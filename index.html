@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#5b5cf0">
 <meta name="description" content="Friendship Connect - Connect, share and make new friends.">
 <title>Friendship Connect</title>
@@ -10,74 +10,42 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-:root{
---primary:#5b5cf0;
---secondary:#8b5cf6;
---danger:#ef4444;
---success:#10b981;
---warning:#f59e0b;
---bg:#f4f6fb;
---card:#fff;
---text:#171923;
---muted:#697386;
---border:#e6e8ef;
---input:#f6f7fb;
---shadow:0 8px 30px rgba(30,35,80,.08)
-}
-
-body.dark{
---bg:#10121a;
---card:#181b25;
---text:#f5f5f7;
---muted:#a5a9b7;
---border:#292d3a;
---input:#202431
-}
-
+*{box-sizing:border-box;margin:0}
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:var(--bg);
-color:var(--text);
-min-height:100vh
+font-family:Arial,sans-serif;
+background:#f4f6fb;
+color:#171923
 }
-
 button,input,textarea{font:inherit}
-button{border:0;cursor:pointer}
-button:disabled{opacity:.55;cursor:not-allowed}
+button{cursor:pointer;border:0}
 .hidden{display:none!important}
 
 .container{
-width:min(1180px,calc(100% - 28px));
+width:min(1150px,calc(100% - 20px));
 margin:auto
 }
 
 .card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:18px;
-box-shadow:var(--shadow)
+background:#fff;
+border:1px solid #e5e7ef;
+border-radius:16px;
+box-shadow:0 7px 25px #1e235014
 }
 
 .btn{
-padding:11px 17px;
-border-radius:11px;
-font-weight:700;
-display:inline-flex;
-justify-content:center;
-align-items:center;
-gap:7px
+padding:10px 15px;
+border-radius:10px;
+font-weight:700
 }
 
 .primary{
 color:#fff;
-background:linear-gradient(135deg,var(--primary),var(--secondary))
+background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
 }
 
 .light{
-color:var(--text);
-background:var(--input)
+background:#f4f5f9;
+color:#333
 }
 
 .danger{
@@ -90,74 +58,49 @@ width:45px;
 height:45px;
 min-width:45px;
 border-radius:50%;
-background:linear-gradient(135deg,var(--primary),var(--secondary));
-color:#fff;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
+color:#fff;
 font-weight:800;
-overflow:hidden
+background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
 }
 
-.avatar.small{
+.small{
 width:38px;
 height:38px;
 min-width:38px;
 font-size:13px
 }
 
-.avatar.large{
-width:95px;
-height:95px;
-min-width:95px;
-font-size:30px;
-border:5px solid var(--card)
+.large{
+width:92px;
+height:92px;
+min-width:92px;
+font-size:28px;
+border:5px solid #fff
 }
-
-.toast-box{
-position:fixed;
-right:18px;
-bottom:18px;
-z-index:9999
-}
-
-.toast{
-padding:13px 17px;
-margin-top:8px;
-color:#fff;
-background:#20232e;
-border-radius:12px;
-box-shadow:var(--shadow)
-}
-
-.toast.success{background:#059669}
-.toast.error{background:#dc2626}
-
-/* AUTH */
 
 .auth{
 min-height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 padding:20px;
 background:
-radial-gradient(circle at 10% 20%,rgba(91,92,240,.16),transparent 35%),
-radial-gradient(circle at 90% 80%,rgba(139,92,246,.14),transparent 35%),
-var(--bg)
+radial-gradient(circle at 10% 20%,#5b5cf026,transparent 35%),
+radial-gradient(circle at 90% 80%,#8b5cf624,transparent 35%),
+#f4f6fb
 }
 
 .auth-card{
 width:min(430px,100%);
-padding:32px
+padding:30px
 }
 
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:900;
-font-size:21px
+.auth-logo{
+text-align:center;
+margin-bottom:22px
 }
 
 .logo-icon{
@@ -165,136 +108,138 @@ width:42px;
 height:42px;
 border-radius:12px;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
+margin:auto;
 color:#fff;
-background:linear-gradient(135deg,var(--primary),var(--secondary))
+background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
 }
 
-.auth-logo{text-align:center;margin-bottom:25px}
-.auth-logo .logo-icon{margin:auto}
-.auth-logo h1{margin-top:13px;font-size:28px}
-.auth-logo p{color:var(--muted);margin-top:5px}
+.auth-logo h1{margin-top:12px}
+.auth-logo p{
+color:#697386;
+margin-top:5px
+}
 
 .tabs{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:4px;
 padding:4px;
-background:var(--input);
-border-radius:12px;
-margin-bottom:22px
+background:#f5f6fa;
+border-radius:11px;
+margin-bottom:20px
 }
 
 .tab{
 padding:10px;
-border-radius:9px;
 background:transparent;
-color:var(--muted);
+color:#697386;
+border-radius:8px;
 font-weight:700
 }
 
 .tab.active{
-color:var(--primary);
-background:var(--card)
+background:#fff;
+color:#5b5cf0
 }
 
-.field{margin-bottom:15px}
+.field{
+margin-bottom:14px
+}
 
 .field label{
 display:block;
-font-size:14px;
 font-weight:700;
+font-size:14px;
 margin-bottom:6px
 }
 
 .field input{
 width:100%;
-padding:13px;
-border:1px solid var(--border);
-border-radius:11px;
-outline:0;
-background:var(--input);
-color:var(--text)
+padding:12px;
+border:1px solid #e2e4eb;
+border-radius:10px;
+background:#f7f8fb;
+outline:0
 }
-
-.field input:focus{border-color:var(--primary)}
 
 .submit{
 width:100%;
-margin-top:5px
+margin-top:4px
 }
-
-/* HEADER */
 
 header{
-height:68px;
+height:66px;
 position:sticky;
 top:0;
-z-index:1000;
-background:rgba(255,255,255,.94);
-border-bottom:1px solid var(--border);
-backdrop-filter:blur(14px)
-}
-
-.dark header{
-background:rgba(24,27,37,.94)
+z-index:10;
+background:#fffffff2;
+border-bottom:1px solid #e5e7ef;
+backdrop-filter:blur(10px)
 }
 
 .header-inner{
 height:100%;
 display:flex;
 align-items:center;
-gap:18px
+gap:16px
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:9px;
+font-weight:900
+}
+
+.logo .logo-icon{
+margin:0
 }
 
 .search{
 flex:1;
-max-width:440px;
+max-width:430px;
 position:relative
 }
 
 .search input{
 width:100%;
 border:0;
-outline:0;
-padding:12px 15px 12px 40px;
-border-radius:12px;
-background:var(--input);
-color:var(--text)
+background:#f4f5f9;
+padding:11px 14px 11px 38px;
+border-radius:11px;
+outline:0
 }
 
 .search span{
 position:absolute;
-left:14px;
-top:50%;
-transform:translateY(-50%)
+left:13px;
+top:10px
 }
 
 .header-actions{
 margin-left:auto;
 display:flex;
-gap:8px
+gap:7px
 }
 
 .icon{
-width:41px;
-height:41px;
-border-radius:11px;
-background:var(--input);
-color:var(--text);
-display:flex;
-align-items:center;
-justify-content:center
+width:40px;
+height:40px;
+border-radius:10px;
+background:#f4f5f9
 }
 
-.notify{position:relative}
+.notify{
+position:relative
+}
 
 .badge{
 position:absolute;
+right:-2px;
 top:-3px;
-right:-3px;
-background:var(--danger);
+background:#ef4444;
 color:#fff;
 border-radius:20px;
 min-width:17px;
@@ -305,115 +250,111 @@ align-items:center;
 justify-content:center
 }
 
-/* APP */
-
 .app{
-padding:25px 0 80px
+padding:22px 0 70px
 }
 
 .grid{
 display:grid;
-grid-template-columns:235px minmax(0,1fr) 285px;
-gap:20px;
-align-items:start
-}
-
-.left,.right{
-position:sticky;
-top:88px
+grid-template-columns:220px minmax(0,1fr) 270px;
+gap:18px
 }
 
 .side{
-padding:12px
+padding:12px;
+position:sticky;
+top:84px
 }
 
 .user-side{
 display:flex;
-gap:10px;
 align-items:center;
-padding:12px;
-margin-bottom:7px
+gap:9px;
+padding:10px
 }
 
 .user-side strong{
 display:block
 }
 
-.user-side small{
-color:var(--muted)
+.user-side small,
+.author small,
+.friend-info small,
+.profile-bio,
+.title p{
+color:#697386
 }
 
 .nav{
 width:100%;
-padding:12px;
-border-radius:11px;
+padding:11px;
+border-radius:10px;
 background:transparent;
 text-align:left;
-color:var(--text);
 font-weight:700;
-margin-bottom:3px
+color:#222;
+margin-top:2px
 }
 
-.nav:hover,.nav.active{
-background:rgba(91,92,240,.10);
-color:var(--primary)
+.nav.active,
+.nav:hover{
+background:#5b5cf014;
+color:#5b5cf0
 }
-
-/* FEED */
 
 .title{
-margin-bottom:17px
+margin-bottom:15px
 }
 
 .title h2{
-font-size:24px
+font-size:23px
 }
 
 .title p{
-color:var(--muted);
-font-size:14px
+font-size:14px;
+margin-top:3px
 }
 
-.create{
+.create,
+.post,
+.widget{
 padding:16px;
-margin-bottom:18px
+margin-bottom:16px
 }
 
 .create-top{
 display:flex;
-gap:10px
+gap:9px
 }
 
 .create textarea{
 flex:1;
-resize:none;
-min-height:48px;
 border:0;
-outline:0;
-border-radius:12px;
-background:var(--input);
-color:var(--text);
-padding:12px
+background:#f5f6fa;
+border-radius:11px;
+padding:11px;
+resize:none;
+outline:0
 }
 
 .create-bottom{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-top:12px;
-padding-top:11px;
-border-top:1px solid var(--border)
+border-top:1px solid #e5e7ef;
+margin-top:11px;
+padding-top:10px
 }
 
-.post{
-padding:17px;
-margin-bottom:17px
+.muted{
+color:#697386;
+font-size:13px
 }
 
 .post-head{
 display:flex;
 align-items:center;
-gap:10px
+gap:9px
 }
 
 .author{
@@ -424,70 +365,62 @@ flex:1
 display:block
 }
 
-.author small{
-color:var(--muted)
-}
-
 .post-menu{
 background:transparent;
-color:var(--muted);
-font-size:20px
+font-size:20px;
+color:#697386
 }
 
 .post-text{
-margin:15px 0;
 white-space:pre-wrap;
 word-break:break-word;
-line-height:1.55
+line-height:1.55;
+margin:14px 0
 }
 
 .post-stats{
 display:flex;
 justify-content:space-between;
-color:var(--muted);
+color:#697386;
 font-size:12px;
-padding:9px 0
+padding:8px 0
 }
 
 .post-actions{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-border-top:1px solid var(--border);
-padding-top:6px
+border-top:1px solid #e5e7ef;
+padding-top:5px
 }
 
 .action{
-padding:10px 5px;
 background:transparent;
-color:var(--muted);
-border-radius:9px;
-font-weight:700
+color:#697386;
+padding:9px;
+font-weight:700;
+border-radius:8px
 }
 
-.action:hover{
-background:var(--input)
-}
-
-.action.liked{
-color:var(--danger)
+.liked{
+color:#ef4444
 }
 
 .comment{
 display:flex;
 gap:8px;
-margin-top:10px
+margin-top:9px
 }
 
 .comment-body{
 flex:1;
-padding:8px 11px;
-background:var(--input);
-border-radius:11px
+background:#f5f6fa;
+padding:8px 10px;
+border-radius:10px
 }
 
 .comment-body strong{
-font-size:13px;
-display:block
+display:block;
+font-size:13px
 }
 
 .comment-body p{
@@ -497,42 +430,25 @@ margin-top:3px
 
 .comment-form{
 display:flex;
-gap:7px;
-margin-top:12px
+gap:6px;
+margin-top:11px
 }
 
 .comment-form input{
 flex:1;
 min-width:0;
-padding:10px;
-border:1px solid var(--border);
-border-radius:10px;
-outline:0;
-background:var(--input);
-color:var(--text)
-}
-
-/* RIGHT */
-
-.widget{
-padding:17px;
-margin-bottom:17px
-}
-
-.widget h3{
-margin-bottom:13px
+padding:9px;
+border:1px solid #e2e4eb;
+border-radius:9px;
+background:#f7f8fb
 }
 
 .friend{
 display:flex;
 align-items:center;
-gap:9px;
+gap:8px;
 padding:10px 0;
-border-bottom:1px solid var(--border)
-}
-
-.friend:last-child{
-border-bottom:0
+border-bottom:1px solid #e5e7ef
 }
 
 .friend-info{
@@ -545,48 +461,38 @@ display:block;
 font-size:13px
 }
 
-.friend-info small{
-color:var(--muted)
-}
-
 .friend .btn{
 padding:7px 9px;
 font-size:11px
 }
 
-/* PROFILE */
-
 .profile{
 overflow:hidden;
-margin-bottom:20px
+margin-bottom:18px
 }
 
 .cover{
-height:175px;
-background:linear-gradient(135deg,var(--primary),var(--secondary))
+height:160px;
+background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
 }
 
 .profile-info{
-padding:0 22px 22px
+padding:0 20px 20px
 }
 
 .profile-avatar{
-margin-top:-48px
+margin-top:-45px
 }
 
 .profile-name{
-font-size:25px;
-margin-top:10px
-}
-
-.profile-bio{
-color:var(--muted)
+font-size:24px;
+margin-top:8px
 }
 
 .stats{
 display:flex;
 gap:28px;
-margin-top:17px
+margin-top:15px
 }
 
 .stats strong{
@@ -595,85 +501,86 @@ font-size:18px
 }
 
 .stats small{
-color:var(--muted)
+color:#697386
 }
-
-/* NOTIFICATIONS */
 
 .notification{
 display:flex;
-gap:10px;
-padding:15px;
-border-bottom:1px solid var(--border)
-}
-
-.notification:last-child{
-border:0
+gap:9px;
+padding:14px;
+border-bottom:1px solid #e5e7ef
 }
 
 .notification-text{
-flex:1
-}
-
-.notification-text p{
+flex:1;
 font-size:14px
 }
 
 .notification-text small{
-color:var(--muted)
+color:#697386;
+display:block;
+margin-top:5px
 }
 
 .notification-actions{
 display:flex;
-gap:7px;
-margin-top:9px
+gap:6px;
+margin-top:8px
 }
 
 .notification-actions .btn{
-padding:7px 11px;
+padding:7px 10px;
 font-size:12px
 }
 
-/* EMPTY */
-
 .empty{
 text-align:center;
-padding:45px 20px;
-color:var(--muted)
+padding:40px 18px;
+color:#697386
 }
 
 .empty-icon{
-font-size:40px;
-margin-bottom:10px
+font-size:38px;
+margin-bottom:8px
 }
 
-/* MOBILE */
+.toast-box{
+position:fixed;
+right:15px;
+bottom:15px;
+z-index:99
+}
+
+.toast{
+color:#fff;
+background:#20232e;
+padding:12px 15px;
+border-radius:10px;
+margin-top:7px
+}
+
+.toast.error{
+background:#dc2626
+}
+
+.toast.success{
+background:#059669
+}
 
 .mobile{
 display:none
 }
 
-@media(max-width:1050px){
-
+@media(max-width:1000px){
 .grid{
-grid-template-columns:210px minmax(0,1fr)
+grid-template-columns:200px minmax(0,1fr)
 }
-
 .right{
 display:none
 }
-
 }
 
-@media(max-width:760px){
-
-header{
-height:62px
-}
-
-.container{
-width:calc(100% - 18px)
-}
+@media(max-width:720px){
 
 .logo span{
 display:none
@@ -687,20 +594,15 @@ display:block
 display:none
 }
 
-.app{
-padding-top:17px;
-padding-bottom:85px
-}
-
 .mobile{
 display:block;
 position:fixed;
+bottom:0;
 left:0;
 right:0;
-bottom:0;
-z-index:2000;
-background:var(--card);
-border-top:1px solid var(--border)
+background:#fff;
+border-top:1px solid #e5e7ef;
+z-index:20
 }
 
 .mobile-inner{
@@ -709,14 +611,10 @@ grid-template-columns:repeat(5,1fr)
 }
 
 .mobile button{
-padding:8px 2px;
 background:transparent;
-color:var(--muted);
-font-size:11px
-}
-
-.mobile button.active{
-color:var(--primary)
+padding:7px 2px;
+font-size:11px;
+color:#697386
 }
 
 .mobile b{
@@ -724,41 +622,40 @@ display:block;
 font-size:18px
 }
 
-.header-actions .profile-icon{
-display:none
+.mobile .active{
+color:#5b5cf0
+}
+
+.app{
+padding-top:16px
 }
 
 .auth-card{
-padding:25px 20px
+padding:24px 19px
 }
 
-.post{
-padding:14px
-}
-
-.cover{
-height:140px
-}
-
-.stats{
-gap:20px
+.header-actions .profile-icon{
+display:none
 }
 
 }
 
 @media(max-width:420px){
 
+.container{
+width:calc(100% - 14px)
+}
+
 .header-inner{
-gap:7px
+gap:6px
 }
 
 .icon{
-width:37px;
-height:37px
+width:37px
 }
 
-.search input{
-padding-left:35px
+.post{
+padding:13px
 }
 
 .post-actions{
@@ -771,7 +668,7 @@ font-size:12px
 
 <body>
 
-<!-- ================= AUTH ================= -->
+<!-- AUTH -->
 
 <section id="auth" class="auth">
 
@@ -789,13 +686,15 @@ font-size:12px
 
 <div class="tabs">
 
-<button id="loginTab"
+<button
+id="loginTab"
 class="tab active"
 onclick="switchAuth('login')">
 Login
 </button>
 
-<button id="registerTab"
+<button
+id="registerTab"
 class="tab"
 onclick="switchAuth('register')">
 Register
@@ -810,9 +709,8 @@ Register
 <input
 id="loginEmail"
 type="email"
-placeholder="Enter your email"
-autocomplete="email"
-required>
+required
+placeholder="Enter your email">
 </div>
 
 <div class="field">
@@ -820,9 +718,8 @@ required>
 <input
 id="loginPassword"
 type="password"
-placeholder="Enter your password"
-autocomplete="current-password"
-required>
+required
+placeholder="Enter your password">
 </div>
 
 <button class="btn primary submit" type="submit">
@@ -837,10 +734,8 @@ required>
 <label>Full Name</label>
 <input
 id="registerName"
-type="text"
-placeholder="Your full name"
-autocomplete="name"
-required>
+required
+placeholder="Your full name">
 </div>
 
 <div class="field">
@@ -848,9 +743,8 @@ required>
 <input
 id="registerEmail"
 type="email"
-placeholder="Your email"
-autocomplete="email"
-required>
+required
+placeholder="Your email">
 </div>
 
 <div class="field">
@@ -859,9 +753,8 @@ required>
 id="registerPassword"
 type="password"
 minlength="6"
-placeholder="Minimum 6 characters"
-autocomplete="new-password"
-required>
+required
+placeholder="Minimum 6 characters">
 </div>
 
 <button class="btn primary submit" type="submit">
@@ -874,7 +767,7 @@ required>
 </section>
 
 
-<!-- ================= APP ================= -->
+<!-- APP -->
 
 <div id="app" class="hidden">
 
@@ -883,8 +776,11 @@ required>
 <div class="container header-inner">
 
 <div class="logo">
+
 <div class="logo-icon">🤝</div>
+
 <span>Friendship Connect</span>
+
 </div>
 
 <div class="search">
@@ -894,8 +790,7 @@ required>
 <input
 id="search"
 type="search"
-placeholder="Search posts..."
-autocomplete="off">
+placeholder="Search posts...">
 
 </div>
 
@@ -903,15 +798,13 @@ autocomplete="off">
 
 <button
 class="icon"
-onclick="toggleTheme()"
-title="Theme">
+onclick="toggleTheme()">
 🌙
 </button>
 
 <button
 class="icon notify"
-onclick="showPage('notifications')"
-title="Notifications">
+onclick="showPage('notifications')">
 
 🔔
 
@@ -921,8 +814,7 @@ title="Notifications">
 
 <button
 class="icon profile-icon"
-onclick="showPage('profile')"
-title="Profile">
+onclick="showPage('profile')">
 👤
 </button>
 
@@ -952,7 +844,9 @@ U
 
 <div>
 
-<strong id="sideName">User</strong>
+<strong id="sideName">
+User
+</strong>
 
 <small id="sideEmail">
 user@email.com
@@ -1016,7 +910,9 @@ onclick="logout()">
 
 <div class="title">
 
-<h2>Welcome back 👋</h2>
+<h2>
+Welcome back 👋
+</h2>
 
 <p>
 Share your thoughts and connect with friends.
@@ -1028,21 +924,24 @@ Share your thoughts and connect with friends.
 
 <div class="create-top">
 
-<div id="createAvatar" class="avatar">
+<div
+id="createAvatar"
+class="avatar">
 U
 </div>
 
 <textarea
 id="postInput"
-placeholder="What's on your mind?"
 rows="2"
-maxlength="5000"></textarea>
+maxlength="5000"
+placeholder="What's on your mind?">
+</textarea>
 
 </div>
 
 <div class="create-bottom">
 
-<span style="color:var(--muted);font-size:13px">
+<span class="muted">
 ✨ Share something with your friends
 </span>
 
@@ -1073,17 +972,23 @@ Post
 
 <div class="profile-avatar">
 
-<div id="profileAvatar" class="avatar large">
+<div
+id="profileAvatar"
+class="avatar large">
 U
 </div>
 
 </div>
 
-<h2 id="profileName" class="profile-name">
+<h2
+id="profileName"
+class="profile-name">
 User
 </h2>
 
-<p id="profileBio" class="profile-bio">
+<p
+id="profileBio"
+class="profile-bio">
 Welcome to Friendship Connect.
 </p>
 
@@ -1111,7 +1016,9 @@ Welcome to Friendship Connect.
 
 <div class="title">
 
-<h2>My Posts</h2>
+<h2>
+My Posts
+</h2>
 
 <p>
 Your posts on Friendship Connect.
@@ -1130,7 +1037,9 @@ Your posts on Friendship Connect.
 
 <div class="title">
 
-<h2>Friends 👥</h2>
+<h2>
+Friends 👥
+</h2>
 
 <p>
 Discover people and manage friend requests.
@@ -1138,7 +1047,10 @@ Discover people and manage friend requests.
 
 </div>
 
-<div id="friendsList" class="card"></div>
+<div
+id="friendsList"
+class="card">
+</div>
 
 </div>
 
@@ -1149,7 +1061,9 @@ Discover people and manage friend requests.
 
 <div class="title">
 
-<h2>Notifications 🔔</h2>
+<h2>
+Notifications 🔔
+</h2>
 
 <p>
 Your latest friendship activity.
@@ -1157,7 +1071,10 @@ Your latest friendship activity.
 
 </div>
 
-<div id="notificationList" class="card"></div>
+<div
+id="notificationList"
+class="card">
+</div>
 
 </div>
 
@@ -1170,7 +1087,9 @@ Your latest friendship activity.
 
 <div class="card widget">
 
-<h3>People You May Know</h3>
+<h3>
+People You May Know
+</h3>
 
 <div id="suggestions"></div>
 
@@ -1178,12 +1097,14 @@ Your latest friendship activity.
 
 <div class="card widget">
 
-<h3>Friendship Connect 💜</h3>
+<h3>
+Friendship Connect 💜
+</h3>
 
-<p style="color:var(--muted);font-size:13px;line-height:1.6">
-
+<p
+class="muted"
+style="line-height:1.6">
 Connect with people, share your thoughts and build meaningful friendships.
-
 </p>
 
 </div>
@@ -1192,6 +1113,7 @@ Connect with people, share your thoughts and build meaningful friendships.
 
 </div>
 </div>
+
 </main>
 
 
@@ -1205,50 +1127,64 @@ Connect with people, share your thoughts and build meaningful friendships.
 data-mobile="home"
 class="active"
 onclick="showPage('home')">
+
 <b>🏠</b>
 Home
+
 </button>
 
 <button
 data-mobile="friends"
 onclick="showPage('friends')">
+
 <b>👥</b>
 Friends
+
 </button>
 
 <button
 data-mobile="notifications"
 onclick="showPage('notifications')">
+
 <b>🔔</b>
 Alerts
+
 </button>
 
 <button
 data-mobile="profile"
 onclick="showPage('profile')">
+
 <b>👤</b>
 Profile
+
 </button>
 
 <button onclick="logout()">
+
 <b>🚪</b>
 Logout
+
 </button>
 
 </div>
+
 </nav>
 
 </div>
+
 
 <div id="toastBox" class="toast-box"></div>
 
 
 <script>
+
 "use strict";
 
-/* =========================================================
+
+/* =========================
    SUPABASE
-   ========================================================= */
+========================= */
 
 const SUPABASE_URL =
 "https://fpdhozxounuxbpnioban.supabase.co";
@@ -1263,9 +1199,9 @@ SUPABASE_KEY
 );
 
 
-/* =========================================================
+/* =========================
    STATE
-   ========================================================= */
+========================= */
 
 let currentUser=null;
 let currentProfile=null;
@@ -1274,14 +1210,17 @@ let allPosts=[];
 let allProfiles=[];
 let allRequests=[];
 
-let appStarting=false;
 
-
-/* =========================================================
+/* =========================
    HELPERS
-   ========================================================= */
+========================= */
 
-function escapeHTML(value){
+function $(id){
+return document.getElementById(id);
+}
+
+
+function esc(value){
 
 return String(value ?? "")
 .replace(/&/g,"&amp;")
@@ -1293,7 +1232,7 @@ return String(value ?? "")
 }
 
 
-function initials(name){
+function ini(name){
 
 return String(name || "User")
 .trim()
@@ -1306,15 +1245,20 @@ return String(name || "User")
 }
 
 
-function timeAgo(date){
+function ago(date){
 
 const seconds=Math.floor(
 (Date.now()-new Date(date).getTime())/1000
 );
 
-if(seconds<60)return "Just now";
-if(seconds<3600)return Math.floor(seconds/60)+" min ago";
-if(seconds<86400)return Math.floor(seconds/3600)+" hr ago";
+if(seconds<60)
+return "Just now";
+
+if(seconds<3600)
+return Math.floor(seconds/60)+" min ago";
+
+if(seconds<86400)
+return Math.floor(seconds/3600)+" hr ago";
 
 return Math.floor(seconds/86400)+" day ago";
 
@@ -1323,33 +1267,35 @@ return Math.floor(seconds/86400)+" day ago";
 
 function toast(message,type="success"){
 
-const box=document.getElementById("toastBox");
+const box=$("toastBox");
 
 const item=document.createElement("div");
 
 item.className="toast "+type;
+
 item.textContent=message;
 
 box.appendChild(item);
 
-setTimeout(()=>{
-item.remove();
-},3500);
+setTimeout(
+()=>item.remove(),
+3500
+);
 
 }
 
 
-/* =========================================================
+/* =========================
    AUTH UI
-   ========================================================= */
+========================= */
 
 function switchAuth(type){
 
-const login=document.getElementById("loginForm");
-const register=document.getElementById("registerForm");
+const login=$("loginForm");
+const register=$("registerForm");
 
-const loginTab=document.getElementById("loginTab");
-const registerTab=document.getElementById("registerTab");
+const loginTab=$("loginTab");
+const registerTab=$("registerTab");
 
 if(type==="login"){
 
@@ -1372,25 +1318,24 @@ registerTab.classList.add("active");
 }
 
 
-/* =========================================================
+/* =========================
    REGISTER
-   ========================================================= */
+========================= */
 
-document.getElementById("registerForm")
-.addEventListener("submit",async e=>{
+$("registerForm")
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
-const name=document
-.getElementById("registerName")
+const name=$("registerName")
 .value.trim();
 
-const email=document
-.getElementById("registerEmail")
+const email=$("registerEmail")
 .value.trim();
 
-const password=document
-.getElementById("registerPassword")
+const password=$("registerPassword")
 .value;
 
 if(name.length<2){
@@ -1415,7 +1360,7 @@ return;
 
 }
 
-const {data,error}=
+const result=
 await supabaseClient.auth.signUp({
 
 email,
@@ -1429,14 +1374,22 @@ full_name:name
 
 });
 
-if(error){
+if(result.error){
 
-toast(error.message,"error");
+toast(
+result.error.message,
+"error"
+);
+
 return;
 
 }
 
-if(data.session){
+if(result.data.session){
+
+currentUser=result.data.user;
+
+await startApp();
 
 toast(
 "Account created successfully! 🎉"
@@ -1450,27 +1403,28 @@ toast(
 
 }
 
-});
+}
+);
 
 
-/* =========================================================
+/* =========================
    LOGIN
-   ========================================================= */
+========================= */
 
-document.getElementById("loginForm")
-.addEventListener("submit",async e=>{
+$("loginForm")
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
-const email=document
-.getElementById("loginEmail")
+const email=$("loginEmail")
 .value.trim();
 
-const password=document
-.getElementById("loginPassword")
+const password=$("loginPassword")
 .value;
 
-const {error}=
+const result=
 await supabaseClient.auth.signInWithPassword({
 
 email,
@@ -1478,40 +1432,55 @@ password
 
 });
 
-if(error){
+if(result.error){
 
-toast(error.message,"error");
+toast(
+result.error.message,
+"error"
+);
+
 return;
 
 }
 
-toast("Welcome back! 👋");
+currentUser=result.data.user;
 
-});
+await startApp();
+
+toast(
+"Welcome back! 👋"
+);
+
+}
+);
 
 
-/* =========================================================
+/* =========================
    AUTH STATE
-   ========================================================= */
+========================= */
 
 supabaseClient.auth.onAuthStateChange(
-(event,session)=>{
+function(event,session){
 
 if(session){
 
 currentUser=session.user;
 
-setTimeout(()=>{
-startApp();
-},0);
+setTimeout(
+startApp,
+0
+);
 
 }else{
 
 currentUser=null;
 currentProfile=null;
-appStarting=false;
 
-showAuth();
+$("auth")
+.classList.remove("hidden");
+
+$("app")
+.classList.add("hidden");
 
 }
 
@@ -1520,141 +1489,96 @@ showAuth();
 
 async function checkSession(){
 
-const {data,error}=
+const result=
 await supabaseClient.auth.getSession();
 
-if(error){
+if(result.error){
 
-console.error(error);
-showAuth();
+toast(
+result.error.message,
+"error"
+);
+
 return;
 
 }
 
-if(data.session){
+if(result.data.session){
 
-currentUser=data.session.user;
+currentUser=
+result.data.session.user;
 
 await startApp();
 
-}else{
-
-showAuth();
-
 }
 
 }
 
 
-function showAuth(){
-
-document.getElementById("auth")
-.classList.remove("hidden");
-
-document.getElementById("app")
-.classList.add("hidden");
-
-}
-
-
-/* =========================================================
-   START APP
-   ========================================================= */
-
-async function startApp(){
-
-if(!currentUser)return;
-
-if(appStarting)return;
-
-appStarting=true;
-
-document.getElementById("auth")
-.classList.add("hidden");
-
-document.getElementById("app")
-.classList.remove("hidden");
-
-try{
-
-await loadProfile();
-await loadProfiles();
-await loadRequests();
-await loadPosts();
-
-updateUserUI();
-
-renderPosts();
-renderMyPosts();
-renderSuggestions();
-renderFriends();
-renderNotifications();
-
-applyTheme();
-
-}catch(error){
-
-console.error(error);
-
-toast(
-"Could not start the app. Check Supabase settings.",
-"error"
-);
-
-}finally{
-
-appStarting=false;
-
-}
-
-}
-
-
-/* =========================================================
+/* =========================
    PROFILE
-   ========================================================= */
+========================= */
 
-async function loadProfile(){
+async function ensureProfile(){
 
-const {data,error}=
+if(!currentUser)
+return false;
+
+
+/*
+IMPORTANT:
+Your Supabase profiles table uses:
+
+id
+name
+location
+avatar_url
+created_at
+
+So we use name here,
+NOT full_name or bio.
+*/
+
+let result=
 await supabaseClient
 .from("profiles")
 .select("*")
 .eq("id",currentUser.id)
 .maybeSingle();
 
-if(error){
-
-console.error("Profile select error:",error);
+if(result.error){
 
 toast(
-"Could not load profile: "+error.message,
+"Could not load profile: "+
+result.error.message,
 "error"
 );
 
-return;
+return false;
 
 }
 
-currentProfile=data;
 
-if(!currentProfile){
+if(result.data){
+
+currentProfile=result.data;
+
+return true;
+
+}
+
 
 const name=
 currentUser.user_metadata?.full_name ||
 "New User";
 
-const result=
+
+const insertResult=
 await supabaseClient
 .from("profiles")
 .insert({
 
 id:currentUser.id,
-
-/* IMPORTANT:
-   Your profiles table uses 'name',
-   NOT 'full_name'
-*/
 
 name:name,
 
@@ -1666,127 +1590,165 @@ avatar_url:""
 .select()
 .single();
 
-if(result.error){
+
+if(insertResult.error){
 
 console.error(
-"Profile insert error:",
-result.error
+"Profile creation error:",
+insertResult.error
 );
 
 toast(
 "Profile could not be created: "+
-result.error.message,
+insertResult.error.message,
 "error"
 );
 
+return false;
+
+}
+
+
+currentProfile=
+insertResult.data;
+
+return true;
+
+}
+
+
+/* =========================
+   START APP
+========================= */
+
+async function startApp(){
+
+if(!currentUser)
 return;
 
+$("auth")
+.classList.add("hidden");
+
+$("app")
+.classList.remove("hidden");
+
+const profileOK=
+await ensureProfile();
+
+if(!profileOK)
+return;
+
+await Promise.all([
+loadProfiles(),
+loadRequests()
+]);
+
+await loadPosts();
+
+updateUI();
+
+renderAll();
+
 }
 
-currentProfile=result.data;
 
-}
+/* =========================
+   UPDATE UI
+========================= */
 
-}
-
-
-/* =========================================================
-   UPDATE USER UI
-   ========================================================= */
-
-function updateUserUI(){
+function updateUI(){
 
 const name=
 currentProfile?.name ||
 currentUser.user_metadata?.full_name ||
 "User";
 
-const email=
+const avatar=
+ini(name);
+
+$("sideName").textContent=name;
+
+$("sideEmail").textContent=
 currentUser.email || "";
 
-const ini=initials(name);
+$("sideAvatar").textContent=avatar;
 
-document.getElementById("sideName")
-.textContent=name;
+$("createAvatar").textContent=avatar;
 
-document.getElementById("sideEmail")
-.textContent=email;
+$("profileAvatar").textContent=avatar;
 
-document.getElementById("sideAvatar")
-.textContent=ini;
+$("profileName").textContent=name;
 
-document.getElementById("createAvatar")
-.textContent=ini;
-
-document.getElementById("profileAvatar")
-.textContent=ini;
-
-document.getElementById("profileName")
-.textContent=name;
-
-document.getElementById("profileBio")
-.textContent=
+$("profileBio").textContent=
+currentProfile?.location ||
 "Welcome to Friendship Connect.";
 
 }
 
 
-/* =========================================================
-   LOAD PROFILES
-   ========================================================= */
+/* =========================
+   PROFILES
+========================= */
 
 async function loadProfiles(){
 
-const {data,error}=
+const result=
 await supabaseClient
 .from("profiles")
 .select("*")
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.error(
-"Profiles load error:",
-error
+.order(
+"created_at",
+{ascending:false}
 );
 
+if(result.error){
+
+console.error(result.error);
+
 allProfiles=[];
+
 return;
 
 }
 
-allProfiles=data || [];
+allProfiles=
+result.data || [];
 
 }
 
 
-/* =========================================================
-   LOAD POSTS
-   ========================================================= */
+/* =========================
+   POSTS
+========================= */
 
 async function loadPosts(){
 
-const {data,error}=
+const result=
 await supabaseClient
 .from("posts")
 .select("*")
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
-if(error){
-
-console.error(error);
+if(result.error){
 
 toast(
-"Could not load posts: "+error.message,
+"Could not load posts: "+
+result.error.message,
 "error"
 );
 
 allPosts=[];
+
 return;
 
 }
 
-allPosts=data || [];
+allPosts=
+result.data || [];
+
 
 for(const post of allPosts){
 
@@ -1795,23 +1757,40 @@ allProfiles.find(
 p=>p.id===post.user_id
 ) || null;
 
-const likesResult=
+
+const likes=
 await supabaseClient
 .from("likes")
 .select("id,user_id")
-.eq("post_id",post.id);
+.eq(
+"post_id",
+post.id
+);
 
-const commentsResult=
+
+const comments=
 await supabaseClient
 .from("comments")
 .select("*")
-.eq("post_id",post.id)
-.order("created_at",{ascending:true});
+.eq(
+"post_id",
+post.id
+)
+.order(
+"created_at",
+{ascending:true}
+);
 
-post.likes=likesResult.data || [];
-post.comments=commentsResult.data || [];
 
-for(const comment of post.comments){
+post.likes=
+likes.data || [];
+
+post.comments=
+comments.data || [];
+
+
+post.comments.forEach(
+comment=>{
 
 comment.profile=
 allProfiles.find(
@@ -1819,121 +1798,52 @@ p=>p.id===comment.user_id
 ) || null;
 
 }
+);
 
 }
 
 }
 
 
-/* =========================================================
-   RENDER POSTS
-   ========================================================= */
-
-function renderPosts(){
-
-const container=
-document.getElementById("posts");
-
-if(!allPosts.length){
-
-container.innerHTML=`
-
-<div class="card empty">
-
-<div class="empty-icon">📝</div>
-
-<h3>No posts yet</h3>
-
-<p>
-Be the first to share something.
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-container.innerHTML=
-allPosts
-.map(post=>postHTML(post))
-.join("");
-
-}
-
+/* =========================
+   POST HTML
+========================= */
 
 function postHTML(post){
 
-const profile=post.profile;
-
 const name=
-profile?.name || "User";
-
-const ini=initials(name);
-
-const likeCount=
-post.likes?.length || 0;
+post.profile?.name ||
+"User";
 
 const liked=
-post.likes?.some(
-like=>like.user_id===currentUser.id
+post.likes.some(
+like=>
+like.user_id===
+currentUser.id
 );
 
 const comments=
 post.comments || [];
 
-const commentHTML=
-comments.map(comment=>{
 
-const cname=
-comment.profile?.name || "User";
-
-return`
-
-<div class="comment">
-
-<div class="avatar small">
-${escapeHTML(initials(cname))}
-</div>
-
-<div class="comment-body">
-
-<strong>
-${escapeHTML(cname)}
-</strong>
-
-<p>
-${escapeHTML(comment.content)}
-</p>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-return`
+return `
 
 <article class="card post">
 
 <div class="post-head">
 
 <div class="avatar">
-${escapeHTML(ini)}
+${esc(ini(name))}
 </div>
 
 <div class="author">
 
 <strong>
-${escapeHTML(name)}
+${esc(name)}
 </strong>
 
 <small>
-${timeAgo(post.created_at)}
+${ago(post.created_at)}
 </small>
 
 </div>
@@ -1942,28 +1852,28 @@ ${
 post.user_id===currentUser.id
 ?
 `
-
 <button
 class="post-menu"
-onclick="deletePost(${post.id})"
-title="Delete">
+onclick="deletePost(${post.id})">
 ⋯
 </button>
-
 `
-:""
+:
+""
 }
 
 </div>
 
+
 <div class="post-text">
-${escapeHTML(post.content)}
+${esc(post.content)}
 </div>
+
 
 <div class="post-stats">
 
 <span>
-❤️ ${likeCount}
+❤️ ${post.likes.length}
 </span>
 
 <span>
@@ -1971,6 +1881,7 @@ ${escapeHTML(post.content)}
 </span>
 
 </div>
+
 
 <div class="post-actions">
 
@@ -1982,6 +1893,7 @@ ${liked?"❤️":"♡"} Like
 
 </button>
 
+
 <button
 class="action"
 onclick="focusComment(${post.id})">
@@ -1989,6 +1901,7 @@ onclick="focusComment(${post.id})">
 💬 Comment
 
 </button>
+
 
 <button
 class="action"
@@ -2000,9 +1913,45 @@ onclick="sharePost(${post.id})">
 
 </div>
 
-<div>
-${commentHTML}
+
+${
+comments.map(
+comment=>`
+
+<div class="comment">
+
+<div class="avatar small">
+
+${esc(
+ini(
+comment.profile?.name ||
+"User"
+)
+)}
+
 </div>
+
+<div class="comment-body">
+
+<strong>
+${esc(
+comment.profile?.name ||
+"User"
+)}
+</strong>
+
+<p>
+${esc(comment.content)}
+</p>
+
+</div>
+
+</div>
+
+`
+).join("")
+}
+
 
 <form
 class="comment-form"
@@ -2010,13 +1959,11 @@ onsubmit="addComment(event,${post.id})">
 
 <input
 id="comment-${post.id}"
-placeholder="Write a comment..."
-autocomplete="off"
-maxlength="1000">
+maxlength="1000"
+placeholder="Write a comment...">
 
 <button
-class="btn primary"
-type="submit">
+class="btn primary">
 Send
 </button>
 
@@ -2029,14 +1976,100 @@ Send
 }
 
 
-/* =========================================================
+/* =========================
+   RENDER POSTS
+========================= */
+
+function renderPosts(
+list=allPosts
+){
+
+$("posts").innerHTML=
+
+list.length
+
+?
+
+list.map(postHTML).join("")
+
+:
+
+`
+<div class="card empty">
+
+<div class="empty-icon">
+📝
+</div>
+
+<h3>
+No posts yet
+</h3>
+
+<p>
+Be the first to share something.
+</p>
+
+</div>
+`;
+
+}
+
+
+/* =========================
+   MY POSTS
+========================= */
+
+function renderMyPosts(){
+
+const mine=
+allPosts.filter(
+post=>
+post.user_id===
+currentUser.id
+);
+
+$("myPostCount")
+.textContent=mine.length;
+
+
+$("myPosts").innerHTML=
+
+mine.length
+
+?
+
+mine.map(postHTML).join("")
+
+:
+
+`
+<div class="card empty">
+
+<div class="empty-icon">
+✨
+</div>
+
+<h3>
+No posts yet
+</h3>
+
+<p>
+Create your first post from Home.
+</p>
+
+</div>
+`;
+
+}
+
+
+/* =========================
    CREATE POST
-   ========================================================= */
+========================= */
 
 async function createPost(){
 
-const input=
-document.getElementById("postInput");
+const input=$("postInput");
 
 const content=
 input.value.trim();
@@ -2052,20 +2085,22 @@ return;
 
 }
 
-const {error}=
+const result=
 await supabaseClient
 .from("posts")
 .insert({
 
 user_id:currentUser.id,
+
 content:content
 
 });
 
-if(error){
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2078,6 +2113,7 @@ input.value="";
 await loadPosts();
 
 renderPosts();
+
 renderMyPosts();
 
 toast(
@@ -2087,54 +2123,52 @@ toast(
 }
 
 
-/* =========================================================
+/* =========================
    LIKE
-   ========================================================= */
+========================= */
 
-async function toggleLike(postId,liked){
+async function toggleLike(
+postId,
+liked
+){
+
+let result;
 
 if(liked){
 
-const {error}=
+result=
 await supabaseClient
 .from("likes")
 .delete()
 .eq("post_id",postId)
-.eq("user_id",currentUser.id);
-
-if(error){
-
-toast(
-error.message,
-"error"
+.eq(
+"user_id",
+currentUser.id
 );
-
-return;
-
-}
 
 }else{
 
-const {error}=
+result=
 await supabaseClient
 .from("likes")
 .insert({
 
 post_id:postId,
+
 user_id:currentUser.id
 
 });
 
-if(error){
+}
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
 return;
-
-}
 
 }
 
@@ -2145,39 +2179,44 @@ renderPosts();
 }
 
 
-/* =========================================================
+/* =========================
    COMMENTS
-   ========================================================= */
+========================= */
 
-async function addComment(event,postId){
+async function addComment(
+event,
+postId
+){
 
 event.preventDefault();
 
 const input=
-document.getElementById(
-"comment-"+postId
-);
+$("comment-"+postId);
 
 const content=
 input.value.trim();
 
-if(!content)return;
+if(!content)
+return;
 
-const {error}=
+const result=
 await supabaseClient
 .from("comments")
 .insert({
 
 post_id:postId,
+
 user_id:currentUser.id,
+
 content:content
 
 });
 
-if(error){
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2197,9 +2236,7 @@ renderPosts();
 function focusComment(postId){
 
 const input=
-document.getElementById(
-"comment-"+postId
-);
+$("comment-"+postId);
 
 if(input){
 
@@ -2215,26 +2252,33 @@ block:"center"
 }
 
 
-/* =========================================================
-   DELETE POST
-   ========================================================= */
+/* =========================
+   DELETE
+========================= */
 
 async function deletePost(postId){
 
-if(!confirm("Delete this post?"))
+if(
+!confirm(
+"Delete this post?"
+)
+)
 return;
 
-const {error}=
+const result=
 await supabaseClient
 .from("posts")
 .delete()
 .eq("id",postId)
-.eq("user_id",currentUser.id);
+.eq(
+"user_id",
+currentUser.id
+);
 
-if(error){
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2245,31 +2289,36 @@ return;
 await loadPosts();
 
 renderPosts();
+
 renderMyPosts();
 
-toast("Post deleted.");
+toast(
+"Post deleted."
+);
 
 }
 
 
-/* =========================================================
+/* =========================
    SHARE
-   ========================================================= */
+========================= */
 
 async function sharePost(postId){
 
 const post=
 allPosts.find(
-p=>p.id===postId
+x=>x.id===postId
 );
 
-if(!post)return;
-
-const name=
-post.profile?.name || "User";
+if(!post)
+return;
 
 const text=
-name+": "+post.content;
+(
+post.profile?.name ||
+"User"
+)+": "+post.content;
+
 
 if(navigator.share){
 
@@ -2278,6 +2327,7 @@ try{
 await navigator.share({
 
 title:"Friendship Connect",
+
 text:text
 
 });
@@ -2288,9 +2338,12 @@ return;
 
 }
 
+
 try{
 
-await navigator.clipboard.writeText(text);
+await navigator.clipboard.writeText(
+text
+);
 
 toast(
 "Post copied to clipboard."
@@ -2308,13 +2361,13 @@ toast(
 }
 
 
-/* =========================================================
+/* =========================
    FRIEND REQUESTS
-   ========================================================= */
+========================= */
 
 async function loadRequests(){
 
-const {data,error}=
+const result=
 await supabaseClient
 .from("friend_requests")
 .select("*")
@@ -2322,9 +2375,7 @@ await supabaseClient
 `sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
 );
 
-if(error){
-
-console.error(error);
+if(result.error){
 
 allRequests=[];
 
@@ -2332,102 +2383,67 @@ return;
 
 }
 
-allRequests=data || [];
+allRequests=
+result.data || [];
 
-updateFriendStats();
-
-}
-
-
-function updateFriendStats(){
-
-const accepted=
-allRequests.filter(
-r=>r.status==="accepted"
-);
-
-const pendingIncoming=
-allRequests.filter(
-r=>
-r.receiver_id===currentUser.id &&
-r.status==="pending"
-);
-
-document.getElementById("friendCount")
-.textContent=accepted.length;
-
-document.getElementById("pendingCount")
-.textContent=pendingIncoming.length;
+updateStats();
 
 }
 
 
-function getRequestStatus(personId){
+function updateStats(){
 
-const request=
-allRequests.find(r=>
+const friends=
+allRequests.filter(
+x=>x.status==="accepted"
+).length;
 
+const pending=
+allRequests.filter(
+x=>
+x.receiver_id===
+currentUser.id &&
+x.status==="pending"
+).length;
+
+$("friendCount")
+.textContent=friends;
+
+$("pendingCount")
+.textContent=pending;
+
+}
+
+
+function req(personId){
+
+return allRequests.find(
+x=>
 (
-r.sender_id===currentUser.id &&
-r.receiver_id===personId
+x.sender_id===currentUser.id &&
+x.receiver_id===personId
 )
-
 ||
-
 (
-r.receiver_id===currentUser.id &&
-r.sender_id===personId
+x.receiver_id===currentUser.id &&
+x.sender_id===personId
 )
-
 );
 
-return request || null;
-
 }
 
 
-function renderSuggestions(){
-
-const container=
-document.getElementById("suggestions");
-
-const people=
-allProfiles
-.filter(
-p=>p.id!==currentUser.id
-)
-.slice(0,5);
-
-if(!people.length){
-
-container.innerHTML=`
-
-<p style="color:var(--muted);font-size:13px">
-
-No other users yet.
-
-</p>
-
-`;
-
-return;
-
-}
-
-container.innerHTML=
-people
-.map(person=>friendHTML(person))
-.join("");
-
-}
-
+/* =========================
+   FRIEND HTML
+========================= */
 
 function friendHTML(person){
 
 const request=
-getRequestStatus(person.id);
+req(person.id);
 
 let button="";
+
 
 if(!request){
 
@@ -2435,7 +2451,7 @@ button=`
 
 <button
 class="btn primary"
-onclick="sendFriendRequest('${person.id}')">
+onclick="sendRequest('${person.id}')">
 
 + Add
 
@@ -2446,7 +2462,9 @@ onclick="sendFriendRequest('${person.id}')">
 }else if(
 
 request.status==="pending" &&
-request.receiver_id===currentUser.id
+
+request.receiver_id===
+currentUser.id
 
 ){
 
@@ -2454,7 +2472,7 @@ button=`
 
 <button
 class="btn primary"
-onclick="acceptFriendRequest('${request.id}')">
+onclick="acceptRequest('${request.id}')">
 
 Accept
 
@@ -2464,8 +2482,7 @@ Accept
 
 }else if(
 
-request.status==="pending" &&
-request.sender_id===currentUser.id
+request.status==="pending"
 
 ){
 
@@ -2482,7 +2499,9 @@ Sent ✓
 `;
 
 }else if(
+
 request.status==="accepted"
+
 ){
 
 button=`
@@ -2513,27 +2532,33 @@ Requested
 
 }
 
-const name=
-person.name || "User";
 
-return`
+const name=
+person.name ||
+"User";
+
+
+return `
 
 <div class="friend">
 
 <div class="avatar small">
 
-${escapeHTML(initials(name))}
+${esc(ini(name))}
 
 </div>
 
 <div class="friend-info">
 
 <strong>
-${escapeHTML(name)}
+${esc(name)}
 </strong>
 
 <small>
-Friendship Connect
+${esc(
+person.location ||
+"Friendship Connect"
+)}
 </small>
 
 </div>
@@ -2547,19 +2572,78 @@ ${button}
 }
 
 
-/* =========================================================
-   SEND FRIEND REQUEST
-   ========================================================= */
+/* =========================
+   FRIENDS
+========================= */
 
-async function sendFriendRequest(receiverId){
+function renderFriends(){
 
-if(receiverId===currentUser.id)
-return;
+const people=
+allProfiles.filter(
+x=>x.id!==currentUser.id
+);
 
-const existing=
-getRequestStatus(receiverId);
 
-if(existing){
+$("friendsList").innerHTML=
+
+people.length
+
+?
+
+people.map(
+person=>
+`
+<div style="padding:15px">
+${friendHTML(person)}
+</div>
+`
+).join("")
+
+:
+
+`
+<div class="empty">
+
+<div class="empty-icon">
+👥
+</div>
+
+<h3>
+No other users yet
+</h3>
+
+<p>
+Invite someone to join Friendship Connect.
+</p>
+
+</div>
+`;
+
+
+$("suggestions").innerHTML=
+
+people.slice(0,5)
+.map(friendHTML)
+.join("")
+||
+`
+<p class="muted">
+No other users yet.
+</p>
+`;
+
+}
+
+
+/* =========================
+   SEND REQUEST
+========================= */
+
+async function sendRequest(
+receiverId
+){
+
+if(req(receiverId)){
 
 toast(
 "A request already exists.",
@@ -2570,21 +2654,24 @@ return;
 
 }
 
-const {error}=
+const result=
 await supabaseClient
 .from("friend_requests")
 .insert({
 
 sender_id:currentUser.id,
+
 receiver_id:receiverId,
+
 status:"pending"
 
 });
 
-if(error){
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2594,8 +2681,8 @@ return;
 
 await loadRequests();
 
-renderSuggestions();
 renderFriends();
+
 renderNotifications();
 
 toast(
@@ -2605,27 +2692,34 @@ toast(
 }
 
 
-/* =========================================================
-   ACCEPT REQUEST
-   ========================================================= */
+/* =========================
+   ACCEPT
+========================= */
 
-async function acceptFriendRequest(requestId){
+async function acceptRequest(
+requestId
+){
 
-const {error}=
+const result=
 await supabaseClient
 .from("friend_requests")
 .update({
-
 status:"accepted"
-
 })
-.eq("id",requestId)
-.eq("receiver_id",currentUser.id);
+.eq(
+"id",
+requestId
+)
+.eq(
+"receiver_id",
+currentUser.id
+);
 
-if(error){
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2635,8 +2729,8 @@ return;
 
 await loadRequests();
 
-renderSuggestions();
 renderFriends();
+
 renderNotifications();
 
 toast(
@@ -2646,23 +2740,32 @@ toast(
 }
 
 
-/* =========================================================
-   REJECT REQUEST
-   ========================================================= */
+/* =========================
+   REJECT
+========================= */
 
-async function rejectFriendRequest(requestId){
+async function rejectRequest(
+requestId
+){
 
-const {error}=
+const result=
 await supabaseClient
 .from("friend_requests")
 .delete()
-.eq("id",requestId)
-.eq("receiver_id",currentUser.id);
+.eq(
+"id",
+requestId
+)
+.eq(
+"receiver_id",
+currentUser.id
+);
 
-if(error){
+
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -2672,8 +2775,8 @@ return;
 
 await loadRequests();
 
-renderSuggestions();
 renderFriends();
+
 renderNotifications();
 
 toast(
@@ -2683,99 +2786,38 @@ toast(
 }
 
 
-/* =========================================================
-   FRIENDS PAGE
-   ========================================================= */
-
-function renderFriends(){
-
-const container=
-document.getElementById("friendsList");
-
-const others=
-allProfiles.filter(
-p=>p.id!==currentUser.id
-);
-
-if(!others.length){
-
-container.innerHTML=`
-
-<div class="empty">
-
-<div class="empty-icon">👥</div>
-
-<h3>No other users yet</h3>
-
-<p>
-Invite someone to join Friendship Connect.
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-container.innerHTML=
-others.map(person=>{
-
-return`
-
-<div style="padding:15px;border-bottom:1px solid var(--border)">
-
-${friendHTML(person)}
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
-
-/* =========================================================
+/* =========================
    NOTIFICATIONS
-   ========================================================= */
-
-function getIncomingRequests(){
-
-return allRequests.filter(
-
-r=>
-r.receiver_id===currentUser.id &&
-r.status==="pending"
-
-);
-
-}
-
+========================= */
 
 function renderNotifications(){
 
-const container=
-document.getElementById(
-"notificationList"
+const incoming=
+allRequests.filter(
+x=>
+x.receiver_id===
+currentUser.id &&
+x.status==="pending"
 );
 
-const incoming=
-getIncomingRequests();
 
-document.getElementById("badge")
+$("badge")
 .textContent=incoming.length;
+
 
 if(!incoming.length){
 
-container.innerHTML=`
+$("notificationList").innerHTML=`
 
 <div class="empty">
 
-<div class="empty-icon">🔔</div>
+<div class="empty-icon">
+🔔
+</div>
 
-<h3>No notifications</h3>
+<h3>
+No notifications
+</h3>
 
 <p>
 You're all caught up.
@@ -2789,50 +2831,50 @@ return;
 
 }
 
-container.innerHTML=
-incoming.map(request=>{
+
+$("notificationList").innerHTML=
+
+incoming.map(
+request=>{
 
 const sender=
 allProfiles.find(
-p=>p.id===request.sender_id
+p=>p.id===
+request.sender_id
 );
 
 const name=
-sender?.name || "Someone";
+sender?.name ||
+"Someone";
 
-return`
+
+return `
 
 <div class="notification">
 
 <div class="avatar small">
 
-${escapeHTML(initials(name))}
+${esc(ini(name))}
 
 </div>
 
 <div class="notification-text">
 
-<p>
-
-<strong>
-${escapeHTML(name)}
-</strong>
+<b>
+${esc(name)}
+</b>
 
 sent you a friend request.
 
-</p>
-
 <small>
-
-${timeAgo(request.created_at)}
-
+${ago(request.created_at)}
 </small>
 
 <div class="notification-actions">
 
 <button
 class="btn primary"
-onclick="acceptFriendRequest('${request.id}')">
+onclick="acceptRequest('${request.id}')">
 
 Accept
 
@@ -2840,7 +2882,7 @@ Accept
 
 <button
 class="btn danger"
-onclick="rejectFriendRequest('${request.id}')">
+onclick="rejectRequest('${request.id}')">
 
 Decline
 
@@ -2854,30 +2896,28 @@ Decline
 
 `;
 
-}).join("");
+}
+).join("");
 
 }
 
 
-/* =========================================================
-   PAGE NAVIGATION
-   ========================================================= */
+/* =========================
+   NAVIGATION
+========================= */
 
 function showPage(page){
 
-const pages=[
+[
 "home",
 "profile",
 "friends",
 "notifications"
-];
-
-pages.forEach(name=>{
+].forEach(
+name=>{
 
 const element=
-document.getElementById(
-name+"Page"
-);
+$(name+"Page");
 
 if(element){
 
@@ -2890,9 +2930,13 @@ name!==page
 
 });
 
-document.querySelectorAll(
+
+document
+.querySelectorAll(
 ".nav[data-page]"
-).forEach(item=>{
+)
+.forEach(
+item=>{
 
 item.classList.toggle(
 "active",
@@ -2901,9 +2945,13 @@ item.dataset.page===page
 
 });
 
-document.querySelectorAll(
+
+document
+.querySelectorAll(
 ".mobile button[data-mobile]"
-).forEach(item=>{
+)
+.forEach(
+item=>{
 
 item.classList.toggle(
 "active",
@@ -2912,160 +2960,85 @@ item.dataset.mobile===page
 
 });
 
-if(page==="profile"){
 
+if(page==="profile")
 renderMyPosts();
 
-}
-
-if(page==="notifications"){
-
+if(page==="notifications")
 renderNotifications();
 
-}
-
 window.scrollTo({
-
 top:0,
 behavior:"smooth"
-
 });
 
 }
 
 
-/* =========================================================
-   MY POSTS
-   ========================================================= */
-
-function renderMyPosts(){
-
-const container=
-document.getElementById("myPosts");
-
-const mine=
-allPosts.filter(
-post=>post.user_id===currentUser.id
-);
-
-document.getElementById("myPostCount")
-.textContent=mine.length;
-
-if(!mine.length){
-
-container.innerHTML=`
-
-<div class="card empty">
-
-<div class="empty-icon">✨</div>
-
-<h3>No posts yet</h3>
-
-<p>
-Create your first post from Home.
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-container.innerHTML=
-mine
-.map(post=>postHTML(post))
-.join("");
-
-}
-
-
-/* =========================================================
+/* =========================
    SEARCH
-   ========================================================= */
+========================= */
 
-document.getElementById("search")
-.addEventListener(
-"input",
+$("search").oninput=
 function(){
 
 const query=
-this.value.trim().toLowerCase();
+this.value
+.toLowerCase()
+.trim();
+
 
 if(!query){
 
 renderPosts();
+
 return;
 
 }
+
 
 const filtered=
-allPosts.filter(post=>{
-
-const text=
-post.content?.toLowerCase() || "";
-
-const name=
-post.profile?.name?.toLowerCase() || "";
-
-return(
-text.includes(query) ||
-name.includes(query)
+allPosts.filter(
+post=>
+(
+post.content ||
+""
+)
+.toLowerCase()
+.includes(query)
+||
+(
+post.profile?.name ||
+""
+)
+.toLowerCase()
+.includes(query)
 );
 
-});
 
-const container=
-document.getElementById("posts");
+renderPosts(filtered);
 
-if(!filtered.length){
-
-container.innerHTML=`
-
-<div class="card empty">
-
-<div class="empty-icon">🔍</div>
-
-<h3>No results found</h3>
-
-<p>
-Try another search.
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-container.innerHTML=
-filtered
-.map(post=>postHTML(post))
-.join("");
-
-});
+};
 
 
-/* =========================================================
+/* =========================
    THEME
-   ========================================================= */
+========================= */
 
 function toggleTheme(){
 
-document.body.classList.toggle("dark");
-
-localStorage.setItem(
-
-"fc_theme",
-
-document.body.classList.contains("dark")
-?"dark"
-:"light"
-
+document.body.classList.toggle(
+"dark"
 );
+
+localStorage.fc_theme=
+document.body.classList.contains(
+"dark"
+)
+?
+"dark"
+:
+"light";
 
 }
 
@@ -3073,33 +3046,32 @@ document.body.classList.contains("dark")
 function applyTheme(){
 
 if(
-localStorage.getItem("fc_theme")==="dark"
+localStorage.fc_theme===
+"dark"
 ){
 
-document.body.classList.add("dark");
-
-}else{
-
-document.body.classList.remove("dark");
+document.body.classList.add(
+"dark"
+);
 
 }
 
 }
 
 
-/* =========================================================
+/* =========================
    LOGOUT
-   ========================================================= */
+========================= */
 
 async function logout(){
 
-const {error}=
+const result=
 await supabaseClient.auth.signOut();
 
-if(error){
+if(result.error){
 
 toast(
-error.message,
+result.error.message,
 "error"
 );
 
@@ -3114,9 +3086,26 @@ toast(
 }
 
 
-/* =========================================================
+/* =========================
+   RENDER ALL
+========================= */
+
+function renderAll(){
+
+renderPosts();
+
+renderMyPosts();
+
+renderFriends();
+
+renderNotifications();
+
+}
+
+
+/* =========================
    START
-   ========================================================= */
+========================= */
 
 applyTheme();
 
