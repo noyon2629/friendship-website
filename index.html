@@ -380,12 +380,19 @@ function scrollToProfiles(){
     });
 }
 
-function connect(name){
-    alert(
-        "Thanks for your interest in connecting with " +
-        name +
-        "! This demo does not have real messaging yet."
-    );
+async function connect(name){
+    const { data, error } = await supabase
+        .from("connections")
+        .insert([
+            { name: name }
+        ]);
+
+    if(error){
+        alert("Connection failed: " + error.message);
+        return;
+    }
+
+    alert("Connection request sent to " + name + "!");
 }
 
 function showAbout(){
