@@ -1,823 +1,569 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#5b5cf0">
-<meta name="description" content="Friendship Connect - Connect, share and make new friends.">
-<title>Friendship Connect</title>
-
+<title>Call Boy Center</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;margin:0}
-body{
-font-family:Arial,sans-serif;
-background:#f4f6fb;
-color:#171923
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f3f5fb;color:#171923}
+:root{
+ --p:#5b5cf0;
+ --s:#8b5cf6;
+ --card:#fff;
+ --text:#171923;
+ --muted:#6b7280;
+ --border:#e5e7eb;
+ --input:#f5f6fa
 }
-button,input,textarea{font:inherit}
-button{cursor:pointer;border:0}
+body.dark{
+ --card:#181b25;
+ --text:#f5f5f7;
+ --muted:#a5a9b7;
+ --border:#2b2f3b;
+ --input:#202431;
+ background:#10121a
+}
+button,input,textarea,select{font:inherit}
+button{border:0;cursor:pointer}
 .hidden{display:none!important}
 
 .container{
-width:min(1150px,calc(100% - 20px));
-margin:auto
+ width:min(1180px,calc(100% - 24px));
+ margin:auto
 }
-
 .card{
-background:#fff;
-border:1px solid #e5e7ef;
-border-radius:16px;
-box-shadow:0 7px 25px #1e235014
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:18px;
+ box-shadow:0 8px 28px #1e23500d
 }
-
 .btn{
-padding:10px 15px;
-border-radius:10px;
-font-weight:700
+ padding:10px 15px;
+ border-radius:10px;
+ font-weight:700
 }
-
 .primary{
-color:#fff;
-background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
+ background:linear-gradient(135deg,var(--p),var(--s));
+ color:#fff
 }
-
 .light{
-background:#f4f5f9;
-color:#333
+ background:var(--input);
+ color:var(--text)
 }
-
-.danger{
-background:#fee2e2;
-color:#dc2626
-}
-
 .avatar{
-width:45px;
-height:45px;
-min-width:45px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#fff;
-font-weight:800;
-background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
+ width:48px;
+ height:48px;
+ border-radius:50%;
+ overflow:hidden;
+ display:grid;
+ place-items:center;
+ background:linear-gradient(135deg,var(--p),var(--s));
+ color:#fff;
+ font-weight:800;
+ flex:none
 }
-
+.avatar img{
+ width:100%;
+ height:100%;
+ object-fit:cover
+}
 .small{
-width:38px;
-height:38px;
-min-width:38px;
-font-size:13px
+ width:38px;
+ height:38px;
+ font-size:13px
 }
-
 .large{
-width:92px;
-height:92px;
-min-width:92px;
-font-size:28px;
-border:5px solid #fff
+ width:105px;
+ height:105px;
+ border:5px solid var(--card);
+ font-size:30px
 }
 
 .auth{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:
-radial-gradient(circle at 10% 20%,#5b5cf026,transparent 35%),
-radial-gradient(circle at 90% 80%,#8b5cf624,transparent 35%),
-#f4f6fb
+ min-height:100vh;
+ display:grid;
+ place-items:center;
+ padding:20px;
+ background:
+ radial-gradient(circle at 10% 20%,#5b5cf026,transparent 35%),
+ radial-gradient(circle at 90% 80%,#8b5cf624,transparent 35%),
+ var(--input)
 }
-
 .auth-card{
-width:min(430px,100%);
-padding:30px
+ width:min(430px,100%);
+ padding:30px
 }
-
-.auth-logo{
-text-align:center;
-margin-bottom:22px
-}
-
+.logo{text-align:center}
 .logo-icon{
-width:42px;
-height:42px;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:auto;
-color:#fff;
-background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
+ width:48px;
+ height:48px;
+ margin:auto;
+ border-radius:14px;
+ display:grid;
+ place-items:center;
+ background:linear-gradient(135deg,var(--p),var(--s));
+ color:#fff;
+ font-size:25px
 }
-
-.auth-logo h1{margin-top:12px}
-.auth-logo p{
-color:#697386;
-margin-top:5px
-}
+.logo h1{margin:10px 0 4px}
+.muted{color:var(--muted)}
 
 .tabs{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:4px;
-padding:4px;
-background:#f5f6fa;
-border-radius:11px;
-margin-bottom:20px
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ background:var(--input);
+ padding:4px;
+ border-radius:11px;
+ margin:20px 0
 }
-
 .tab{
-padding:10px;
-background:transparent;
-color:#697386;
-border-radius:8px;
-font-weight:700
+ padding:10px;
+ background:transparent;
+ color:var(--muted);
+ border-radius:8px;
+ font-weight:700
 }
-
 .tab.active{
-background:#fff;
-color:#5b5cf0
+ background:var(--card);
+ color:var(--p)
 }
-
-.field{
-margin-bottom:14px
-}
-
+.field{margin:13px 0}
 .field label{
-display:block;
-font-weight:700;
-font-size:14px;
-margin-bottom:6px
+ display:block;
+ font-weight:700;
+ font-size:14px;
+ margin-bottom:6px
 }
-
-.field input{
-width:100%;
-padding:12px;
-border:1px solid #e2e4eb;
-border-radius:10px;
-background:#f7f8fb;
-outline:0
+.field input,
+.field textarea,
+.field select{
+ width:100%;
+ padding:12px;
+ border:1px solid var(--border);
+ border-radius:10px;
+ background:var(--input);
+ color:var(--text);
+ outline:0
 }
-
 .submit{
-width:100%;
-margin-top:4px
+ width:100%;
+ margin-top:5px
 }
 
 header{
-height:66px;
-position:sticky;
-top:0;
-z-index:10;
-background:#fffffff2;
-border-bottom:1px solid #e5e7ef;
-backdrop-filter:blur(10px)
+ height:66px;
+ position:sticky;
+ top:0;
+ z-index:20;
+ background:var(--card);
+ border-bottom:1px solid var(--border)
 }
-
-.header-inner{
-height:100%;
-display:flex;
-align-items:center;
-gap:16px
+.head{
+ height:100%;
+ display:flex;
+ align-items:center;
+ gap:15px
 }
-
-.logo{
-display:flex;
-align-items:center;
-gap:9px;
-font-weight:900
+.brand{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ font-weight:900
 }
-
-.logo .logo-icon{
-margin:0
+.brand .logo-icon{
+ width:40px;
+ height:40px;
+ font-size:20px;
+ margin:0
 }
-
 .search{
-flex:1;
-max-width:430px;
-position:relative
+ flex:1;
+ max-width:430px
 }
-
 .search input{
-width:100%;
-border:0;
-background:#f4f5f9;
-padding:11px 14px 11px 38px;
-border-radius:11px;
-outline:0
+ width:100%;
+ padding:11px 14px;
+ border:0;
+ border-radius:11px;
+ background:var(--input);
+ color:var(--text);
+ outline:0
 }
-
-.search span{
-position:absolute;
-left:13px;
-top:10px
+.actions{
+ margin-left:auto;
+ display:flex;
+ gap:7px
 }
-
-.header-actions{
-margin-left:auto;
-display:flex;
-gap:7px
-}
-
 .icon{
-width:40px;
-height:40px;
-border-radius:10px;
-background:#f4f5f9
-}
-
-.notify{
-position:relative
-}
-
-.badge{
-position:absolute;
-right:-2px;
-top:-3px;
-background:#ef4444;
-color:#fff;
-border-radius:20px;
-min-width:17px;
-height:17px;
-font-size:9px;
-display:flex;
-align-items:center;
-justify-content:center
+ width:40px;
+ height:40px;
+ border-radius:10px;
+ background:var(--input);
+ color:var(--text)
 }
 
 .app{
-padding:22px 0 70px
+ padding:22px 0 80px
 }
-
 .grid{
-display:grid;
-grid-template-columns:220px minmax(0,1fr) 270px;
-gap:18px
+ display:grid;
+ grid-template-columns:225px minmax(0,1fr) 275px;
+ gap:18px
 }
-
-.side{
-padding:12px;
-position:sticky;
-top:84px
+.sticky{
+ position:sticky;
+ top:85px
 }
-
-.user-side{
-display:flex;
-align-items:center;
-gap:9px;
-padding:10px
+.side{padding:12px}
+.sideuser{
+ display:flex;
+ gap:10px;
+ align-items:center;
+ padding:10px;
+ margin-bottom:7px
 }
-
-.user-side strong{
-display:block
-}
-
-.user-side small,
-.author small,
-.friend-info small,
-.profile-bio,
-.title p{
-color:#697386
-}
-
 .nav{
-width:100%;
-padding:11px;
-border-radius:10px;
-background:transparent;
-text-align:left;
-font-weight:700;
-color:#222;
-margin-top:2px
+ width:100%;
+ text-align:left;
+ padding:11px;
+ border-radius:10px;
+ background:transparent;
+ color:var(--text);
+ font-weight:700
 }
-
 .nav.active,
 .nav:hover{
-background:#5b5cf014;
-color:#5b5cf0
+ background:#5b5cf012;
+ color:var(--p)
 }
 
 .title{
-margin-bottom:15px
+ margin-bottom:15px
 }
-
-.title h2{
-font-size:23px
-}
-
+.title h2{font-size:24px}
 .title p{
-font-size:14px;
-margin-top:3px
+ color:var(--muted);
+ font-size:14px;
+ margin-top:4px
 }
 
 .create,
 .post,
 .widget{
-padding:16px;
-margin-bottom:16px
+ padding:16px;
+ margin-bottom:16px
 }
-
 .create-top{
-display:flex;
-gap:9px
+ display:flex;
+ gap:9px
 }
-
 .create textarea{
-flex:1;
-border:0;
-background:#f5f6fa;
-border-radius:11px;
-padding:11px;
-resize:none;
-outline:0
+ flex:1;
+ min-height:55px;
+ resize:none;
+ border:0;
+ background:var(--input);
+ color:var(--text);
+ border-radius:11px;
+ padding:12px;
+ outline:0
 }
-
 .create-bottom{
-display:flex;
-justify-content:space-between;
-align-items:center;
-border-top:1px solid #e5e7ef;
-margin-top:11px;
-padding-top:10px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-top:1px solid var(--border);
+ margin-top:11px;
+ padding-top:10px
 }
 
-.muted{
-color:#697386;
-font-size:13px
+.posthead{
+ display:flex;
+ align-items:center;
+ gap:9px
 }
-
-.post-head{
-display:flex;
-align-items:center;
-gap:9px
+.author{flex:1}
+.author strong{display:block}
+.author small{color:var(--muted)}
+.posttext{
+ margin:14px 0;
+ line-height:1.55;
+ white-space:pre-wrap;
+ word-break:break-word
 }
-
-.author{
-flex:1
+.postmedia{
+ max-width:100%;
+ max-height:520px;
+ border-radius:12px;
+ display:block;
+ margin-top:10px
 }
-
-.author strong{
-display:block
+.poststats{
+ display:flex;
+ justify-content:space-between;
+ color:var(--muted);
+ font-size:12px;
+ padding:9px 0
 }
-
-.post-menu{
-background:transparent;
-font-size:20px;
-color:#697386
+.postactions{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ border-top:1px solid var(--border)
 }
-
-.post-text{
-white-space:pre-wrap;
-word-break:break-word;
-line-height:1.55;
-margin:14px 0
-}
-
-.post-stats{
-display:flex;
-justify-content:space-between;
-color:#697386;
-font-size:12px;
-padding:8px 0
-}
-
-.post-actions{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-border-top:1px solid #e5e7ef;
-padding-top:5px
-}
-
 .action{
-background:transparent;
-color:#697386;
-padding:9px;
-font-weight:700;
-border-radius:8px
+ padding:10px 4px;
+ background:transparent;
+ color:var(--muted);
+ font-weight:700
 }
-
-.liked{
-color:#ef4444
-}
+.action.liked{color:#ef4444}
 
 .comment{
-display:flex;
-gap:8px;
-margin-top:9px
+ display:flex;
+ gap:8px;
+ margin-top:9px
 }
-
-.comment-body{
-flex:1;
-background:#f5f6fa;
-padding:8px 10px;
-border-radius:10px
+.commentbody{
+ background:var(--input);
+ padding:8px 11px;
+ border-radius:11px;
+ flex:1
 }
-
-.comment-body strong{
-display:block;
-font-size:13px
+.commentbody strong{
+ font-size:13px;
+ display:block
 }
-
-.comment-body p{
-font-size:13px;
-margin-top:3px
+.commentbody p{
+ font-size:13px;
+ margin-top:3px
 }
-
-.comment-form{
-display:flex;
-gap:6px;
-margin-top:11px
+.commentform{
+ display:flex;
+ gap:7px;
+ margin-top:10px
 }
-
-.comment-form input{
-flex:1;
-min-width:0;
-padding:9px;
-border:1px solid #e2e4eb;
-border-radius:9px;
-background:#f7f8fb
-}
-
-.friend{
-display:flex;
-align-items:center;
-gap:8px;
-padding:10px 0;
-border-bottom:1px solid #e5e7ef
-}
-
-.friend-info{
-flex:1;
-min-width:0
-}
-
-.friend-info strong{
-display:block;
-font-size:13px
-}
-
-.friend .btn{
-padding:7px 9px;
-font-size:11px
-}
-
-.profile{
-overflow:hidden;
-margin-bottom:18px
+.commentform input{
+ flex:1;
+ min-width:0;
+ padding:10px;
+ border:1px solid var(--border);
+ border-radius:9px;
+ background:var(--input);
+ color:var(--text)
 }
 
 .cover{
-height:160px;
-background:linear-gradient(135deg,#5b5cf0,#8b5cf6)
+ height:190px;
+ background:linear-gradient(135deg,var(--p),var(--s));
+ background-size:cover;
+ background-position:center
 }
-
-.profile-info{
-padding:0 20px 20px
+.profileinfo{
+ padding:0 22px 22px
 }
-
-.profile-avatar{
-margin-top:-45px
-}
-
+.profileavatar{margin-top:-53px}
 .profile-name{
-font-size:24px;
-margin-top:8px
+ margin-top:9px;
+ font-size:25px
 }
-
 .stats{
-display:flex;
-gap:28px;
-margin-top:15px
+ display:flex;
+ gap:28px;
+ margin-top:17px
 }
-
 .stats strong{
-display:block;
-font-size:18px
+ display:block;
+ font-size:18px
 }
+.stats small{color:var(--muted)}
 
-.stats small{
-color:#697386
+.friend{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ padding:11px 0;
+ border-bottom:1px solid var(--border)
 }
-
-.notification{
-display:flex;
-gap:9px;
-padding:14px;
-border-bottom:1px solid #e5e7ef
+.friend:last-child{border:0}
+.friendinfo{
+ flex:1;
+ min-width:0
 }
-
-.notification-text{
-flex:1;
-font-size:14px
+.friendinfo strong{
+ display:block;
+ font-size:13px
 }
-
-.notification-text small{
-color:#697386;
-display:block;
-margin-top:5px
-}
-
-.notification-actions{
-display:flex;
-gap:6px;
-margin-top:8px
-}
-
-.notification-actions .btn{
-padding:7px 10px;
-font-size:12px
-}
+.friendinfo small{color:var(--muted)}
 
 .empty{
-text-align:center;
-padding:40px 18px;
-color:#697386
+ text-align:center;
+ padding:45px 20px;
+ color:var(--muted)
 }
 
-.empty-icon{
-font-size:38px;
-margin-bottom:8px
+.modal{
+ position:fixed;
+ inset:0;
+ background:#0008;
+ display:grid;
+ place-items:center;
+ padding:18px;
+ z-index:100
+}
+.modalbox{
+ width:min(520px,100%);
+ max-height:90vh;
+ overflow:auto;
+ padding:20px
+}
+.modalhead{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:10px
+}
+.close{
+ background:transparent;
+ color:var(--muted);
+ font-size:24px
+}
+.filebox{
+ border:1px dashed var(--border);
+ padding:12px;
+ border-radius:10px;
+ background:var(--input)
+}
+.preview{
+ width:100%;
+ max-height:180px;
+ object-fit:cover;
+ border-radius:10px;
+ margin-top:8px
+}
+.mobile{display:none}
+
+@media(max-width:1050px){
+ .grid{
+  grid-template-columns:205px minmax(0,1fr)
+ }
+ .right{display:none}
 }
 
-.toast-box{
-position:fixed;
-right:15px;
-bottom:15px;
-z-index:99
-}
-
-.toast{
-color:#fff;
-background:#20232e;
-padding:12px 15px;
-border-radius:10px;
-margin-top:7px
-}
-
-.toast.error{
-background:#dc2626
-}
-
-.toast.success{
-background:#059669
-}
-
-.mobile{
-display:none
-}
-
-@media(max-width:1000px){
-.grid{
-grid-template-columns:200px minmax(0,1fr)
-}
-.right{
-display:none
-}
-}
-
-@media(max-width:720px){
-
-.logo span{
-display:none
-}
-
-.grid{
-display:block
-}
-
-.left{
-display:none
-}
-
-.mobile{
-display:block;
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#fff;
-border-top:1px solid #e5e7ef;
-z-index:20
-}
-
-.mobile-inner{
-display:grid;
-grid-template-columns:repeat(5,1fr)
-}
-
-.mobile button{
-background:transparent;
-padding:7px 2px;
-font-size:11px;
-color:#697386
-}
-
-.mobile b{
-display:block;
-font-size:18px
-}
-
-.mobile .active{
-color:#5b5cf0
-}
-
-.app{
-padding-top:16px
-}
-
-.auth-card{
-padding:24px 19px
-}
-
-.header-actions .profile-icon{
-display:none
-}
-
-}
-
-@media(max-width:420px){
-
-.container{
-width:calc(100% - 14px)
-}
-
-.header-inner{
-gap:6px
-}
-
-.icon{
-width:37px
-}
-
-.post{
-padding:13px
-}
-
-.post-actions{
-font-size:12px
-}
-
+@media(max-width:760px){
+ .container{width:calc(100% - 14px)}
+ .grid{display:block}
+ .left{display:none}
+ .app{padding-top:15px}
+ .mobile{
+  display:block;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  z-index:30
+ }
+ .mobilein{
+  display:grid;
+  grid-template-columns:repeat(5,1fr)
+ }
+ .mobile button{
+  padding:7px 2px;
+  background:transparent;
+  color:var(--muted);
+  font-size:10px
+ }
+ .mobile b{
+  display:block;
+  font-size:18px
+ }
+ .mobile .active{color:var(--p)}
+ .brand span{display:none}
+ .search{max-width:none}
+ .actions .profilebtn{display:none}
+ .cover{height:145px}
+ .postactions{font-size:12px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- AUTH -->
-
 <section id="auth" class="auth">
-
 <div class="auth-card card">
 
-<div class="auth-logo">
-
-<div class="logo-icon">🤝</div>
-
-<h1>Friendship Connect</h1>
-
-<p>Connect. Share. Make new friends.</p>
-
+<div class="logo">
+ <div class="logo-icon">🤝</div>
+ <h1>Call Boy Center</h1>
+ <p class="muted">যোগাযোগ করুন, বন্ধু বানান, শেয়ার করুন</p>
 </div>
 
 <div class="tabs">
-
-<button
-id="loginTab"
-class="tab active"
-onclick="switchAuth('login')">
-Login
-</button>
-
-<button
-id="registerTab"
-class="tab"
-onclick="switchAuth('register')">
-Register
-</button>
-
+ <button id="lt" class="tab active" onclick="switchAuth('login')">লগইন</button>
+ <button id="rt" class="tab" onclick="switchAuth('register')">রেজিস্টার</button>
 </div>
 
 <form id="loginForm">
+ <div class="field">
+  <label>ইমেইল</label>
+  <input id="loginEmail" type="email" required>
+ </div>
 
-<div class="field">
-<label>Email</label>
-<input
-id="loginEmail"
-type="email"
-required
-placeholder="Enter your email">
-</div>
+ <div class="field">
+  <label>পাসওয়ার্ড</label>
+  <input id="loginPassword" type="password" required>
+ </div>
 
-<div class="field">
-<label>Password</label>
-<input
-id="loginPassword"
-type="password"
-required
-placeholder="Enter your password">
-</div>
-
-<button class="btn primary submit" type="submit">
-🔐 Login
-</button>
-
+ <button class="btn primary submit">🔐 লগইন</button>
 </form>
 
 <form id="registerForm" class="hidden">
 
-<div class="field">
-<label>Full Name</label>
-<input
-id="registerName"
-required
-placeholder="Your full name">
-</div>
+ <div class="field">
+  <label>পুরো নাম</label>
+  <input id="registerName" required>
+ </div>
 
-<div class="field">
-<label>Email</label>
-<input
-id="registerEmail"
-type="email"
-required
-placeholder="Your email">
-</div>
+ <div class="field">
+  <label>ইমেইল</label>
+  <input id="registerEmail" type="email" required>
+ </div>
 
-<div class="field">
-<label>Password</label>
-<input
-id="registerPassword"
-type="password"
-minlength="6"
-required
-placeholder="Minimum 6 characters">
-</div>
+ <div class="field">
+  <label>পাসওয়ার্ড</label>
+  <input id="registerPassword" type="password" minlength="6" required>
+ </div>
 
-<button class="btn primary submit" type="submit">
-🚀 Create Account
-</button>
-
+ <button class="btn primary submit">🚀 অ্যাকাউন্ট তৈরি</button>
 </form>
 
 </div>
 </section>
 
 
-<!-- APP -->
-
 <div id="app" class="hidden">
 
 <header>
+<div class="container head">
 
-<div class="container header-inner">
-
-<div class="logo">
-
-<div class="logo-icon">🤝</div>
-
-<span>Friendship Connect</span>
-
+<div class="brand">
+ <div class="logo-icon">🤝</div>
+ <span>Call Boy Center</span>
 </div>
 
 <div class="search">
-
-<span>🔍</span>
-
-<input
-id="search"
-type="search"
-placeholder="Search posts...">
-
+ <input id="search" placeholder="পোস্ট খুঁজুন...">
 </div>
 
-<div class="header-actions">
-
-<button
-class="icon"
-onclick="toggleTheme()">
-🌙
-</button>
-
-<button
-class="icon notify"
-onclick="showPage('notifications')">
-
-🔔
-
-<span id="badge" class="badge">0</span>
-
-</button>
-
-<button
-class="icon profile-icon"
-onclick="showPage('profile')">
-👤
-</button>
-
+<div class="actions">
+ <button class="icon" onclick="toggleTheme()">🌙</button>
+ <button class="icon" onclick="showPage('notifications')">🔔</button>
+ <button class="icon profilebtn" onclick="showPage('profile')">👤</button>
 </div>
 
 </div>
@@ -825,133 +571,92 @@ onclick="showPage('profile')">
 
 
 <main class="app">
+<div class="container grid">
 
-<div class="container">
-
-<div class="grid">
-
-<!-- LEFT -->
-
-<aside class="left">
-
+<aside class="left sticky">
 <div class="card side">
 
-<div class="user-side">
+<div class="sideuser">
+ <div id="sideAvatar" class="avatar small">U</div>
 
-<div id="sideAvatar" class="avatar small">
-U
+ <div>
+  <strong id="sideName">User</strong>
+  <small id="sideEmail" class="muted"></small>
+ </div>
 </div>
 
-<div>
-
-<strong id="sideName">
-User
-</strong>
-
-<small id="sideEmail">
-user@email.com
-</small>
-
-</div>
-
-</div>
-
-<button
-class="nav active"
-data-page="home"
-onclick="showPage('home')">
-🏠 Home
+<button class="nav active" data-page="home" onclick="showPage('home')">
+🏠 হোম
 </button>
 
-<button
-class="nav"
-data-page="profile"
-onclick="showPage('profile')">
-👤 My Profile
+<button class="nav" data-page="profile" onclick="showPage('profile')">
+👤 প্রোফাইল
 </button>
 
-<button
-class="nav"
-data-page="friends"
-onclick="showPage('friends')">
-👥 Friends
+<button class="nav" data-page="friends" onclick="showPage('friends')">
+👥 বন্ধুরা
 </button>
 
-<button
-class="nav"
-data-page="notifications"
-onclick="showPage('notifications')">
-🔔 Notifications
+<button class="nav" data-page="notifications" onclick="showPage('notifications')">
+🔔 নোটিফিকেশন
 </button>
 
-<button
-class="nav"
-onclick="toggleTheme()">
-🌙 Dark Mode
+<button class="nav" onclick="showPage('settings')">
+⚙️ সেটিংস
 </button>
 
-<button
-class="nav"
-onclick="logout()">
-🚪 Logout
+<button class="nav" onclick="toggleTheme()">
+🌙 ডার্ক মোড
+</button>
+
+<button class="nav" onclick="logout()">
+🚪 লগআউট
 </button>
 
 </div>
 </aside>
 
 
-<!-- CENTER -->
-
 <section>
-
-<!-- HOME -->
 
 <div id="homePage">
 
 <div class="title">
-
-<h2>
-Welcome back 👋
-</h2>
-
-<p>
-Share your thoughts and connect with friends.
-</p>
-
+ <h2>স্বাগতম 👋</h2>
+ <p>তোমার বন্ধুদের সঙ্গে শেয়ার করো।</p>
 </div>
 
 <div class="card create">
 
 <div class="create-top">
 
-<div
-id="createAvatar"
-class="avatar">
-U
-</div>
+ <div id="createAvatar" class="avatar">U</div>
 
-<textarea
-id="postInput"
-rows="2"
-maxlength="5000"
-placeholder="What's on your mind?">
-</textarea>
+ <textarea
+ id="postInput"
+ placeholder="তোমার মনের কথা লিখুন..."
+ maxlength="5000"></textarea>
 
 </div>
 
 <div class="create-bottom">
 
-<span class="muted">
-✨ Share something with your friends
-</span>
+<label class="btn light">
+ 📷 ছবি/ভিডিও
+ <input
+  id="mediaInput"
+  type="file"
+  accept="image/*,video/*"
+  hidden>
+</label>
 
-<button
-class="btn primary"
-onclick="createPost()">
-Post
+<button class="btn primary" onclick="createPost()">
+ পোস্ট করুন
 </button>
 
 </div>
+
+<div id="mediaPreview"></div>
 
 </div>
 
@@ -960,70 +665,62 @@ Post
 </div>
 
 
-<!-- PROFILE -->
-
 <div id="profilePage" class="hidden">
 
-<div class="card profile">
+<div class="card" style="overflow:hidden;margin-bottom:18px">
 
-<div class="cover"></div>
+<div id="cover" class="cover"></div>
 
-<div class="profile-info">
+<div class="profileinfo">
 
-<div class="profile-avatar">
-
-<div
-id="profileAvatar"
-class="avatar large">
-U
+<div class="profileavatar">
+ <div id="profileAvatar" class="avatar large">U</div>
 </div>
 
-</div>
+<button
+ class="btn primary"
+ style="float:right;margin-top:-35px"
+ onclick="openEditProfile()">
+ ✏️ প্রোফাইল এডিট
+</button>
 
-<h2
-id="profileName"
-class="profile-name">
-User
+<h2 id="profileName" class="profile-name">
+ User
 </h2>
 
+<p id="profileBio" class="muted">
+ স্বাগতম Call Boy Center-এ।
+</p>
+
 <p
-id="profileBio"
-class="profile-bio">
-Welcome to Friendship Connect.
+ id="profileLocation"
+ class="muted"
+ style="margin-top:5px">
 </p>
 
 <div class="stats">
 
 <div>
-<strong id="myPostCount">0</strong>
-<small>Posts</small>
+ <strong id="myPostCount">0</strong>
+ <small>পোস্ট</small>
 </div>
 
 <div>
-<strong id="friendCount">0</strong>
-<small>Friends</small>
+ <strong id="friendCount">0</strong>
+ <small>বন্ধু</small>
 </div>
 
 <div>
-<strong id="pendingCount">0</strong>
-<small>Pending</small>
+ <strong id="pendingCount">0</strong>
+ <small>অনুরোধ</small>
 </div>
 
 </div>
-
 </div>
 </div>
 
 <div class="title">
-
-<h2>
-My Posts
-</h2>
-
-<p>
-Your posts on Friendship Connect.
-</p>
-
+ <h2>আমার পোস্ট</h2>
 </div>
 
 <div id="myPosts"></div>
@@ -1031,49 +728,42 @@ Your posts on Friendship Connect.
 </div>
 
 
-<!-- FRIENDS -->
-
 <div id="friendsPage" class="hidden">
 
 <div class="title">
+ <h2>👥 বন্ধুরা</h2>
+ <p>নতুন মানুষ খুঁজুন ও বন্ধুত্ব করুন।</p>
+</div>
 
-<h2>
-Friends 👥
-</h2>
-
-<p>
-Discover people and manage friend requests.
-</p>
+<div id="friendsList" class="card" style="padding:10px"></div>
 
 </div>
 
-<div
-id="friendsList"
-class="card">
-</div>
-
-</div>
-
-
-<!-- NOTIFICATIONS -->
 
 <div id="notificationsPage" class="hidden">
 
 <div class="title">
+ <h2>🔔 নোটিফিকেশন</h2>
+</div>
 
-<h2>
-Notifications 🔔
-</h2>
-
-<p>
-Your latest friendship activity.
-</p>
+<div id="notificationList" class="card"></div>
 
 </div>
 
-<div
-id="notificationList"
-class="card">
+
+<div id="settingsPage" class="hidden">
+
+<div class="title">
+ <h2>⚙️ সেটিংস</h2>
+ <p>অ্যাকাউন্ট ও ওয়েবসাইটের সেটিংস।</p>
+</div>
+
+<div class="card widget">
+
+<button class="btn light" onclick="toggleTheme()">
+ 🌙 থিম পরিবর্তন
+</button>
+
 </div>
 
 </div>
@@ -1081,30 +771,24 @@ class="card">
 </section>
 
 
-<!-- RIGHT -->
-
-<aside class="right">
+<aside class="right sticky">
 
 <div class="card widget">
-
-<h3>
-People You May Know
-</h3>
-
+<h3>People You May Know</h3>
 <div id="suggestions"></div>
-
 </div>
 
 <div class="card widget">
 
-<h3>
-Friendship Connect 💜
-</h3>
+<h3>Call Boy Center</h3>
 
 <p
-class="muted"
-style="line-height:1.6">
-Connect with people, share your thoughts and build meaningful friendships.
+ class="muted"
+ style="font-size:13px;line-height:1.6">
+
+বন্ধুদের সঙ্গে যোগাযোগ, পোস্ট ও
+ছবি/ভিডিও শেয়ার করার জায়গা।
+
 </p>
 
 </div>
@@ -1112,729 +796,542 @@ Connect with people, share your thoughts and build meaningful friendships.
 </aside>
 
 </div>
-</div>
-
 </main>
 
 
-<!-- MOBILE -->
-
 <nav class="mobile">
 
-<div class="mobile-inner">
+<div class="mobilein">
 
 <button
-data-mobile="home"
-class="active"
-onclick="showPage('home')">
-
-<b>🏠</b>
-Home
-
+ data-mobile="home"
+ class="active"
+ onclick="showPage('home')">
+ <b>🏠</b>হোম
 </button>
 
 <button
-data-mobile="friends"
-onclick="showPage('friends')">
-
-<b>👥</b>
-Friends
-
+ data-mobile="friends"
+ onclick="showPage('friends')">
+ <b>👥</b>বন্ধু
 </button>
 
 <button
-data-mobile="notifications"
-onclick="showPage('notifications')">
-
-<b>🔔</b>
-Alerts
-
+ data-mobile="notifications"
+ onclick="showPage('notifications')">
+ <b>🔔</b>নোটিফাই
 </button>
 
 <button
-data-mobile="profile"
-onclick="showPage('profile')">
-
-<b>👤</b>
-Profile
-
+ data-mobile="profile"
+ onclick="showPage('profile')">
+ <b>👤</b>প্রোফাইল
 </button>
 
 <button onclick="logout()">
-
-<b>🚪</b>
-Logout
-
+ <b>🚪</b>লগআউট
 </button>
 
 </div>
-
 </nav>
 
 </div>
 
 
-<div id="toastBox" class="toast-box"></div>
+<div id="editModal" class="modal hidden">
+
+<div class="modalbox card">
+
+<div class="modalhead">
+
+<h2>✏️ প্রোফাইল এডিট</h2>
+
+<button
+ class="close"
+ onclick="closeEditProfile()">
+ ×
+</button>
+
+</div>
+
+
+<div class="field">
+<label>নাম</label>
+<input id="editName">
+</div>
+
+
+<div class="field">
+<label>বায়ো</label>
+<textarea id="editBio" rows="3"></textarea>
+</div>
+
+
+<div class="field">
+<label>লোকেশন</label>
+<input id="editLocation">
+</div>
+
+
+<div class="field">
+
+<label>প্রোফাইল ছবি</label>
+
+<div class="filebox">
+
+<input
+ id="avatarFile"
+ type="file"
+ accept="image/*">
+
+<img
+ id="avatarPreview"
+ class="preview hidden">
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>কভার ছবি</label>
+
+<div class="filebox">
+
+<input
+ id="coverFile"
+ type="file"
+ accept="image/*">
+
+<img
+ id="coverPreview"
+ class="preview hidden">
+
+</div>
+
+</div>
+
+
+<button
+ class="btn primary"
+ style="width:100%"
+ onclick="saveProfile()">
+
+💾 পরিবর্তন সংরক্ষণ
+
+</button>
+
+</div>
+</div>
+
+
+<div id="toast"></div>
 
 
 <script>
-
 "use strict";
 
+const SUPABASE_URL="https://fpdhozxounuxbpnioban.supabase.co";
 
-/* =========================
-   SUPABASE
-========================= */
+const SUPABASE_KEY="sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
 
-const SUPABASE_URL =
-"https://fpdhozxounuxbpnioban.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
-
-const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const db=window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
 );
-
-
-/* =========================
-   STATE
-========================= */
 
 let currentUser=null;
 let currentProfile=null;
-
-let allPosts=[];
 let allProfiles=[];
+let allPosts=[];
 let allRequests=[];
 
 
-/* =========================
-   HELPERS
-========================= */
+const $=id=>document.getElementById(id);
 
-function $(id){
-return document.getElementById(id);
+
+function esc(v){
+ return String(v??"").replace(
+  /[&<>"']/g,
+  m=>({
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#039;"
+  }[m])
+ );
 }
 
 
-function esc(value){
-
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
+function initials(n){
+ return String(n||"User")
+  .trim()
+  .split(/\s+/)
+  .slice(0,2)
+  .map(x=>x[0])
+  .join("")
+  .toUpperCase()||"U";
 }
 
 
-function ini(name){
+function toast(m){
 
-return String(name || "User")
-.trim()
-.split(/\s+/)
-.slice(0,2)
-.map(x=>x.charAt(0))
-.join("")
-.toUpperCase() || "U";
+ const x=document.createElement("div");
 
+ x.textContent=m;
+
+ x.style=
+ "position:fixed;right:15px;bottom:15px;z-index:999;padding:13px 17px;background:#20232e;color:#fff;border-radius:12px";
+
+ document.body.appendChild(x);
+
+ setTimeout(()=>x.remove(),3000);
 }
 
 
-function ago(date){
+function ago(d){
 
-const seconds=Math.floor(
-(Date.now()-new Date(date).getTime())/1000
-);
+ let s=Math.floor(
+  (Date.now()-new Date(d))/1000
+ );
 
-if(seconds<60)
-return "Just now";
+ if(s<60)return"এইমাত্র";
 
-if(seconds<3600)
-return Math.floor(seconds/60)+" min ago";
+ if(s<3600)
+  return Math.floor(s/60)+" মিনিট আগে";
 
-if(seconds<86400)
-return Math.floor(seconds/3600)+" hr ago";
+ if(s<86400)
+  return Math.floor(s/3600)+" ঘণ্টা আগে";
 
-return Math.floor(seconds/86400)+" day ago";
-
+ return Math.floor(s/86400)+" দিন আগে";
 }
 
 
-function toast(message,type="success"){
+function switchAuth(t){
 
-const box=$("toastBox");
+ $("loginForm")
+  .classList
+  .toggle("hidden",t!=="login");
 
-const item=document.createElement("div");
+ $("registerForm")
+  .classList
+  .toggle("hidden",t==="login");
 
-item.className="toast "+type;
+ $("lt")
+  .classList
+  .toggle("active",t==="login");
 
-item.textContent=message;
-
-box.appendChild(item);
-
-setTimeout(
-()=>item.remove(),
-3500
-);
-
+ $("rt")
+  .classList
+  .toggle("active",t==="register");
 }
 
 
-/* =========================
-   AUTH UI
-========================= */
+function showAuth(){
 
-function switchAuth(type){
+ $("auth").classList.remove("hidden");
 
-const login=$("loginForm");
-const register=$("registerForm");
-
-const loginTab=$("loginTab");
-const registerTab=$("registerTab");
-
-if(type==="login"){
-
-login.classList.remove("hidden");
-register.classList.add("hidden");
-
-loginTab.classList.add("active");
-registerTab.classList.remove("active");
-
-}else{
-
-login.classList.add("hidden");
-register.classList.remove("hidden");
-
-loginTab.classList.remove("active");
-registerTab.classList.add("active");
-
-}
-
+ $("app").classList.add("hidden");
 }
 
 
-/* =========================
-   REGISTER
-========================= */
+async function start(){
 
-$("registerForm")
-.addEventListener(
-"submit",
-async function(e){
+ if(!currentUser)return;
 
-e.preventDefault();
+ $("auth").classList.add("hidden");
 
-const name=$("registerName")
-.value.trim();
+ $("app").classList.remove("hidden");
 
-const email=$("registerEmail")
-.value.trim();
+ await loadProfile();
 
-const password=$("registerPassword")
-.value;
+ await loadProfiles();
 
-if(name.length<2){
+ await loadRequests();
 
-toast(
-"Please enter your full name.",
-"error"
-);
+ await loadPosts();
 
-return;
+ updateUI();
 
-}
-
-if(password.length<6){
-
-toast(
-"Password must contain at least 6 characters.",
-"error"
-);
-
-return;
-
-}
-
-const result=
-await supabaseClient.auth.signUp({
-
-email,
-password,
-
-options:{
-data:{
-full_name:name
-}
-}
-
-});
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-if(result.data.session){
-
-currentUser=result.data.user;
-
-await startApp();
-
-toast(
-"Account created successfully! 🎉"
-);
-
-}else{
-
-toast(
-"Account created. Please check your email to confirm your account."
-);
-
-}
-
-}
-);
-
-
-/* =========================
-   LOGIN
-========================= */
-
-$("loginForm")
-.addEventListener(
-"submit",
-async function(e){
-
-e.preventDefault();
-
-const email=$("loginEmail")
-.value.trim();
-
-const password=$("loginPassword")
-.value;
-
-const result=
-await supabaseClient.auth.signInWithPassword({
-
-email,
-password
-
-});
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-currentUser=result.data.user;
-
-await startApp();
-
-toast(
-"Welcome back! 👋"
-);
-
-}
-);
-
-
-/* =========================
-   AUTH STATE
-========================= */
-
-supabaseClient.auth.onAuthStateChange(
-function(event,session){
-
-if(session){
-
-currentUser=session.user;
-
-setTimeout(
-startApp,
-0
-);
-
-}else{
-
-currentUser=null;
-currentProfile=null;
-
-$("auth")
-.classList.remove("hidden");
-
-$("app")
-.classList.add("hidden");
-
-}
-
-});
-
-
-async function checkSession(){
-
-const result=
-await supabaseClient.auth.getSession();
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-if(result.data.session){
-
-currentUser=
-result.data.session.user;
-
-await startApp();
-
-}
-
+ renderAll();
 }
 
 
-/* =========================
-   PROFILE
-========================= */
+async function loadProfile(){
 
-async function ensureProfile(){
+ let {
+  data,
+  error
+ }=
+ await db
+ .from("profiles")
+ .select("*")
+ .eq("id",currentUser.id)
+ .maybeSingle();
 
-if(!currentUser)
-return false;
+ if(error){
 
+  toast(
+   "প্রোফাইল লোড হয়নি: "+
+   error.message
+  );
 
-/*
-IMPORTANT:
-Your Supabase profiles table uses:
+  return;
+ }
 
-id
-name
-location
-avatar_url
-created_at
+ if(!data){
 
-So we use name here,
-NOT full_name or bio.
-*/
+  let r=
+  await db
+  .from("profiles")
+  .insert({
+   id:currentUser.id,
+   name:
+    currentUser.user_metadata?.full_name||
+    "User",
+   location:"",
+   avatar_url:""
+  })
+  .select()
+  .single();
 
-let result=
-await supabaseClient
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.maybeSingle();
+  data=r.data;
+ }
 
-if(result.error){
-
-toast(
-"Could not load profile: "+
-result.error.message,
-"error"
-);
-
-return false;
-
+ currentProfile=data;
 }
 
-
-if(result.data){
-
-currentProfile=result.data;
-
-return true;
-
-}
-
-
-const name=
-currentUser.user_metadata?.full_name ||
-"New User";
-
-
-const insertResult=
-await supabaseClient
-.from("profiles")
-.insert({
-
-id:currentUser.id,
-
-name:name,
-
-location:"",
-
-avatar_url:""
-
-})
-.select()
-.single();
-
-
-if(insertResult.error){
-
-console.error(
-"Profile creation error:",
-insertResult.error
-);
-
-toast(
-"Profile could not be created: "+
-insertResult.error.message,
-"error"
-);
-
-return false;
-
-}
-
-
-currentProfile=
-insertResult.data;
-
-return true;
-
-}
-
-
-/* =========================
-   START APP
-========================= */
-
-async function startApp(){
-
-if(!currentUser)
-return;
-
-$("auth")
-.classList.add("hidden");
-
-$("app")
-.classList.remove("hidden");
-
-const profileOK=
-await ensureProfile();
-
-if(!profileOK)
-return;
-
-await Promise.all([
-loadProfiles(),
-loadRequests()
-]);
-
-await loadPosts();
-
-updateUI();
-
-renderAll();
-
-}
-
-
-/* =========================
-   UPDATE UI
-========================= */
-
-function updateUI(){
-
-const name=
-currentProfile?.name ||
-currentUser.user_metadata?.full_name ||
-"User";
-
-const avatar=
-ini(name);
-
-$("sideName").textContent=name;
-
-$("sideEmail").textContent=
-currentUser.email || "";
-
-$("sideAvatar").textContent=avatar;
-
-$("createAvatar").textContent=avatar;
-
-$("profileAvatar").textContent=avatar;
-
-$("profileName").textContent=name;
-
-$("profileBio").textContent=
-currentProfile?.location ||
-"Welcome to Friendship Connect.";
-
-}
-
-
-/* =========================
-   PROFILES
-========================= */
 
 async function loadProfiles(){
 
-const result=
-await supabaseClient
-.from("profiles")
-.select("*")
-.order(
-"created_at",
-{ascending:false}
-);
+ let {data}=
+ await db
+ .from("profiles")
+ .select("*")
+ .order("created_at",{ascending:false});
 
-if(result.error){
-
-console.error(result.error);
-
-allProfiles=[];
-
-return;
-
-}
-
-allProfiles=
-result.data || [];
-
+ allProfiles=data||[];
 }
 
 
-/* =========================
-   POSTS
-========================= */
+async function loadRequests(){
+
+ let {data}=
+ await db
+ .from("friend_requests")
+ .select("*")
+ .or(
+  `sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
+ );
+
+ allRequests=data||[];
+}
+
 
 async function loadPosts(){
 
-const result=
-await supabaseClient
-.from("posts")
-.select("*")
-.order(
-"created_at",
-{ascending:false}
-);
+ let {
+  data,
+  error
+ }=
+ await db
+ .from("posts")
+ .select("*")
+ .order("created_at",{ascending:false});
 
-if(result.error){
+ if(error){
 
-toast(
-"Could not load posts: "+
-result.error.message,
-"error"
-);
+  allPosts=[];
 
-allPosts=[];
+  return;
+ }
 
-return;
+ allPosts=data||[];
 
-}
+ for(const p of allPosts){
 
-allPosts=
-result.data || [];
+  p.profile=
+   allProfiles.find(
+    x=>x.id===p.user_id
+   );
 
+  let l=
+   await db
+   .from("likes")
+   .select("id,user_id")
+   .eq("post_id",p.id);
 
-for(const post of allPosts){
+  let c=
+   await db
+   .from("comments")
+   .select("*")
+   .eq("post_id",p.id)
+   .order("created_at",{ascending:true});
 
-post.profile=
-allProfiles.find(
-p=>p.id===post.user_id
-) || null;
+  p.likes=l.data||[];
 
+  p.comments=c.data||[];
 
-const likes=
-await supabaseClient
-.from("likes")
-.select("id,user_id")
-.eq(
-"post_id",
-post.id
-);
+  for(const z of p.comments){
 
+   z.profile=
+    allProfiles.find(
+     x=>x.id===z.user_id
+    );
 
-const comments=
-await supabaseClient
-.from("comments")
-.select("*")
-.eq(
-"post_id",
-post.id
-)
-.order(
-"created_at",
-{ascending:true}
-);
-
-
-post.likes=
-likes.data || [];
-
-post.comments=
-comments.data || [];
-
-
-post.comments.forEach(
-comment=>{
-
-comment.profile=
-allProfiles.find(
-p=>p.id===comment.user_id
-) || null;
-
-}
-);
-
-}
-
+  }
+ }
 }
 
 
-/* =========================
-   POST HTML
-========================= */
+function avatarHTML(p,cls="avatar"){
 
-function postHTML(post){
+ if(p?.avatar_url){
 
-const name=
-post.profile?.name ||
-"User";
+  return `
+   <div class="${cls}">
+    <img src="${esc(p.avatar_url)}">
+   </div>
+  `;
 
-const liked=
-post.likes.some(
-like=>
-like.user_id===
-currentUser.id
-);
+ }
 
-const comments=
-post.comments || [];
+ return `
+  <div class="${cls}">
+   ${esc(initials(p?.name))}
+  </div>
+ `;
+}
 
 
-return `
+function updateUI(){
+
+ let n=currentProfile?.name||"User";
+
+ $("sideName").textContent=n;
+
+ $("sideEmail").textContent=
+  currentUser.email||"";
+
+ $("sideAvatar").outerHTML=
+  avatarHTML(
+   currentProfile,
+   "avatar small"
+  );
+
+ $("createAvatar").outerHTML=
+  avatarHTML(
+   currentProfile,
+   "avatar"
+  );
+
+ $("profileAvatar").outerHTML=
+  avatarHTML(
+   currentProfile,
+   "avatar large"
+  );
+
+ $("profileName").textContent=n;
+
+ $("profileBio").textContent=
+  currentProfile?.bio||
+  "স্বাগতম Call Boy Center-এ।";
+
+ $("profileLocation").textContent=
+  currentProfile?.location
+   ?"📍 "+currentProfile.location
+   :"";
+
+ if(currentProfile?.cover_url){
+
+  $("cover").style.backgroundImage=
+   `url("${currentProfile.cover_url}")`;
+
+ }
+}
+
+
+function renderAll(){
+
+ renderPosts();
+
+ renderMyPosts();
+
+ renderFriends();
+
+ renderSuggestions();
+
+ renderNotifications();
+}
+
+
+function postHTML(p){
+
+ let name=
+  p.profile?.name||"User";
+
+ let liked=
+  p.likes.some(
+   x=>x.user_id===currentUser.id
+  );
+
+ let media=
+  p.media_url
+   ?
+    (
+     (p.media_type||"")
+      .startsWith("video")
+      ?
+      `
+      <video
+       class="postmedia"
+       src="${esc(p.media_url)}"
+       controls>
+      </video>
+      `
+      :
+      `
+      <img
+       class="postmedia"
+       src="${esc(p.media_url)}">
+      `
+    )
+   :"";
+
+ let comments=
+  p.comments
+   .map(c=>`
+
+<div class="comment">
+
+${avatarHTML(c.profile,"avatar small")}
+
+<div class="commentbody">
+
+<strong>
+${esc(c.profile?.name||"User")}
+</strong>
+
+<p>
+${esc(c.content)}
+</p>
+
+</div>
+
+</div>
+
+`)
+.join("");
+
+ return `
 
 <article class="card post">
 
-<div class="post-head">
+<div class="posthead">
 
-<div class="avatar">
-${esc(ini(name))}
-</div>
+${avatarHTML(p.profile)}
 
 <div class="author">
 
@@ -1843,128 +1340,100 @@ ${esc(name)}
 </strong>
 
 <small>
-${ago(post.created_at)}
+${ago(p.created_at)}
 </small>
 
 </div>
 
 ${
-post.user_id===currentUser.id
-?
-`
-<button
-class="post-menu"
-onclick="deletePost(${post.id})">
-⋯
-</button>
-`
-:
-""
+ p.user_id===currentUser.id
+ ?
+ `
+ <button
+  class="icon"
+  onclick="deletePost(${p.id})">
+  ⋯
+ </button>
+ `
+ :""
 }
 
 </div>
 
 
-<div class="post-text">
-${esc(post.content)}
+<div class="posttext">
+${esc(p.content)}
 </div>
 
+${media}
 
-<div class="post-stats">
+
+<div class="poststats">
 
 <span>
-❤️ ${post.likes.length}
+❤️ ${p.likes.length}
 </span>
 
 <span>
-💬 ${comments.length}
+💬 ${p.comments.length}
 </span>
 
 </div>
 
 
-<div class="post-actions">
+<div class="postactions">
 
 <button
-class="action ${liked?"liked":""}"
-onclick="toggleLike(${post.id},${liked})">
+ class="action ${liked?"liked":""}"
+ onclick="likePost(${p.id},${liked})">
 
-${liked?"❤️":"♡"} Like
+${liked?"❤️":"♡"} পছন্দ
 
 </button>
 
 
 <button
-class="action"
-onclick="focusComment(${post.id})">
+ class="action"
+ onclick="focusComment(${p.id})">
 
-💬 Comment
+💬 কমেন্ট
 
 </button>
 
 
 <button
-class="action"
-onclick="sharePost(${post.id})">
+ class="action"
+ onclick="sharePost(${p.id})">
 
-↗ Share
+🔄 শেয়ার
+
+</button>
+
+
+<button
+ class="action"
+ onclick="savePost(${p.id})">
+
+🔖 সেভ
 
 </button>
 
 </div>
 
 
-${
-comments.map(
-comment=>`
-
-<div class="comment">
-
-<div class="avatar small">
-
-${esc(
-ini(
-comment.profile?.name ||
-"User"
-)
-)}
-
-</div>
-
-<div class="comment-body">
-
-<strong>
-${esc(
-comment.profile?.name ||
-"User"
-)}
-</strong>
-
-<p>
-${esc(comment.content)}
-</p>
-
-</div>
-
-</div>
-
-`
-).join("")
-}
+${comments}
 
 
 <form
-class="comment-form"
-onsubmit="addComment(event,${post.id})">
+ class="commentform"
+ onsubmit="comment(event,${p.id})">
 
 <input
-id="comment-${post.id}"
-maxlength="1000"
-placeholder="Write a comment...">
+ id="c${p.id}"
+ placeholder="কমেন্ট লিখুন...">
 
-<button
-class="btn primary">
-Send
+<button class="btn primary">
+পাঠান
 </button>
 
 </form>
@@ -1972,1146 +1441,927 @@ Send
 </article>
 
 `;
-
 }
 
 
-/* =========================
-   RENDER POSTS
-========================= */
+function renderPosts(){
 
-function renderPosts(
-list=allPosts
-){
+ let q=
+  $("search").value
+  .trim()
+  .toLowerCase();
 
-$("posts").innerHTML=
+ let arr=
+  allPosts.filter(
+   p=>
+    !q||
+    (p.content||"")
+     .toLowerCase()
+     .includes(q)||
+    (p.profile?.name||"")
+     .toLowerCase()
+     .includes(q)
+  );
 
-list.length
-
-?
-
-list.map(postHTML).join("")
-
-:
-
-`
-<div class="card empty">
-
-<div class="empty-icon">
-📝
-</div>
-
-<h3>
-No posts yet
-</h3>
-
-<p>
-Be the first to share something.
-</p>
-
-</div>
-`;
-
+ $("posts").innerHTML=
+  arr.length
+   ?
+   arr.map(postHTML).join("")
+   :
+   `
+   <div class="card empty">
+    📝
+    <h3>কোনো পোস্ট নেই</h3>
+    <p>প্রথম পোস্টটি আপনিই করুন।</p>
+   </div>
+   `;
 }
 
-
-/* =========================
-   MY POSTS
-========================= */
 
 function renderMyPosts(){
 
-const mine=
-allPosts.filter(
-post=>
-post.user_id===
-currentUser.id
-);
+ let a=
+  allPosts.filter(
+   p=>p.user_id===currentUser.id
+  );
 
-$("myPostCount")
-.textContent=mine.length;
+ $("myPostCount").textContent=
+  a.length;
 
-
-$("myPosts").innerHTML=
-
-mine.length
-
-?
-
-mine.map(postHTML).join("")
-
-:
-
-`
-<div class="card empty">
-
-<div class="empty-icon">
-✨
-</div>
-
-<h3>
-No posts yet
-</h3>
-
-<p>
-Create your first post from Home.
-</p>
-
-</div>
-`;
-
+ $("myPosts").innerHTML=
+  a.length
+   ?
+   a.map(postHTML).join("")
+   :
+   `
+   <div class="card empty">
+    ✨
+    <h3>আপনার কোনো পোস্ট নেই</h3>
+   </div>
+   `;
 }
 
 
-/* =========================
-   CREATE POST
-========================= */
+async function upload(file,path){
+
+ const bucket=
+  db.storage.from("media");
+
+ const result=
+  await bucket.upload(
+   path,
+   file,
+   {
+    upsert:true,
+    contentType:
+     file.type||undefined
+   }
+  );
+
+ if(result.error){
+
+  const msg=
+   result.error.message||"";
+
+  if(
+   msg
+   .toLowerCase()
+   .includes("bucket not found")
+  ){
+
+   throw new Error(
+    "Supabase-এ media bucket নেই। Supabase SQL সেটআপটি আগে চালান।"
+   );
+  }
+
+  throw result.error;
+ }
+
+ const {data}=
+  bucket.getPublicUrl(path);
+
+ return data.publicUrl;
+}
+
 
 async function createPost(){
 
-const input=$("postInput");
+ let content=
+  $("postInput")
+  .value
+  .trim();
 
-const content=
-input.value.trim();
+ let file=
+  $("mediaInput")
+  .files[0];
 
-if(!content){
+ if(!content&&!file){
 
-toast(
-"Write something before posting.",
-"error"
+  return toast(
+   "কিছু লিখুন বা ছবি/ভিডিও দিন"
+  );
+ }
+
+ let media_url=null;
+
+ let media_type=null;
+
+ if(file){
+
+  try{
+
+   media_type=file.type;
+
+   media_url=
+    await upload(
+     file,
+     `posts/${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`
+    );
+
+  }
+  catch(e){
+
+   return toast(
+    "মিডিয়া আপলোড হয়নি: "+
+    e.message
+   );
+
+  }
+ }
+
+ let {error}=
+  await db
+  .from("posts")
+  .insert({
+   user_id:currentUser.id,
+   content:content||"",
+   media_url,
+   media_type
+  });
+
+ if(error){
+
+  if(
+   (error.message||"")
+   .toLowerCase()
+   .includes("media_type")||
+   (error.message||"")
+   .toLowerCase()
+   .includes("schema cache")
+  ){
+
+   return toast(
+    "Supabase-এর posts টেবিলে media_type/media_url কলাম এখনো যোগ হয়নি। SQL সেটআপটি একবার চালান।"
+   );
+  }
+
+  return toast(error.message);
+ }
+
+ $("postInput").value="";
+
+ $("mediaInput").value="";
+
+ $("mediaPreview").innerHTML="";
+
+ await loadPosts();
+
+ renderPosts();
+
+ renderMyPosts();
+
+ toast("পোস্ট হয়েছে");
+}
+
+
+$("mediaInput").addEventListener(
+ "change",
+ e=>{
+
+  let f=e.target.files[0];
+
+  $("mediaPreview").innerHTML=
+   f
+   ?
+   `<p class="muted">${esc(f.name)}</p>`
+   :"";
+ }
 );
 
-return;
 
-}
+async function likePost(id,liked){
 
-const result=
-await supabaseClient
-.from("posts")
-.insert({
+ let q=
+  liked
+  ?
+  db
+   .from("likes")
+   .delete()
+   .eq("post_id",id)
+   .eq("user_id",currentUser.id)
+  :
+  db
+   .from("likes")
+   .insert({
+    post_id:id,
+    user_id:currentUser.id
+   });
 
-user_id:currentUser.id,
+ let {error}=await q;
 
-content:content
+ if(error)
+  return toast(error.message);
 
-});
+ await loadPosts();
 
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-input.value="";
-
-await loadPosts();
-
-renderPosts();
-
-renderMyPosts();
-
-toast(
-"Your post was published! 🎉"
-);
-
+ renderPosts();
 }
 
 
-/* =========================
-   LIKE
-========================= */
+async function comment(e,id){
 
-async function toggleLike(
-postId,
-liked
-){
+ e.preventDefault();
 
-let result;
+ let i=$("c"+id);
 
-if(liked){
+ let v=i.value.trim();
 
-result=
-await supabaseClient
-.from("likes")
-.delete()
-.eq("post_id",postId)
-.eq(
-"user_id",
-currentUser.id
-);
+ if(!v)return;
 
-}else{
+ let {error}=
+  await db
+  .from("comments")
+  .insert({
+   post_id:id,
+   user_id:currentUser.id,
+   content:v
+  });
 
-result=
-await supabaseClient
-.from("likes")
-.insert({
+ if(error)
+  return toast(error.message);
 
-post_id:postId,
+ i.value="";
 
-user_id:currentUser.id
+ await loadPosts();
 
-});
-
-}
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-await loadPosts();
-
-renderPosts();
-
+ renderPosts();
 }
 
 
-/* =========================
-   COMMENTS
-========================= */
+function focusComment(id){
 
-async function addComment(
-event,
-postId
-){
-
-event.preventDefault();
-
-const input=
-$("comment-"+postId);
-
-const content=
-input.value.trim();
-
-if(!content)
-return;
-
-const result=
-await supabaseClient
-.from("comments")
-.insert({
-
-post_id:postId,
-
-user_id:currentUser.id,
-
-content:content
-
-});
-
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-input.value="";
-
-await loadPosts();
-
-renderPosts();
-
+ $("c"+id)?.focus();
 }
 
 
-function focusComment(postId){
+async function deletePost(id){
 
-const input=
-$("comment-"+postId);
+ if(!confirm("পোস্টটি মুছে ফেলবেন?"))
+  return;
 
-if(input){
+ let {error}=
+  await db
+  .from("posts")
+  .delete()
+  .eq("id",id)
+  .eq("user_id",currentUser.id);
 
-input.focus();
+ if(error)
+  return toast(error.message);
 
-input.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
+ await loadPosts();
 
-}
+ renderPosts();
 
-}
-
-
-/* =========================
-   DELETE
-========================= */
-
-async function deletePost(postId){
-
-if(
-!confirm(
-"Delete this post?"
-)
-)
-return;
-
-const result=
-await supabaseClient
-.from("posts")
-.delete()
-.eq("id",postId)
-.eq(
-"user_id",
-currentUser.id
-);
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-await loadPosts();
-
-renderPosts();
-
-renderMyPosts();
-
-toast(
-"Post deleted."
-);
-
+ renderMyPosts();
 }
 
 
-/* =========================
-   SHARE
-========================= */
+async function sharePost(id){
 
-async function sharePost(postId){
+ let p=
+  allPosts.find(
+   x=>x.id===id
+  );
 
-const post=
-allPosts.find(
-x=>x.id===postId
-);
+ if(navigator.share){
 
-if(!post)
-return;
+  try{
 
-const text=
-(
-post.profile?.name ||
-"User"
-)+": "+post.content;
+   await navigator.share({
+    title:"Call Boy Center",
+    text:
+     (p.profile?.name||"User")+
+     ": "+
+     p.content
+   });
 
+  }
+  catch(e){}
 
-if(navigator.share){
+ }
+ else{
 
-try{
+  await navigator.clipboard.writeText(
+   p.content
+  );
 
-await navigator.share({
-
-title:"Friendship Connect",
-
-text:text
-
-});
-
-return;
-
-}catch(e){}
-
+  toast("কপি হয়েছে");
+ }
 }
 
 
-try{
+function savePost(id){
 
-await navigator.clipboard.writeText(
-text
-);
+ let s=
+  JSON.parse(
+   localStorage.getItem(
+    "saved_posts"
+   )||"[]"
+  );
 
-toast(
-"Post copied to clipboard."
-);
+ if(!s.includes(id))
+  s.push(id);
 
-}catch(e){
+ localStorage.setItem(
+  "saved_posts",
+  JSON.stringify(s)
+ );
 
-toast(
-"Sharing is not supported.",
-"error"
-);
-
-}
-
-}
-
-
-/* =========================
-   FRIEND REQUESTS
-========================= */
-
-async function loadRequests(){
-
-const result=
-await supabaseClient
-.from("friend_requests")
-.select("*")
-.or(
-`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
-);
-
-if(result.error){
-
-allRequests=[];
-
-return;
-
-}
-
-allRequests=
-result.data || [];
-
-updateStats();
-
+ toast("পোস্ট সেভ হয়েছে");
 }
 
 
-function updateStats(){
+function reqStatus(id){
 
-const friends=
-allRequests.filter(
-x=>x.status==="accepted"
-).length;
-
-const pending=
-allRequests.filter(
-x=>
-x.receiver_id===
-currentUser.id &&
-x.status==="pending"
-).length;
-
-$("friendCount")
-.textContent=friends;
-
-$("pendingCount")
-.textContent=pending;
-
+ return allRequests.find(
+  r=>
+   (
+    r.sender_id===currentUser.id&&
+    r.receiver_id===id
+   )||
+   (
+    r.receiver_id===currentUser.id&&
+    r.sender_id===id
+   )
+ );
 }
 
 
-function req(personId){
+function friendHTML(p){
 
-return allRequests.find(
-x=>
-(
-x.sender_id===currentUser.id &&
-x.receiver_id===personId
-)
-||
-(
-x.receiver_id===currentUser.id &&
-x.sender_id===personId
-)
-);
+ let r=reqStatus(p.id);
 
-}
+ let b=
+  !r
+  ?
+  `
+  <button
+   class="btn primary"
+   onclick="sendReq('${p.id}')">
+   + যোগ
+  </button>
+  `
+  :
+  r.status==="accepted"
+  ?
+  `
+  <button
+   class="btn light"
+   disabled>
+   বন্ধু ✓
+  </button>
+  `
+  :
+  r.receiver_id===currentUser.id
+  ?
+  `
+  <button
+   class="btn primary"
+   onclick="acceptReq('${r.id}')">
+   গ্রহণ
+  </button>
+  `
+  :
+  `
+  <button
+   class="btn light"
+   disabled>
+   পাঠানো ✓
+  </button>
+  `;
 
-
-/* =========================
-   FRIEND HTML
-========================= */
-
-function friendHTML(person){
-
-const request=
-req(person.id);
-
-let button="";
-
-
-if(!request){
-
-button=`
-
-<button
-class="btn primary"
-onclick="sendRequest('${person.id}')">
-
-+ Add
-
-</button>
-
-`;
-
-}else if(
-
-request.status==="pending" &&
-
-request.receiver_id===
-currentUser.id
-
-){
-
-button=`
-
-<button
-class="btn primary"
-onclick="acceptRequest('${request.id}')">
-
-Accept
-
-</button>
-
-`;
-
-}else if(
-
-request.status==="pending"
-
-){
-
-button=`
-
-<button
-class="btn light"
-disabled>
-
-Sent ✓
-
-</button>
-
-`;
-
-}else if(
-
-request.status==="accepted"
-
-){
-
-button=`
-
-<button
-class="btn light"
-disabled>
-
-Friends ✓
-
-</button>
-
-`;
-
-}else{
-
-button=`
-
-<button
-class="btn light"
-disabled>
-
-Requested
-
-</button>
-
-`;
-
-}
-
-
-const name=
-person.name ||
-"User";
-
-
-return `
+ return `
 
 <div class="friend">
 
-<div class="avatar small">
+${avatarHTML(p,"avatar small")}
 
-${esc(ini(name))}
-
-</div>
-
-<div class="friend-info">
+<div class="friendinfo">
 
 <strong>
-${esc(name)}
+${esc(p.name||"User")}
 </strong>
 
 <small>
-${esc(
-person.location ||
-"Friendship Connect"
-)}
+Call Boy Center
 </small>
 
 </div>
 
-${button}
+${b}
 
 </div>
 
 `;
-
 }
 
-
-/* =========================
-   FRIENDS
-========================= */
 
 function renderFriends(){
 
-const people=
-allProfiles.filter(
-x=>x.id!==currentUser.id
-);
+ let a=
+  allProfiles.filter(
+   p=>p.id!==currentUser.id
+  );
 
-
-$("friendsList").innerHTML=
-
-people.length
-
-?
-
-people.map(
-person=>
-`
-<div style="padding:15px">
-${friendHTML(person)}
-</div>
-`
-).join("")
-
-:
-
-`
-<div class="empty">
-
-<div class="empty-icon">
-👥
-</div>
-
-<h3>
-No other users yet
-</h3>
-
-<p>
-Invite someone to join Friendship Connect.
-</p>
-
-</div>
-`;
-
-
-$("suggestions").innerHTML=
-
-people.slice(0,5)
-.map(friendHTML)
-.join("")
-||
-`
-<p class="muted">
-No other users yet.
-</p>
-`;
-
+ $("friendsList").innerHTML=
+  a.length
+  ?
+  a.map(friendHTML).join("")
+  :
+  `
+  <div class="empty">
+   আর কোনো ব্যবহারকারী নেই।
+  </div>
+  `;
 }
 
 
-/* =========================
-   SEND REQUEST
-========================= */
+function renderSuggestions(){
 
-async function sendRequest(
-receiverId
-){
+ let a=
+  allProfiles
+  .filter(
+   p=>p.id!==currentUser.id
+  )
+  .slice(0,5);
 
-if(req(receiverId)){
-
-toast(
-"A request already exists.",
-"error"
-);
-
-return;
-
-}
-
-const result=
-await supabaseClient
-.from("friend_requests")
-.insert({
-
-sender_id:currentUser.id,
-
-receiver_id:receiverId,
-
-status:"pending"
-
-});
-
-
-if(result.error){
-
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
-}
-
-await loadRequests();
-
-renderFriends();
-
-renderNotifications();
-
-toast(
-"Friend request sent! 👥"
-);
-
+ $("suggestions").innerHTML=
+  a.length
+  ?
+  a.map(friendHTML).join("")
+  :
+  `<p class="muted">এখনো কেউ নেই।</p>`;
 }
 
 
-/* =========================
-   ACCEPT
-========================= */
+async function sendReq(id){
 
-async function acceptRequest(
-requestId
-){
+ if(reqStatus(id))
+  return;
 
-const result=
-await supabaseClient
-.from("friend_requests")
-.update({
-status:"accepted"
-})
-.eq(
-"id",
-requestId
-)
-.eq(
-"receiver_id",
-currentUser.id
-);
+ let {error}=
+  await db
+  .from("friend_requests")
+  .insert({
+   sender_id:currentUser.id,
+   receiver_id:id,
+   status:"pending"
+  });
 
+ if(error)
+  return toast(error.message);
 
-if(result.error){
+ await loadRequests();
 
-toast(
-result.error.message,
-"error"
-);
+ renderAll();
 
-return;
-
-}
-
-await loadRequests();
-
-renderFriends();
-
-renderNotifications();
-
-toast(
-"Friend request accepted! 🎉"
-);
-
+ toast(
+  "ফ্রেন্ড রিকোয়েস্ট পাঠানো হয়েছে"
+ );
 }
 
 
-/* =========================
-   REJECT
-========================= */
+async function acceptReq(id){
 
-async function rejectRequest(
-requestId
-){
+ let {error}=
+  await db
+  .from("friend_requests")
+  .update({
+   status:"accepted"
+  })
+  .eq("id",id)
+  .eq(
+   "receiver_id",
+   currentUser.id
+  );
 
-const result=
-await supabaseClient
-.from("friend_requests")
-.delete()
-.eq(
-"id",
-requestId
-)
-.eq(
-"receiver_id",
-currentUser.id
-);
+ if(error)
+  return toast(error.message);
 
+ await loadRequests();
 
-if(result.error){
+ renderAll();
 
-toast(
-result.error.message,
-"error"
-);
-
-return;
-
+ toast(
+  "বন্ধুত্ব গ্রহণ করা হয়েছে"
+ );
 }
 
-await loadRequests();
-
-renderFriends();
-
-renderNotifications();
-
-toast(
-"Friend request declined."
-);
-
-}
-
-
-/* =========================
-   NOTIFICATIONS
-========================= */
 
 function renderNotifications(){
 
-const incoming=
-allRequests.filter(
-x=>
-x.receiver_id===
-currentUser.id &&
-x.status==="pending"
-);
+ let a=
+  allRequests.filter(
+   r=>
+    r.receiver_id===currentUser.id&&
+    r.status==="pending"
+  );
 
+ $("notificationList").innerHTML=
+  a.length
+  ?
+  a.map(r=>{
 
-$("badge")
-.textContent=incoming.length;
+   let p=
+    allProfiles.find(
+     x=>x.id===r.sender_id
+    );
 
+   return `
 
-if(!incoming.length){
+   <div
+    class="friend"
+    style="padding:15px">
 
-$("notificationList").innerHTML=`
+    ${avatarHTML(
+     p,
+     "avatar small"
+    )}
 
-<div class="empty">
+    <div class="friendinfo">
 
-<div class="empty-icon">
-🔔
-</div>
+     <strong>
+      ${esc(p?.name||"Someone")}
+     </strong>
 
-<h3>
-No notifications
-</h3>
+     <small>
+      আপনাকে ফ্রেন্ড রিকোয়েস্ট পাঠিয়েছে
+     </small>
 
-<p>
-You're all caught up.
-</p>
+    </div>
 
-</div>
+    <button
+     class="btn primary"
+     onclick="acceptReq('${r.id}')">
 
-`;
+     গ্রহণ
 
-return;
+    </button>
 
+   </div>
+
+   `;
+
+  }).join("")
+  :
+  `
+  <div class="empty">
+   🔔 কোনো নতুন নোটিফিকেশন নেই।
+  </div>
+  `;
 }
 
-
-$("notificationList").innerHTML=
-
-incoming.map(
-request=>{
-
-const sender=
-allProfiles.find(
-p=>p.id===
-request.sender_id
-);
-
-const name=
-sender?.name ||
-"Someone";
-
-
-return `
-
-<div class="notification">
-
-<div class="avatar small">
-
-${esc(ini(name))}
-
-</div>
-
-<div class="notification-text">
-
-<b>
-${esc(name)}
-</b>
-
-sent you a friend request.
-
-<small>
-${ago(request.created_at)}
-</small>
-
-<div class="notification-actions">
-
-<button
-class="btn primary"
-onclick="acceptRequest('${request.id}')">
-
-Accept
-
-</button>
-
-<button
-class="btn danger"
-onclick="rejectRequest('${request.id}')">
-
-Decline
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}
-).join("");
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
 
 function showPage(page){
 
-[
-"home",
-"profile",
-"friends",
-"notifications"
-].forEach(
-name=>{
+ [
+  "home",
+  "profile",
+  "friends",
+  "notifications",
+  "settings"
+ ].forEach(
+  x=>
+   $(x+"Page")
+    .classList
+    .toggle(
+     "hidden",
+     x!==page
+    )
+ );
 
-const element=
-$(name+"Page");
+ document
+  .querySelectorAll(
+   ".nav[data-page]"
+  )
+  .forEach(
+   x=>
+    x.classList.toggle(
+     "active",
+     x.dataset.page===page
+    )
+  );
 
-if(element){
+ document
+  .querySelectorAll(
+   ".mobile button[data-mobile]"
+  )
+  .forEach(
+   x=>
+    x.classList.toggle(
+     "active",
+     x.dataset.mobile===page
+    )
+  );
 
-element.classList.toggle(
-"hidden",
-name!==page
-);
+ if(page==="profile")
+  renderMyPosts();
 
+ scrollTo(0,0);
 }
 
-});
-
-
-document
-.querySelectorAll(
-".nav[data-page]"
-)
-.forEach(
-item=>{
-
-item.classList.toggle(
-"active",
-item.dataset.page===page
-);
-
-});
-
-
-document
-.querySelectorAll(
-".mobile button[data-mobile]"
-)
-.forEach(
-item=>{
-
-item.classList.toggle(
-"active",
-item.dataset.mobile===page
-);
-
-});
-
-
-if(page==="profile")
-renderMyPosts();
-
-if(page==="notifications")
-renderNotifications();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-$("search").oninput=
-function(){
-
-const query=
-this.value
-.toLowerCase()
-.trim();
-
-
-if(!query){
-
-renderPosts();
-
-return;
-
-}
-
-
-const filtered=
-allPosts.filter(
-post=>
-(
-post.content ||
-""
-)
-.toLowerCase()
-.includes(query)
-||
-(
-post.profile?.name ||
-""
-)
-.toLowerCase()
-.includes(query)
-);
-
-
-renderPosts(filtered);
-
-};
-
-
-/* =========================
-   THEME
-========================= */
 
 function toggleTheme(){
 
-document.body.classList.toggle(
-"dark"
-);
+ document.body.classList.toggle(
+  "dark"
+ );
 
-localStorage.fc_theme=
-document.body.classList.contains(
-"dark"
-)
-?
-"dark"
-:
-"light";
-
+ localStorage.setItem(
+  "cbc_theme",
+  document.body.classList.contains("dark")
+   ?"dark"
+   :"light"
+ );
 }
 
 
 function applyTheme(){
 
-if(
-localStorage.fc_theme===
-"dark"
-){
-
-document.body.classList.add(
-"dark"
-);
-
-}
-
+ document.body.classList.toggle(
+  "dark",
+  localStorage.getItem(
+   "cbc_theme"
+  )==="dark"
+ );
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+function openEditProfile(){
+
+ $("editName").value=
+  currentProfile?.name||"";
+
+ $("editBio").value=
+  currentProfile?.bio||"";
+
+ $("editLocation").value=
+  currentProfile?.location||"";
+
+ $("editModal")
+  .classList
+  .remove("hidden");
+}
+
+
+function closeEditProfile(){
+
+ $("editModal")
+  .classList
+  .add("hidden");
+}
+
+
+async function saveProfile(){
+
+ try{
+
+  let avatar=
+   currentProfile?.avatar_url||"";
+
+  let cover=
+   currentProfile?.cover_url||"";
+
+  let af=
+   $("avatarFile")
+   .files[0];
+
+  let cf=
+   $("coverFile")
+   .files[0];
+
+  if(af){
+
+   avatar=
+    await upload(
+     af,
+     `profiles/${currentUser.id}/avatar-${Date.now()}.${af.name.split(".").pop()}`
+    );
+  }
+
+  if(cf){
+
+   cover=
+    await upload(
+     cf,
+     `profiles/${currentUser.id}/cover-${Date.now()}.${cf.name.split(".").pop()}`
+    );
+  }
+
+  let {
+   data,
+   error
+  }=
+  await db
+  .from("profiles")
+  .update({
+   name:
+    $("editName")
+     .value
+     .trim()||
+    "User",
+
+   bio:
+    $("editBio")
+     .value
+     .trim(),
+
+   location:
+    $("editLocation")
+     .value
+     .trim(),
+
+   avatar_url:avatar,
+
+   cover_url:cover
+
+  })
+  .eq(
+   "id",
+   currentUser.id
+  )
+  .select()
+  .single();
+
+  if(error)
+   throw error;
+
+  currentProfile=data;
+
+  closeEditProfile();
+
+  await loadProfiles();
+
+  await loadPosts();
+
+  updateUI();
+
+  renderAll();
+
+  toast(
+   "প্রোফাইল আপডেট হয়েছে"
+  );
+
+ }
+ catch(e){
+
+  toast(
+   "আপডেট হয়নি: "+
+   e.message
+  );
+
+ }
+}
+
+
+$("loginForm").onsubmit=
+ async e=>{
+
+  e.preventDefault();
+
+  let {error}=
+   await db.auth.signInWithPassword({
+    email:
+     $("loginEmail")
+      .value
+      .trim(),
+
+    password:
+     $("loginPassword").value
+   });
+
+  if(error)
+   toast(error.message);
+};
+
+
+$("registerForm").onsubmit=
+ async e=>{
+
+  e.preventDefault();
+
+  let {
+   data,
+   error
+  }=
+  await db.auth.signUp({
+
+   email:
+    $("registerEmail")
+     .value
+     .trim(),
+
+   password:
+    $("registerPassword").value,
+
+   options:{
+    data:{
+     full_name:
+      $("registerName")
+       .value
+       .trim()
+    }
+   }
+
+  });
+
+  if(error){
+
+   toast(error.message);
+
+  }
+  else{
+
+   toast(
+    data.session
+     ?"অ্যাকাউন্ট তৈরি হয়েছে"
+     :"ইমেইল যাচাই করুন"
+   );
+
+  }
+};
+
+
+$("search").oninput=
+ renderPosts;
+
 
 async function logout(){
 
-const result=
-await supabaseClient.auth.signOut();
+ await db.auth.signOut();
+}
 
-if(result.error){
 
-toast(
-result.error.message,
-"error"
+db.auth.onAuthStateChange(
+ (e,s)=>{
+
+  if(s){
+
+   currentUser=s.user;
+
+   setTimeout(
+    start,
+    0
+   );
+
+  }
+  else{
+
+   showAuth();
+
+  }
+
+ }
 );
 
-return;
-
-}
-
-toast(
-"Logged out successfully."
-);
-
-}
-
-
-/* =========================
-   RENDER ALL
-========================= */
-
-function renderAll(){
-
-renderPosts();
-
-renderMyPosts();
-
-renderFriends();
-
-renderNotifications();
-
-}
-
-
-/* =========================
-   START
-========================= */
 
 applyTheme();
 
-checkSession();
+
+db.auth
+ .getSession()
+ .then(
+  ({data})=>{
+
+   if(data.session){
+
+    currentUser=
+     data.session.user;
+
+    start();
+
+   }
+   else{
+
+    showAuth();
+
+   }
+
+  }
+ );
 
 </script>
 
 </body>
-   </html>
+</html>
