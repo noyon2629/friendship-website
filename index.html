@@ -200,6 +200,7 @@ background:var(--card)
 }
 
 .field{margin-bottom:15px}
+
 .field label{
 display:block;
 font-size:14px;
@@ -218,7 +219,11 @@ color:var(--text)
 }
 
 .field input:focus{border-color:var(--primary)}
-.submit{width:100%;margin-top:5px}
+
+.submit{
+width:100%;
+margin-top:5px
+}
 
 /* HEADER */
 
@@ -232,7 +237,9 @@ border-bottom:1px solid var(--border);
 backdrop-filter:blur(14px)
 }
 
-.dark header{background:rgba(24,27,37,.94)}
+.dark header{
+background:rgba(24,27,37,.94)
+}
 
 .header-inner{
 height:100%;
@@ -300,7 +307,9 @@ justify-content:center
 
 /* APP */
 
-.app{padding:25px 0 80px}
+.app{
+padding:25px 0 80px
+}
 
 .grid{
 display:grid;
@@ -314,7 +323,9 @@ position:sticky;
 top:88px
 }
 
-.side{padding:12px}
+.side{
+padding:12px
+}
 
 .user-side{
 display:flex;
@@ -324,8 +335,13 @@ padding:12px;
 margin-bottom:7px
 }
 
-.user-side strong{display:block}
-.user-side small{color:var(--muted)}
+.user-side strong{
+display:block
+}
+
+.user-side small{
+color:var(--muted)
+}
 
 .nav{
 width:100%;
@@ -345,9 +361,18 @@ color:var(--primary)
 
 /* FEED */
 
-.title{margin-bottom:17px}
-.title h2{font-size:24px}
-.title p{color:var(--muted);font-size:14px}
+.title{
+margin-bottom:17px
+}
+
+.title h2{
+font-size:24px
+}
+
+.title p{
+color:var(--muted);
+font-size:14px
+}
 
 .create{
 padding:16px;
@@ -391,9 +416,17 @@ align-items:center;
 gap:10px
 }
 
-.author{flex:1}
-.author strong{display:block}
-.author small{color:var(--muted)}
+.author{
+flex:1
+}
+
+.author strong{
+display:block
+}
+
+.author small{
+color:var(--muted)
+}
 
 .post-menu{
 background:transparent;
@@ -431,8 +464,13 @@ border-radius:9px;
 font-weight:700
 }
 
-.action:hover{background:var(--input)}
-.action.liked{color:var(--danger)}
+.action:hover{
+background:var(--input)
+}
+
+.action.liked{
+color:var(--danger)
+}
 
 .comment{
 display:flex;
@@ -481,7 +519,9 @@ padding:17px;
 margin-bottom:17px
 }
 
-.widget h3{margin-bottom:13px}
+.widget h3{
+margin-bottom:13px
+}
 
 .friend{
 display:flex;
@@ -491,7 +531,9 @@ padding:10px 0;
 border-bottom:1px solid var(--border)
 }
 
-.friend:last-child{border-bottom:0}
+.friend:last-child{
+border-bottom:0
+}
 
 .friend-info{
 flex:1;
@@ -503,7 +545,9 @@ display:block;
 font-size:13px
 }
 
-.friend-info small{color:var(--muted)}
+.friend-info small{
+color:var(--muted)
+}
 
 .friend .btn{
 padding:7px 9px;
@@ -522,10 +566,22 @@ height:175px;
 background:linear-gradient(135deg,var(--primary),var(--secondary))
 }
 
-.profile-info{padding:0 22px 22px}
-.profile-avatar{margin-top:-48px}
-.profile-name{font-size:25px;margin-top:10px}
-.profile-bio{color:var(--muted)}
+.profile-info{
+padding:0 22px 22px
+}
+
+.profile-avatar{
+margin-top:-48px
+}
+
+.profile-name{
+font-size:25px;
+margin-top:10px
+}
+
+.profile-bio{
+color:var(--muted)
+}
 
 .stats{
 display:flex;
@@ -538,7 +594,9 @@ display:block;
 font-size:18px
 }
 
-.stats small{color:var(--muted)}
+.stats small{
+color:var(--muted)
+}
 
 /* NOTIFICATIONS */
 
@@ -549,11 +607,21 @@ padding:15px;
 border-bottom:1px solid var(--border)
 }
 
-.notification:last-child{border:0}
+.notification:last-child{
+border:0
+}
 
-.notification-text{flex:1}
-.notification-text p{font-size:14px}
-.notification-text small{color:var(--muted)}
+.notification-text{
+flex:1
+}
+
+.notification-text p{
+font-size:14px
+}
+
+.notification-text small{
+color:var(--muted)
+}
 
 .notification-actions{
 display:flex;
@@ -581,23 +649,43 @@ margin-bottom:10px
 
 /* MOBILE */
 
-.mobile{display:none}
+.mobile{
+display:none
+}
 
 @media(max-width:1050px){
-.grid{grid-template-columns:210px minmax(0,1fr)}
-.right{display:none}
+
+.grid{
+grid-template-columns:210px minmax(0,1fr)
+}
+
+.right{
+display:none
+}
+
 }
 
 @media(max-width:760px){
 
-header{height:62px}
+header{
+height:62px
+}
 
-.container{width:calc(100% - 18px)}
+.container{
+width:calc(100% - 18px)
+}
 
-.logo span{display:none}
+.logo span{
+display:none
+}
 
-.grid{display:block}
-.left{display:none}
+.grid{
+display:block
+}
+
+.left{
+display:none
+}
 
 .app{
 padding-top:17px;
@@ -627,30 +715,56 @@ color:var(--muted);
 font-size:11px
 }
 
-.mobile button.active{color:var(--primary)}
-.mobile b{display:block;font-size:18px}
+.mobile button.active{
+color:var(--primary)
+}
 
-.header-actions .profile-icon{display:none}
+.mobile b{
+display:block;
+font-size:18px
+}
 
-.auth-card{padding:25px 20px}
+.header-actions .profile-icon{
+display:none
+}
 
-.post{padding:14px}
-.cover{height:140px}
-.stats{gap:20px}
+.auth-card{
+padding:25px 20px
+}
+
+.post{
+padding:14px
+}
+
+.cover{
+height:140px
+}
+
+.stats{
+gap:20px
+}
+
 }
 
 @media(max-width:420px){
 
-.header-inner{gap:7px}
+.header-inner{
+gap:7px
+}
 
 .icon{
 width:37px;
 height:37px
 }
 
-.search input{padding-left:35px}
+.search input{
+padding-left:35px
+}
 
-.post-actions{font-size:12px}
+.post-actions{
+font-size:12px
+}
+
 }
 </style>
 </head>
@@ -693,7 +807,8 @@ Register
 
 <div class="field">
 <label>Email</label>
-<input id="loginEmail"
+<input
+id="loginEmail"
 type="email"
 placeholder="Enter your email"
 autocomplete="email"
@@ -702,7 +817,8 @@ required>
 
 <div class="field">
 <label>Password</label>
-<input id="loginPassword"
+<input
+id="loginPassword"
 type="password"
 placeholder="Enter your password"
 autocomplete="current-password"
@@ -719,7 +835,8 @@ required>
 
 <div class="field">
 <label>Full Name</label>
-<input id="registerName"
+<input
+id="registerName"
 type="text"
 placeholder="Your full name"
 autocomplete="name"
@@ -728,7 +845,8 @@ required>
 
 <div class="field">
 <label>Email</label>
-<input id="registerEmail"
+<input
+id="registerEmail"
 type="email"
 placeholder="Your email"
 autocomplete="email"
@@ -737,7 +855,8 @@ required>
 
 <div class="field">
 <label>Password</label>
-<input id="registerPassword"
+<input
+id="registerPassword"
 type="password"
 minlength="6"
 placeholder="Minimum 6 characters"
@@ -772,7 +891,8 @@ required>
 
 <span>🔍</span>
 
-<input id="search"
+<input
+id="search"
 type="search"
 placeholder="Search posts..."
 autocomplete="off">
@@ -781,20 +901,26 @@ autocomplete="off">
 
 <div class="header-actions">
 
-<button class="icon"
+<button
+class="icon"
 onclick="toggleTheme()"
 title="Theme">
 🌙
 </button>
 
-<button class="icon notify"
+<button
+class="icon notify"
 onclick="showPage('notifications')"
 title="Notifications">
+
 🔔
+
 <span id="badge" class="badge">0</span>
+
 </button>
 
-<button class="icon profile-icon"
+<button
+class="icon profile-icon"
 onclick="showPage('profile')"
 title="Profile">
 👤
@@ -812,7 +938,7 @@ title="Profile">
 
 <div class="grid">
 
-<!-- LEFT SIDEBAR -->
+<!-- LEFT -->
 
 <aside class="left">
 
@@ -820,48 +946,58 @@ title="Profile">
 
 <div class="user-side">
 
-<div id="sideAvatar"
-class="avatar small">
+<div id="sideAvatar" class="avatar small">
 U
 </div>
 
 <div>
+
 <strong id="sideName">User</strong>
-<small id="sideEmail">user@email.com</small>
-</div>
+
+<small id="sideEmail">
+user@email.com
+</small>
 
 </div>
 
-<button class="nav active"
+</div>
+
+<button
+class="nav active"
 data-page="home"
 onclick="showPage('home')">
 🏠 Home
 </button>
 
-<button class="nav"
+<button
+class="nav"
 data-page="profile"
 onclick="showPage('profile')">
 👤 My Profile
 </button>
 
-<button class="nav"
+<button
+class="nav"
 data-page="friends"
 onclick="showPage('friends')">
 👥 Friends
 </button>
 
-<button class="nav"
+<button
+class="nav"
 data-page="notifications"
 onclick="showPage('notifications')">
 🔔 Notifications
 </button>
 
-<button class="nav"
+<button
+class="nav"
 onclick="toggleTheme()">
 🌙 Dark Mode
 </button>
 
-<button class="nav"
+<button
+class="nav"
 onclick="logout()">
 🚪 Logout
 </button>
@@ -879,20 +1015,25 @@ onclick="logout()">
 <div id="homePage">
 
 <div class="title">
+
 <h2>Welcome back 👋</h2>
-<p>Share your thoughts and connect with friends.</p>
+
+<p>
+Share your thoughts and connect with friends.
+</p>
+
 </div>
 
 <div class="card create">
 
 <div class="create-top">
 
-<div id="createAvatar"
-class="avatar">
+<div id="createAvatar" class="avatar">
 U
 </div>
 
-<textarea id="postInput"
+<textarea
+id="postInput"
 placeholder="What's on your mind?"
 rows="2"
 maxlength="5000"></textarea>
@@ -905,7 +1046,8 @@ maxlength="5000"></textarea>
 ✨ Share something with your friends
 </span>
 
-<button class="btn primary"
+<button
+class="btn primary"
 onclick="createPost()">
 Post
 </button>
@@ -931,20 +1073,17 @@ Post
 
 <div class="profile-avatar">
 
-<div id="profileAvatar"
-class="avatar large">
+<div id="profileAvatar" class="avatar large">
 U
 </div>
 
 </div>
 
-<h2 id="profileName"
-class="profile-name">
+<h2 id="profileName" class="profile-name">
 User
 </h2>
 
-<p id="profileBio"
-class="profile-bio">
+<p id="profileBio" class="profile-bio">
 Welcome to Friendship Connect.
 </p>
 
@@ -971,8 +1110,13 @@ Welcome to Friendship Connect.
 </div>
 
 <div class="title">
+
 <h2>My Posts</h2>
-<p>Your posts on Friendship Connect.</p>
+
+<p>
+Your posts on Friendship Connect.
+</p>
+
 </div>
 
 <div id="myPosts"></div>
@@ -985,8 +1129,13 @@ Welcome to Friendship Connect.
 <div id="friendsPage" class="hidden">
 
 <div class="title">
+
 <h2>Friends 👥</h2>
-<p>Discover people and manage friend requests.</p>
+
+<p>
+Discover people and manage friend requests.
+</p>
+
 </div>
 
 <div id="friendsList" class="card"></div>
@@ -999,8 +1148,13 @@ Welcome to Friendship Connect.
 <div id="notificationsPage" class="hidden">
 
 <div class="title">
+
 <h2>Notifications 🔔</h2>
-<p>Your latest friendship activity.</p>
+
+<p>
+Your latest friendship activity.
+</p>
+
 </div>
 
 <div id="notificationList" class="card"></div>
@@ -1027,7 +1181,9 @@ Welcome to Friendship Connect.
 <h3>Friendship Connect 💜</h3>
 
 <p style="color:var(--muted);font-size:13px;line-height:1.6">
+
 Connect with people, share your thoughts and build meaningful friendships.
+
 </p>
 
 </div>
@@ -1045,26 +1201,30 @@ Connect with people, share your thoughts and build meaningful friendships.
 
 <div class="mobile-inner">
 
-<button data-mobile="home"
+<button
+data-mobile="home"
 class="active"
 onclick="showPage('home')">
 <b>🏠</b>
 Home
 </button>
 
-<button data-mobile="friends"
+<button
+data-mobile="friends"
 onclick="showPage('friends')">
 <b>👥</b>
 Friends
 </button>
 
-<button data-mobile="notifications"
+<button
+data-mobile="notifications"
 onclick="showPage('notifications')">
 <b>🔔</b>
 Alerts
 </button>
 
-<button data-mobile="profile"
+<button
+data-mobile="profile"
 onclick="showPage('profile')">
 <b>👤</b>
 Profile
@@ -1114,29 +1274,35 @@ let allPosts=[];
 let allProfiles=[];
 let allRequests=[];
 
+let appStarting=false;
+
 
 /* =========================================================
    HELPERS
    ========================================================= */
 
 function escapeHTML(value){
-return String(value??"")
+
+return String(value ?? "")
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
 .replace(/'/g,"&#039;");
+
 }
 
 
 function initials(name){
-return String(name||"User")
+
+return String(name || "User")
 .trim()
 .split(/\s+/)
 .slice(0,2)
 .map(x=>x.charAt(0))
 .join("")
 .toUpperCase() || "U";
+
 }
 
 
@@ -1146,10 +1312,12 @@ const seconds=Math.floor(
 (Date.now()-new Date(date).getTime())/1000
 );
 
-if(seconds<60)return"Just now";
+if(seconds<60)return "Just now";
 if(seconds<3600)return Math.floor(seconds/60)+" min ago";
 if(seconds<86400)return Math.floor(seconds/3600)+" hr ago";
+
 return Math.floor(seconds/86400)+" day ago";
+
 }
 
 
@@ -1164,7 +1332,10 @@ item.textContent=message;
 
 box.appendChild(item);
 
-setTimeout(()=>item.remove(),3500);
+setTimeout(()=>{
+item.remove();
+},3500);
+
 }
 
 
@@ -1197,6 +1368,7 @@ loginTab.classList.remove("active");
 registerTab.classList.add("active");
 
 }
+
 }
 
 
@@ -1222,34 +1394,53 @@ const password=document
 .value;
 
 if(name.length<2){
-toast("Please enter your full name.","error");
+
+toast(
+"Please enter your full name.",
+"error"
+);
+
 return;
+
 }
 
 if(password.length<6){
-toast("Password must contain at least 6 characters.","error");
+
+toast(
+"Password must contain at least 6 characters.",
+"error"
+);
+
 return;
+
 }
 
 const {data,error}=
 await supabaseClient.auth.signUp({
+
 email,
 password,
+
 options:{
 data:{
 full_name:name
 }
 }
+
 });
 
 if(error){
+
 toast(error.message,"error");
 return;
+
 }
 
 if(data.session){
 
-toast("Account created successfully! 🎉");
+toast(
+"Account created successfully! 🎉"
+);
 
 }else{
 
@@ -1281,13 +1472,17 @@ const password=document
 
 const {error}=
 await supabaseClient.auth.signInWithPassword({
+
 email,
 password
+
 });
 
 if(error){
+
 toast(error.message,"error");
 return;
+
 }
 
 toast("Welcome back! 👋");
@@ -1314,6 +1509,7 @@ startApp();
 
 currentUser=null;
 currentProfile=null;
+appStarting=false;
 
 showAuth();
 
@@ -1369,11 +1565,17 @@ async function startApp(){
 
 if(!currentUser)return;
 
+if(appStarting)return;
+
+appStarting=true;
+
 document.getElementById("auth")
 .classList.add("hidden");
 
 document.getElementById("app")
 .classList.remove("hidden");
+
+try{
 
 await loadProfile();
 await loadProfiles();
@@ -1389,6 +1591,21 @@ renderFriends();
 renderNotifications();
 
 applyTheme();
+
+}catch(error){
+
+console.error(error);
+
+toast(
+"Could not start the app. Check Supabase settings.",
+"error"
+);
+
+}finally{
+
+appStarting=false;
+
+}
 
 }
 
@@ -1408,8 +1625,13 @@ await supabaseClient
 
 if(error){
 
-console.error(error);
-toast("Could not load profile: "+error.message,"error");
+console.error("Profile select error:",error);
+
+toast(
+"Could not load profile: "+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1426,18 +1648,40 @@ const result=
 await supabaseClient
 .from("profiles")
 .insert({
+
 id:currentUser.id,
-full_name:name,
-bio:"Welcome to Friendship Connect."
+
+/* IMPORTANT:
+   Your profiles table uses 'name',
+   NOT 'full_name'
+*/
+
+name:name,
+
+location:"",
+
+avatar_url:""
+
 })
 .select()
 .single();
 
 if(result.error){
 
-console.error(result.error);
+console.error(
+"Profile insert error:",
+result.error
+);
 
-}else{
+toast(
+"Profile could not be created: "+
+result.error.message,
+"error"
+);
+
+return;
+
+}
 
 currentProfile=result.data;
 
@@ -1445,30 +1689,43 @@ currentProfile=result.data;
 
 }
 
-}
 
+/* =========================================================
+   UPDATE USER UI
+   ========================================================= */
 
 function updateUserUI(){
 
 const name=
-currentProfile?.full_name ||
+currentProfile?.name ||
 currentUser.user_metadata?.full_name ||
 "User";
 
-const email=currentUser.email||"";
+const email=
+currentUser.email || "";
+
 const ini=initials(name);
 
-document.getElementById("sideName").textContent=name;
-document.getElementById("sideEmail").textContent=email;
+document.getElementById("sideName")
+.textContent=name;
 
-document.getElementById("sideAvatar").textContent=ini;
-document.getElementById("createAvatar").textContent=ini;
-document.getElementById("profileAvatar").textContent=ini;
+document.getElementById("sideEmail")
+.textContent=email;
 
-document.getElementById("profileName").textContent=name;
+document.getElementById("sideAvatar")
+.textContent=ini;
 
-document.getElementById("profileBio").textContent=
-currentProfile?.bio ||
+document.getElementById("createAvatar")
+.textContent=ini;
+
+document.getElementById("profileAvatar")
+.textContent=ini;
+
+document.getElementById("profileName")
+.textContent=name;
+
+document.getElementById("profileBio")
+.textContent=
 "Welcome to Friendship Connect.";
 
 }
@@ -1488,13 +1745,17 @@ await supabaseClient
 
 if(error){
 
-console.error(error);
+console.error(
+"Profiles load error:",
+error
+);
+
 allProfiles=[];
 return;
 
 }
 
-allProfiles=data||[];
+allProfiles=data || [];
 
 }
 
@@ -1525,14 +1786,14 @@ return;
 
 }
 
-allPosts=data||[];
+allPosts=data || [];
 
 for(const post of allPosts){
 
 post.profile=
 allProfiles.find(
 p=>p.id===post.user_id
-)||null;
+) || null;
 
 const likesResult=
 await supabaseClient
@@ -1547,15 +1808,15 @@ await supabaseClient
 .eq("post_id",post.id)
 .order("created_at",{ascending:true});
 
-post.likes=likesResult.data||[];
-post.comments=commentsResult.data||[];
+post.likes=likesResult.data || [];
+post.comments=commentsResult.data || [];
 
 for(const comment of post.comments){
 
 comment.profile=
 allProfiles.find(
 p=>p.id===comment.user_id
-)||null;
+) || null;
 
 }
 
@@ -1570,16 +1831,25 @@ p=>p.id===comment.user_id
 
 function renderPosts(){
 
-const container=document.getElementById("posts");
+const container=
+document.getElementById("posts");
 
 if(!allPosts.length){
 
 container.innerHTML=`
+
 <div class="card empty">
+
 <div class="empty-icon">📝</div>
+
 <h3>No posts yet</h3>
-<p>Be the first to share something.</p>
+
+<p>
+Be the first to share something.
+</p>
+
 </div>
+
 `;
 
 return;
@@ -1587,7 +1857,9 @@ return;
 }
 
 container.innerHTML=
-allPosts.map(post=>postHTML(post)).join("");
+allPosts
+.map(post=>postHTML(post))
+.join("");
 
 }
 
@@ -1596,23 +1868,30 @@ function postHTML(post){
 
 const profile=post.profile;
 
-const name=profile?.full_name||"User";
+const name=
+profile?.name || "User";
+
 const ini=initials(name);
 
-const likeCount=post.likes?.length||0;
+const likeCount=
+post.likes?.length || 0;
 
 const liked=
 post.likes?.some(
 like=>like.user_id===currentUser.id
 );
 
-const comments=post.comments||[];
+const comments=
+post.comments || [];
 
-const commentHTML=comments.map(comment=>{
+const commentHTML=
+comments.map(comment=>{
 
-const cname=comment.profile?.full_name||"User";
+const cname=
+comment.profile?.name || "User";
 
 return`
+
 <div class="comment">
 
 <div class="avatar small">
@@ -1621,17 +1900,24 @@ ${escapeHTML(initials(cname))}
 
 <div class="comment-body">
 
-<strong>${escapeHTML(cname)}</strong>
+<strong>
+${escapeHTML(cname)}
+</strong>
 
-<p>${escapeHTML(comment.content)}</p>
+<p>
+${escapeHTML(comment.content)}
+</p>
 
 </div>
+
 </div>
+
 `;
 
 }).join("");
 
 return`
+
 <article class="card post">
 
 <div class="post-head">
@@ -1642,7 +1928,9 @@ ${escapeHTML(ini)}
 
 <div class="author">
 
-<strong>${escapeHTML(name)}</strong>
+<strong>
+${escapeHTML(name)}
+</strong>
 
 <small>
 ${timeAgo(post.created_at)}
@@ -1654,12 +1942,14 @@ ${
 post.user_id===currentUser.id
 ?
 `
+
 <button
 class="post-menu"
 onclick="deletePost(${post.id})"
 title="Delete">
 ⋯
 </button>
+
 `
 :""
 }
@@ -1672,9 +1962,13 @@ ${escapeHTML(post.content)}
 
 <div class="post-stats">
 
-<span>❤️ ${likeCount}</span>
+<span>
+❤️ ${likeCount}
+</span>
 
-<span>💬 ${comments.length}</span>
+<span>
+💬 ${comments.length}
+</span>
 
 </div>
 
@@ -1683,19 +1977,25 @@ ${escapeHTML(post.content)}
 <button
 class="action ${liked?"liked":""}"
 onclick="toggleLike(${post.id},${liked})">
+
 ${liked?"❤️":"♡"} Like
+
 </button>
 
 <button
 class="action"
 onclick="focusComment(${post.id})">
+
 💬 Comment
+
 </button>
 
 <button
 class="action"
 onclick="sharePost(${post.id})">
+
 ↗ Share
+
 </button>
 
 </div>
@@ -1714,13 +2014,16 @@ placeholder="Write a comment..."
 autocomplete="off"
 maxlength="1000">
 
-<button class="btn primary" type="submit">
+<button
+class="btn primary"
+type="submit">
 Send
 </button>
 
 </form>
 
 </article>
+
 `;
 
 }
@@ -1732,13 +2035,19 @@ Send
 
 async function createPost(){
 
-const input=document.getElementById("postInput");
+const input=
+document.getElementById("postInput");
 
-const content=input.value.trim();
+const content=
+input.value.trim();
 
 if(!content){
 
-toast("Write something before posting.","error");
+toast(
+"Write something before posting.",
+"error"
+);
+
 return;
 
 }
@@ -1747,13 +2056,19 @@ const {error}=
 await supabaseClient
 .from("posts")
 .insert({
+
 user_id:currentUser.id,
-content
+content:content
+
 });
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1765,7 +2080,9 @@ await loadPosts();
 renderPosts();
 renderMyPosts();
 
-toast("Your post was published! 🎉");
+toast(
+"Your post was published! 🎉"
+);
 
 }
 
@@ -1787,7 +2104,11 @@ await supabaseClient
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1798,13 +2119,19 @@ const {error}=
 await supabaseClient
 .from("likes")
 .insert({
+
 post_id:postId,
 user_id:currentUser.id
+
 });
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1826,11 +2153,13 @@ async function addComment(event,postId){
 
 event.preventDefault();
 
-const input=document.getElementById(
+const input=
+document.getElementById(
 "comment-"+postId
 );
 
-const content=input.value.trim();
+const content=
+input.value.trim();
 
 if(!content)return;
 
@@ -1838,14 +2167,20 @@ const {error}=
 await supabaseClient
 .from("comments")
 .insert({
+
 post_id:postId,
 user_id:currentUser.id,
-content
+content:content
+
 });
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1861,7 +2196,8 @@ renderPosts();
 
 function focusComment(postId){
 
-const input=document.getElementById(
+const input=
+document.getElementById(
 "comment-"+postId
 );
 
@@ -1885,7 +2221,8 @@ block:"center"
 
 async function deletePost(postId){
 
-if(!confirm("Delete this post?"))return;
+if(!confirm("Delete this post?"))
+return;
 
 const {error}=
 await supabaseClient
@@ -1896,7 +2233,11 @@ await supabaseClient
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -1925,7 +2266,7 @@ p=>p.id===postId
 if(!post)return;
 
 const name=
-post.profile?.full_name||"User";
+post.profile?.name || "User";
 
 const text=
 name+": "+post.content;
@@ -1935,8 +2276,10 @@ if(navigator.share){
 try{
 
 await navigator.share({
+
 title:"Friendship Connect",
-text
+text:text
+
 });
 
 return;
@@ -1949,11 +2292,16 @@ try{
 
 await navigator.clipboard.writeText(text);
 
-toast("Post copied to clipboard.");
+toast(
+"Post copied to clipboard."
+);
 
 }catch(e){
 
-toast("Sharing is not supported.","error");
+toast(
+"Sharing is not supported.",
+"error"
+);
 
 }
 
@@ -1977,12 +2325,14 @@ await supabaseClient
 if(error){
 
 console.error(error);
+
 allRequests=[];
+
 return;
 
 }
 
-allRequests=data||[];
+allRequests=data || [];
 
 updateFriendStats();
 
@@ -1991,11 +2341,13 @@ updateFriendStats();
 
 function updateFriendStats(){
 
-const accepted=allRequests.filter(
+const accepted=
+allRequests.filter(
 r=>r.status==="accepted"
 );
 
-const pendingIncoming=allRequests.filter(
+const pendingIncoming=
+allRequests.filter(
 r=>
 r.receiver_id===currentUser.id &&
 r.status==="pending"
@@ -2014,14 +2366,22 @@ function getRequestStatus(personId){
 
 const request=
 allRequests.find(r=>
-(r.sender_id===currentUser.id &&
-r.receiver_id===personId)
+
+(
+r.sender_id===currentUser.id &&
+r.receiver_id===personId
+)
+
 ||
-(r.receiver_id===currentUser.id &&
-r.sender_id===personId)
+
+(
+r.receiver_id===currentUser.id &&
+r.sender_id===personId
+)
+
 );
 
-return request||null;
+return request || null;
 
 }
 
@@ -2033,15 +2393,21 @@ document.getElementById("suggestions");
 
 const people=
 allProfiles
-.filter(p=>p.id!==currentUser.id)
+.filter(
+p=>p.id!==currentUser.id
+)
 .slice(0,5);
 
 if(!people.length){
 
 container.innerHTML=`
+
 <p style="color:var(--muted);font-size:13px">
+
 No other users yet.
+
 </p>
+
 `;
 
 return;
@@ -2049,86 +2415,133 @@ return;
 }
 
 container.innerHTML=
-people.map(person=>friendHTML(person)).join("");
+people
+.map(person=>friendHTML(person))
+.join("");
 
 }
 
 
 function friendHTML(person){
 
-const request=getRequestStatus(person.id);
+const request=
+getRequestStatus(person.id);
 
 let button="";
 
 if(!request){
 
 button=`
+
 <button
 class="btn primary"
 onclick="sendFriendRequest('${person.id}')">
+
 + Add
+
 </button>
+
 `;
 
 }else if(
+
 request.status==="pending" &&
 request.receiver_id===currentUser.id
+
 ){
 
 button=`
+
 <button
 class="btn primary"
 onclick="acceptFriendRequest('${request.id}')">
+
 Accept
+
 </button>
+
 `;
 
 }else if(
+
 request.status==="pending" &&
 request.sender_id===currentUser.id
+
 ){
 
 button=`
-<button class="btn light" disabled>
+
+<button
+class="btn light"
+disabled>
+
 Sent ✓
+
 </button>
+
 `;
 
-}else if(request.status==="accepted"){
+}else if(
+request.status==="accepted"
+){
 
 button=`
-<button class="btn light" disabled>
+
+<button
+class="btn light"
+disabled>
+
 Friends ✓
+
 </button>
+
 `;
 
 }else{
 
 button=`
-<button class="btn light" disabled>
+
+<button
+class="btn light"
+disabled>
+
 Requested
+
 </button>
+
 `;
 
 }
 
-const name=person.full_name||"User";
+const name=
+person.name || "User";
 
 return`
+
 <div class="friend">
 
 <div class="avatar small">
+
 ${escapeHTML(initials(name))}
+
 </div>
 
 <div class="friend-info">
-<strong>${escapeHTML(name)}</strong>
-<small>Friendship Connect</small>
+
+<strong>
+${escapeHTML(name)}
+</strong>
+
+<small>
+Friendship Connect
+</small>
+
 </div>
 
 ${button}
 
 </div>
+
 `;
 
 }
@@ -2140,14 +2553,19 @@ ${button}
 
 async function sendFriendRequest(receiverId){
 
-if(receiverId===currentUser.id)return;
+if(receiverId===currentUser.id)
+return;
 
 const existing=
 getRequestStatus(receiverId);
 
 if(existing){
 
-toast("A request already exists.","error");
+toast(
+"A request already exists.",
+"error"
+);
+
 return;
 
 }
@@ -2156,14 +2574,20 @@ const {error}=
 await supabaseClient
 .from("friend_requests")
 .insert({
+
 sender_id:currentUser.id,
 receiver_id:receiverId,
 status:"pending"
+
 });
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -2174,7 +2598,9 @@ renderSuggestions();
 renderFriends();
 renderNotifications();
 
-toast("Friend request sent! 👥");
+toast(
+"Friend request sent! 👥"
+);
 
 }
 
@@ -2189,14 +2615,20 @@ const {error}=
 await supabaseClient
 .from("friend_requests")
 .update({
+
 status:"accepted"
+
 })
 .eq("id",requestId)
 .eq("receiver_id",currentUser.id);
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -2207,7 +2639,9 @@ renderSuggestions();
 renderFriends();
 renderNotifications();
 
-toast("Friend request accepted! 🎉");
+toast(
+"Friend request accepted! 🎉"
+);
 
 }
 
@@ -2227,7 +2661,11 @@ await supabaseClient
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
@@ -2238,7 +2676,9 @@ renderSuggestions();
 renderFriends();
 renderNotifications();
 
-toast("Friend request declined.");
+toast(
+"Friend request declined."
+);
 
 }
 
@@ -2260,11 +2700,19 @@ p=>p.id!==currentUser.id
 if(!others.length){
 
 container.innerHTML=`
+
 <div class="empty">
+
 <div class="empty-icon">👥</div>
+
 <h3>No other users yet</h3>
-<p>Invite someone to join Friendship Connect.</p>
+
+<p>
+Invite someone to join Friendship Connect.
+</p>
+
 </div>
+
 `;
 
 return;
@@ -2275,9 +2723,13 @@ container.innerHTML=
 others.map(person=>{
 
 return`
+
 <div style="padding:15px;border-bottom:1px solid var(--border)">
+
 ${friendHTML(person)}
+
 </div>
+
 `;
 
 }).join("");
@@ -2292,9 +2744,11 @@ ${friendHTML(person)}
 function getIncomingRequests(){
 
 return allRequests.filter(
+
 r=>
 r.receiver_id===currentUser.id &&
 r.status==="pending"
+
 );
 
 }
@@ -2303,9 +2757,12 @@ r.status==="pending"
 function renderNotifications(){
 
 const container=
-document.getElementById("notificationList");
+document.getElementById(
+"notificationList"
+);
 
-const incoming=getIncomingRequests();
+const incoming=
+getIncomingRequests();
 
 document.getElementById("badge")
 .textContent=incoming.length;
@@ -2313,15 +2770,19 @@ document.getElementById("badge")
 if(!incoming.length){
 
 container.innerHTML=`
+
 <div class="empty">
 
 <div class="empty-icon">🔔</div>
 
 <h3>No notifications</h3>
 
-<p>You're all caught up.</p>
+<p>
+You're all caught up.
+</p>
 
 </div>
+
 `;
 
 return;
@@ -2337,24 +2798,34 @@ p=>p.id===request.sender_id
 );
 
 const name=
-sender?.full_name||"Someone";
+sender?.name || "Someone";
 
 return`
+
 <div class="notification">
 
 <div class="avatar small">
+
 ${escapeHTML(initials(name))}
+
 </div>
 
 <div class="notification-text">
 
 <p>
-<strong>${escapeHTML(name)}</strong>
+
+<strong>
+${escapeHTML(name)}
+</strong>
+
 sent you a friend request.
+
 </p>
 
 <small>
+
 ${timeAgo(request.created_at)}
+
 </small>
 
 <div class="notification-actions">
@@ -2362,13 +2833,17 @@ ${timeAgo(request.created_at)}
 <button
 class="btn primary"
 onclick="acceptFriendRequest('${request.id}')">
+
 Accept
+
 </button>
 
 <button
 class="btn danger"
 onclick="rejectFriendRequest('${request.id}')">
+
 Decline
+
 </button>
 
 </div>
@@ -2376,6 +2851,7 @@ Decline
 </div>
 
 </div>
+
 `;
 
 }).join("");
@@ -2414,7 +2890,6 @@ name!==page
 
 });
 
-
 document.querySelectorAll(
 ".nav[data-page]"
 ).forEach(item=>{
@@ -2425,7 +2900,6 @@ item.dataset.page===page
 );
 
 });
-
 
 document.querySelectorAll(
 ".mobile button[data-mobile]"
@@ -2438,18 +2912,23 @@ item.dataset.mobile===page
 
 });
 
-
 if(page==="profile"){
+
 renderMyPosts();
+
 }
 
 if(page==="notifications"){
+
 renderNotifications();
+
 }
 
 window.scrollTo({
+
 top:0,
 behavior:"smooth"
+
 });
 
 }
@@ -2475,15 +2954,19 @@ document.getElementById("myPostCount")
 if(!mine.length){
 
 container.innerHTML=`
+
 <div class="card empty">
 
 <div class="empty-icon">✨</div>
 
 <h3>No posts yet</h3>
 
-<p>Create your first post from Home.</p>
+<p>
+Create your first post from Home.
+</p>
 
 </div>
+
 `;
 
 return;
@@ -2491,7 +2974,9 @@ return;
 }
 
 container.innerHTML=
-mine.map(post=>postHTML(post)).join("");
+mine
+.map(post=>postHTML(post))
+.join("");
 
 }
 
@@ -2501,9 +2986,12 @@ mine.map(post=>postHTML(post)).join("");
    ========================================================= */
 
 document.getElementById("search")
-.addEventListener("input",function(){
+.addEventListener(
+"input",
+function(){
 
-const query=this.value.trim().toLowerCase();
+const query=
+this.value.trim().toLowerCase();
 
 if(!query){
 
@@ -2516,13 +3004,13 @@ const filtered=
 allPosts.filter(post=>{
 
 const text=
-post.content?.toLowerCase()||"";
+post.content?.toLowerCase() || "";
 
 const name=
-post.profile?.full_name?.toLowerCase()||"";
+post.profile?.name?.toLowerCase() || "";
 
 return(
-text.includes(query)||
+text.includes(query) ||
 name.includes(query)
 );
 
@@ -2534,15 +3022,19 @@ document.getElementById("posts");
 if(!filtered.length){
 
 container.innerHTML=`
+
 <div class="card empty">
 
 <div class="empty-icon">🔍</div>
 
 <h3>No results found</h3>
 
-<p>Try another search.</p>
+<p>
+Try another search.
+</p>
 
 </div>
+
 `;
 
 return;
@@ -2550,7 +3042,9 @@ return;
 }
 
 container.innerHTML=
-filtered.map(post=>postHTML(post)).join("");
+filtered
+.map(post=>postHTML(post))
+.join("");
 
 });
 
@@ -2564,10 +3058,13 @@ function toggleTheme(){
 document.body.classList.toggle("dark");
 
 localStorage.setItem(
+
 "fc_theme",
+
 document.body.classList.contains("dark")
 ?"dark"
 :"light"
+
 );
 
 }
@@ -2601,12 +3098,18 @@ await supabaseClient.auth.signOut();
 
 if(error){
 
-toast(error.message,"error");
+toast(
+error.message,
+"error"
+);
+
 return;
 
 }
 
-toast("Logged out successfully.");
+toast(
+"Logged out successfully."
+);
 
 }
 
@@ -2616,9 +3119,10 @@ toast("Logged out successfully.");
    ========================================================= */
 
 applyTheme();
+
 checkSession();
 
 </script>
 
 </body>
-</html>
+   </html>
