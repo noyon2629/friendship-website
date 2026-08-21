@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Friendship Connect</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f6fa;
+    color:#222;
+}
+
+/* Header */
+header{
+    background:linear-gradient(135deg,#6c5ce7,#8e44ad);
+    color:white;
+    padding:18px 20px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.nav{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav button{
+    background:white;
+    color:#6c5ce7;
+    border:0;
+    padding:10px 16px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+/* Hero */
+.hero{
+    text-align:center;
+    padding:55px 20px;
+    background:white;
+}
+
+.hero h1{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.hero h1 span{
+    color:#6c5ce7;
+}
+
+.hero p{
+    color:#666;
+    max-width:600px;
+    margin:auto;
+    line-height:1.6;
+}
+
+.hero button{
+    margin-top:25px;
+    padding:14px 28px;
+    border:0;
+    border-radius:30px;
+    background:#6c5ce7;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* Search */
+.search-box{
+    max-width:700px;
+    margin:25px auto;
+    padding:0 20px;
+}
+
+.search-box input{
+    width:100%;
+    padding:15px 20px;
+    border:1px solid #ddd;
+    border-radius:30px;
+    outline:none;
+    font-size:16px;
+}
+
+/* Profiles */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.profiles{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+}
+
+.avatar{
+    width:85px;
+    height:85px;
+    margin:auto;
+    border-radius:50%;
+    background:linear-gradient(135deg,#6c5ce7,#fd79a8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.card h3{
+    margin-top:15px;
+}
+
+.location{
+    color:#777;
+    font-size:14px;
+    margin:7px 0;
+}
+
+.status{
+    color:#00a884;
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.connect{
+    background:#6c5ce7;
+    color:white;
+    border:0;
+    padding:10px 22px;
+    border-radius:25px;
+    cursor:pointer;
+}
+
+.connect:hover{
+    opacity:.9;
+}
+
+/* Features */
+.features{
+    background:white;
+    margin-top:30px;
+    padding:45px 20px;
+}
+
+.feature-grid{
+    max-width:1000px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.feature{
+    text-align:center;
+    padding:20px;
+}
+
+.feature-icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.feature p{
+    color:#777;
+    margin-top:8px;
+    line-height:1.5;
+}
+
+/* Footer */
+footer{
+    background:#222;
+    color:#aaa;
+    text-align:center;
+    padding:30px 20px;
+    margin-top:30px;
+}
+
+footer strong{
+    color:white;
+}
+
+footer p{
+    margin-top:8px;
+    font-size:13px;
+}
+
+/* Mobile */
+@media(max-width:600px){
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .logo{
+        font-size:20px;
+    }
+
+    .hero{
+        padding:40px 18px;
+    }
+
+    .container{
+        padding:25px 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="nav">
+        <div class="logo">🤝 Friendship Connect</div>
+        <button onclick="showAbout()">About</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Meet New <span>Friends</span></h1>
+
+    <p>
+        Discover new people, make meaningful connections
+        and build genuine friendships in a respectful community.
+    </p>
+
+    <button onclick="scrollToProfiles()">
+        Explore Profiles
+    </button>
+</section>
+
+<div class="search-box">
+    <input
+        type="text"
+        id="search"
+        placeholder="🔍 Search by name or location..."
+        onkeyup="searchProfiles()"
+    >
+</div>
+
+<section class="container" id="profiles">
+
+    <div class="title">
+        <h2>Discover People</h2>
+        <p>Find people and start a friendly conversation.</p>
+    </div>
+
+    <div class="profiles">
+
+        <div class="card" data-name="Alex" data-location="Delhi">
+            <div class="avatar">A</div>
+            <h3>Alex</h3>
+            <div class="location">📍 Delhi</div>
+            <div class="status">● Available to connect</div>
+            <button class="connect" onclick="connect('Alex')">
+                Connect
+            </button>
+        </div>
+
+        <div class="card" data-name="Rahul" data-location="Mumbai">
+            <div class="avatar">R</div>
+            <h3>Rahul</h3>
+            <div class="location">📍 Mumbai</div>
+            <div class="status">● Available to connect</div>
+            <button class="connect" onclick="connect('Rahul')">
+                Connect
+            </button>
+        </div>
+
+        <div class="card" data-name="Sam" data-location="Hyderabad">
+            <div class="avatar">S</div>
+            <h3>Sam</h3>
+            <div class="location">📍 Hyderabad</div>
+            <div class="status">● Available to connect</div>
+            <button class="connect" onclick="connect('Sam')">
+                Connect
+            </button>
+        </div>
+
+        <div class="card" data-name="Arif" data-location="Kolkata">
+            <div class="avatar">A</div>
+            <h3>Arif</h3>
+            <div class="location">📍 Kolkata</div>
+            <div class="status">● Available to connect</div>
+            <button class="connect" onclick="connect('Arif')">
+                Connect
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<section class="features">
+
+    <div class="title">
+        <h2>Why Join Us?</h2>
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature">
+            <div class="feature-icon">🤝</div>
+            <h3>Friendship</h3>
+            <p>Meet people and build genuine friendships.</p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>Privacy</h3>
+            <p>Respect personal boundaries and privacy.</p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">💬</div>
+            <h3>Connect</h3>
+            <p>Start friendly conversations with new people.</p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">🛡️</div>
+            <h3>Safety</h3>
+            <p>Keep interactions respectful and safe.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <strong>Friendship Connect</strong>
+    <p>© 2026 Friendship Connect. All rights reserved.</p>
+    <p>Friendship • Respect • Privacy • Safety</p>
+</footer>
+
+<script>
+
+function scrollToProfiles(){
+    document.getElementById("profiles").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+function connect(name){
+    alert(
+        "Thanks for your interest in connecting with " +
+        name +
+        "! This demo does not have real messaging yet."
+    );
+}
+
+function showAbout(){
+    alert(
+        "Friendship Connect is a social platform concept " +
+        "for meeting people and building respectful friendships."
+    );
+}
+
+function searchProfiles(){
+
+    let input =
+        document.getElementById("search")
+        .value
+        .toLowerCase();
+
+    let cards =
+        document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+
+        let name =
+            card.getAttribute("data-name")
+            .toLowerCase();
+
+        let location =
+            card.getAttribute("data-location")
+            .toLowerCase();
+
+        if(
+            name.includes(input) ||
+            location.includes(input)
+        ){
+            card.style.display = "block";
+        }else{
+            card.style.display = "none";
+        }
+
+    });
+}
+
+</script>
+
+</body>
+</html>
