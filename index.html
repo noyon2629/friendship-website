@@ -2,441 +2,2621 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#5b5cf0">
+<meta name="description" content="Friendship Connect - Connect, share and make new friends.">
 <title>Friendship Connect</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+--primary:#5b5cf0;
+--secondary:#8b5cf6;
+--danger:#ef4444;
+--success:#10b981;
+--warning:#f59e0b;
+--bg:#f4f6fb;
+--card:#fff;
+--text:#171923;
+--muted:#697386;
+--border:#e6e8ef;
+--input:#f6f7fb;
+--shadow:0 8px 30px rgba(30,35,80,.08)
+}
+
+body.dark{
+--bg:#10121a;
+--card:#181b25;
+--text:#f5f5f7;
+--muted:#a5a9b7;
+--border:#292d3a;
+--input:#202431
 }
 
 body{
-    background:#f5f6fa;
-    color:#222;
+font-family:Arial,Helvetica,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh
 }
 
-/* Header */
-header{
-    background:linear-gradient(135deg,#6c5ce7,#8e44ad);
-    color:white;
-    padding:18px 20px;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
+button,input,textarea{font:inherit}
+button{border:0;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.hidden{display:none!important}
 
-.nav{
-    max-width:1100px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logo{
-    font-size:24px;
-    font-weight:bold;
-}
-
-.nav button{
-    background:white;
-    color:#6c5ce7;
-    border:0;
-    padding:10px 16px;
-    border-radius:20px;
-    font-weight:bold;
-}
-
-/* Hero */
-.hero{
-    text-align:center;
-    padding:55px 20px;
-    background:white;
-}
-
-.hero h1{
-    font-size:38px;
-    margin-bottom:12px;
-}
-
-.hero h1 span{
-    color:#6c5ce7;
-}
-
-.hero p{
-    color:#666;
-    max-width:600px;
-    margin:auto;
-    line-height:1.6;
-}
-
-.hero button{
-    margin-top:25px;
-    padding:14px 28px;
-    border:0;
-    border-radius:30px;
-    background:#6c5ce7;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-/* Search */
-.search-box{
-    max-width:700px;
-    margin:25px auto;
-    padding:0 20px;
-}
-
-.search-box input{
-    width:100%;
-    padding:15px 20px;
-    border:1px solid #ddd;
-    border-radius:30px;
-    outline:none;
-    font-size:16px;
-}
-
-/* Profiles */
 .container{
-    max-width:1100px;
-    margin:auto;
-    padding:30px 20px;
-}
-
-.title{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.profiles{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:20px;
+width:min(1180px,calc(100% - 28px));
+margin:auto
 }
 
 .card{
-    background:white;
-    border-radius:18px;
-    padding:22px;
-    text-align:center;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-    transition:.2s;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+box-shadow:var(--shadow)
 }
 
-.card:hover{
-    transform:translateY(-4px);
+.btn{
+padding:11px 17px;
+border-radius:11px;
+font-weight:700;
+display:inline-flex;
+justify-content:center;
+align-items:center;
+gap:7px
+}
+
+.primary{
+color:#fff;
+background:linear-gradient(135deg,var(--primary),var(--secondary))
+}
+
+.light{
+color:var(--text);
+background:var(--input)
+}
+
+.danger{
+background:#fee2e2;
+color:#dc2626
 }
 
 .avatar{
-    width:85px;
-    height:85px;
-    margin:auto;
-    border-radius:50%;
-    background:linear-gradient(135deg,#6c5ce7,#fd79a8);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:30px;
-    font-weight:bold;
+width:45px;
+height:45px;
+min-width:45px;
+border-radius:50%;
+background:linear-gradient(135deg,var(--primary),var(--secondary));
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:800;
+overflow:hidden
 }
 
-.card h3{
-    margin-top:15px;
+.avatar.small{
+width:38px;
+height:38px;
+min-width:38px;
+font-size:13px
 }
 
-.location{
-    color:#777;
-    font-size:14px;
-    margin:7px 0;
+.avatar.large{
+width:95px;
+height:95px;
+min-width:95px;
+font-size:30px;
+border:5px solid var(--card)
 }
 
-.status{
-    color:#00a884;
-    font-size:14px;
-    margin-bottom:15px;
+.toast-box{
+position:fixed;
+right:18px;
+bottom:18px;
+z-index:9999
 }
 
-.connect{
-    background:#6c5ce7;
-    color:white;
-    border:0;
-    padding:10px 22px;
-    border-radius:25px;
-    cursor:pointer;
+.toast{
+padding:13px 17px;
+margin-top:8px;
+color:#fff;
+background:#20232e;
+border-radius:12px;
+box-shadow:var(--shadow)
 }
 
-.connect:hover{
-    opacity:.9;
+.toast.success{background:#059669}
+.toast.error{background:#dc2626}
+
+/* AUTH */
+
+.auth{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+background:
+radial-gradient(circle at 10% 20%,rgba(91,92,240,.16),transparent 35%),
+radial-gradient(circle at 90% 80%,rgba(139,92,246,.14),transparent 35%),
+var(--bg)
 }
 
-/* Features */
-.features{
-    background:white;
-    margin-top:30px;
-    padding:45px 20px;
+.auth-card{
+width:min(430px,100%);
+padding:32px
 }
 
-.feature-grid{
-    max-width:1000px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:900;
+font-size:21px
 }
 
-.feature{
-    text-align:center;
-    padding:20px;
+.logo-icon{
+width:42px;
+height:42px;
+border-radius:12px;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#fff;
+background:linear-gradient(135deg,var(--primary),var(--secondary))
 }
 
-.feature-icon{
-    font-size:35px;
-    margin-bottom:10px;
+.auth-logo{text-align:center;margin-bottom:25px}
+.auth-logo .logo-icon{margin:auto}
+.auth-logo h1{margin-top:13px;font-size:28px}
+.auth-logo p{color:var(--muted);margin-top:5px}
+
+.tabs{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:4px;
+padding:4px;
+background:var(--input);
+border-radius:12px;
+margin-bottom:22px
 }
 
-.feature p{
-    color:#777;
-    margin-top:8px;
-    line-height:1.5;
+.tab{
+padding:10px;
+border-radius:9px;
+background:transparent;
+color:var(--muted);
+font-weight:700
 }
 
-/* Footer */
-footer{
-    background:#222;
-    color:#aaa;
-    text-align:center;
-    padding:30px 20px;
-    margin-top:30px;
+.tab.active{
+color:var(--primary);
+background:var(--card)
 }
 
-footer strong{
-    color:white;
+.field{margin-bottom:15px}
+.field label{
+display:block;
+font-size:14px;
+font-weight:700;
+margin-bottom:6px
 }
 
-footer p{
-    margin-top:8px;
-    font-size:13px;
+.field input{
+width:100%;
+padding:13px;
+border:1px solid var(--border);
+border-radius:11px;
+outline:0;
+background:var(--input);
+color:var(--text)
 }
 
-/* Mobile */
-@media(max-width:600px){
+.field input:focus{border-color:var(--primary)}
+.submit{width:100%;margin-top:5px}
 
-    .hero h1{
-        font-size:30px;
-    }
+/* HEADER */
 
-    .logo{
-        font-size:20px;
-    }
+header{
+height:68px;
+position:sticky;
+top:0;
+z-index:1000;
+background:rgba(255,255,255,.94);
+border-bottom:1px solid var(--border);
+backdrop-filter:blur(14px)
+}
 
-    .hero{
-        padding:40px 18px;
-    }
+.dark header{background:rgba(24,27,37,.94)}
 
-    .container{
-        padding:25px 15px;
-    }
+.header-inner{
+height:100%;
+display:flex;
+align-items:center;
+gap:18px
+}
+
+.search{
+flex:1;
+max-width:440px;
+position:relative
+}
+
+.search input{
+width:100%;
+border:0;
+outline:0;
+padding:12px 15px 12px 40px;
+border-radius:12px;
+background:var(--input);
+color:var(--text)
+}
+
+.search span{
+position:absolute;
+left:14px;
+top:50%;
+transform:translateY(-50%)
+}
+
+.header-actions{
+margin-left:auto;
+display:flex;
+gap:8px
+}
+
+.icon{
+width:41px;
+height:41px;
+border-radius:11px;
+background:var(--input);
+color:var(--text);
+display:flex;
+align-items:center;
+justify-content:center
+}
+
+.notify{position:relative}
+
+.badge{
+position:absolute;
+top:-3px;
+right:-3px;
+background:var(--danger);
+color:#fff;
+border-radius:20px;
+min-width:17px;
+height:17px;
+font-size:9px;
+display:flex;
+align-items:center;
+justify-content:center
+}
+
+/* APP */
+
+.app{padding:25px 0 80px}
+
+.grid{
+display:grid;
+grid-template-columns:235px minmax(0,1fr) 285px;
+gap:20px;
+align-items:start
+}
+
+.left,.right{
+position:sticky;
+top:88px
+}
+
+.side{padding:12px}
+
+.user-side{
+display:flex;
+gap:10px;
+align-items:center;
+padding:12px;
+margin-bottom:7px
+}
+
+.user-side strong{display:block}
+.user-side small{color:var(--muted)}
+
+.nav{
+width:100%;
+padding:12px;
+border-radius:11px;
+background:transparent;
+text-align:left;
+color:var(--text);
+font-weight:700;
+margin-bottom:3px
+}
+
+.nav:hover,.nav.active{
+background:rgba(91,92,240,.10);
+color:var(--primary)
+}
+
+/* FEED */
+
+.title{margin-bottom:17px}
+.title h2{font-size:24px}
+.title p{color:var(--muted);font-size:14px}
+
+.create{
+padding:16px;
+margin-bottom:18px
+}
+
+.create-top{
+display:flex;
+gap:10px
+}
+
+.create textarea{
+flex:1;
+resize:none;
+min-height:48px;
+border:0;
+outline:0;
+border-radius:12px;
+background:var(--input);
+color:var(--text);
+padding:12px
+}
+
+.create-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:12px;
+padding-top:11px;
+border-top:1px solid var(--border)
+}
+
+.post{
+padding:17px;
+margin-bottom:17px
+}
+
+.post-head{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.author{flex:1}
+.author strong{display:block}
+.author small{color:var(--muted)}
+
+.post-menu{
+background:transparent;
+color:var(--muted);
+font-size:20px
+}
+
+.post-text{
+margin:15px 0;
+white-space:pre-wrap;
+word-break:break-word;
+line-height:1.55
+}
+
+.post-stats{
+display:flex;
+justify-content:space-between;
+color:var(--muted);
+font-size:12px;
+padding:9px 0
+}
+
+.post-actions{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+border-top:1px solid var(--border);
+padding-top:6px
+}
+
+.action{
+padding:10px 5px;
+background:transparent;
+color:var(--muted);
+border-radius:9px;
+font-weight:700
+}
+
+.action:hover{background:var(--input)}
+.action.liked{color:var(--danger)}
+
+.comment{
+display:flex;
+gap:8px;
+margin-top:10px
+}
+
+.comment-body{
+flex:1;
+padding:8px 11px;
+background:var(--input);
+border-radius:11px
+}
+
+.comment-body strong{
+font-size:13px;
+display:block
+}
+
+.comment-body p{
+font-size:13px;
+margin-top:3px
+}
+
+.comment-form{
+display:flex;
+gap:7px;
+margin-top:12px
+}
+
+.comment-form input{
+flex:1;
+min-width:0;
+padding:10px;
+border:1px solid var(--border);
+border-radius:10px;
+outline:0;
+background:var(--input);
+color:var(--text)
+}
+
+/* RIGHT */
+
+.widget{
+padding:17px;
+margin-bottom:17px
+}
+
+.widget h3{margin-bottom:13px}
+
+.friend{
+display:flex;
+align-items:center;
+gap:9px;
+padding:10px 0;
+border-bottom:1px solid var(--border)
+}
+
+.friend:last-child{border-bottom:0}
+
+.friend-info{
+flex:1;
+min-width:0
+}
+
+.friend-info strong{
+display:block;
+font-size:13px
+}
+
+.friend-info small{color:var(--muted)}
+
+.friend .btn{
+padding:7px 9px;
+font-size:11px
+}
+
+/* PROFILE */
+
+.profile{
+overflow:hidden;
+margin-bottom:20px
+}
+
+.cover{
+height:175px;
+background:linear-gradient(135deg,var(--primary),var(--secondary))
+}
+
+.profile-info{padding:0 22px 22px}
+.profile-avatar{margin-top:-48px}
+.profile-name{font-size:25px;margin-top:10px}
+.profile-bio{color:var(--muted)}
+
+.stats{
+display:flex;
+gap:28px;
+margin-top:17px
+}
+
+.stats strong{
+display:block;
+font-size:18px
+}
+
+.stats small{color:var(--muted)}
+
+/* NOTIFICATIONS */
+
+.notification{
+display:flex;
+gap:10px;
+padding:15px;
+border-bottom:1px solid var(--border)
+}
+
+.notification:last-child{border:0}
+
+.notification-text{flex:1}
+.notification-text p{font-size:14px}
+.notification-text small{color:var(--muted)}
+
+.notification-actions{
+display:flex;
+gap:7px;
+margin-top:9px
+}
+
+.notification-actions .btn{
+padding:7px 11px;
+font-size:12px
+}
+
+/* EMPTY */
+
+.empty{
+text-align:center;
+padding:45px 20px;
+color:var(--muted)
+}
+
+.empty-icon{
+font-size:40px;
+margin-bottom:10px
+}
+
+/* MOBILE */
+
+.mobile{display:none}
+
+@media(max-width:1050px){
+.grid{grid-template-columns:210px minmax(0,1fr)}
+.right{display:none}
+}
+
+@media(max-width:760px){
+
+header{height:62px}
+
+.container{width:calc(100% - 18px)}
+
+.logo span{display:none}
+
+.grid{display:block}
+.left{display:none}
+
+.app{
+padding-top:17px;
+padding-bottom:85px
+}
+
+.mobile{
+display:block;
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+z-index:2000;
+background:var(--card);
+border-top:1px solid var(--border)
+}
+
+.mobile-inner{
+display:grid;
+grid-template-columns:repeat(5,1fr)
+}
+
+.mobile button{
+padding:8px 2px;
+background:transparent;
+color:var(--muted);
+font-size:11px
+}
+
+.mobile button.active{color:var(--primary)}
+.mobile b{display:block;font-size:18px}
+
+.header-actions .profile-icon{display:none}
+
+.auth-card{padding:25px 20px}
+
+.post{padding:14px}
+.cover{height:140px}
+.stats{gap:20px}
+}
+
+@media(max-width:420px){
+
+.header-inner{gap:7px}
+
+.icon{
+width:37px;
+height:37px
+}
+
+.search input{padding-left:35px}
+
+.post-actions{font-size:12px}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="nav">
-        <div class="logo">🤝 Friendship Connect</div>
-        <button onclick="showAbout()">About</button>
-    </div>
-</header>
+<!-- ================= AUTH ================= -->
 
-<section class="hero">
-    <h1>Meet New <span>Friends</span></h1>
+<section id="auth" class="auth">
 
-    <p>
-        Discover new people, make meaningful connections
-        and build genuine friendships in a respectful community.
-    </p>
+<div class="auth-card card">
 
-    <button onclick="scrollToProfiles()">
-        Explore Profiles
-    </button>
-</section>
+<div class="auth-logo">
 
-<div class="search-box">
-    <input
-        type="text"
-        id="search"
-        placeholder="🔍 Search by name or location..."
-        onkeyup="searchProfiles()"
-    >
+<div class="logo-icon">🤝</div>
+
+<h1>Friendship Connect</h1>
+
+<p>Connect. Share. Make new friends.</p>
+
 </div>
 
-<section class="container" id="profiles">
+<div class="tabs">
 
-    <div class="title">
-        <h2>Discover People</h2>
-        <p>Find people and start a friendly conversation.</p>
-    </div>
+<button id="loginTab"
+class="tab active"
+onclick="switchAuth('login')">
+Login
+</button>
 
-    <div class="profiles">
+<button id="registerTab"
+class="tab"
+onclick="switchAuth('register')">
+Register
+</button>
 
-        <div class="card" data-name="Alex" data-location="Delhi">
-            <div class="avatar">A</div>
-            <h3>Alex</h3>
-            <div class="location">📍 Delhi</div>
-            <div class="status">● Available to connect</div>
-            <button class="connect" onclick="connect('Alex')">
-                Connect
-            </button>
-        </div>
+</div>
 
-        <div class="card" data-name="Rahul" data-location="Mumbai">
-            <div class="avatar">R</div>
-            <h3>Rahul</h3>
-            <div class="location">📍 Mumbai</div>
-            <div class="status">● Available to connect</div>
-            <button class="connect" onclick="connect('Rahul')">
-                Connect
-            </button>
-        </div>
+<form id="loginForm">
 
-        <div class="card" data-name="Sam" data-location="Hyderabad">
-            <div class="avatar">S</div>
-            <h3>Sam</h3>
-            <div class="location">📍 Hyderabad</div>
-            <div class="status">● Available to connect</div>
-            <button class="connect" onclick="connect('Sam')">
-                Connect
-            </button>
-        </div>
+<div class="field">
+<label>Email</label>
+<input id="loginEmail"
+type="email"
+placeholder="Enter your email"
+autocomplete="email"
+required>
+</div>
 
-        <div class="card" data-name="Arif" data-location="Kolkata">
-            <div class="avatar">A</div>
-            <h3>Arif</h3>
-            <div class="location">📍 Kolkata</div>
-            <div class="status">● Available to connect</div>
-            <button class="connect" onclick="connect('Arif')">
-                Connect
-            </button>
-        </div>
+<div class="field">
+<label>Password</label>
+<input id="loginPassword"
+type="password"
+placeholder="Enter your password"
+autocomplete="current-password"
+required>
+</div>
 
-    </div>
+<button class="btn primary submit" type="submit">
+🔐 Login
+</button>
+
+</form>
+
+<form id="registerForm" class="hidden">
+
+<div class="field">
+<label>Full Name</label>
+<input id="registerName"
+type="text"
+placeholder="Your full name"
+autocomplete="name"
+required>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="registerEmail"
+type="email"
+placeholder="Your email"
+autocomplete="email"
+required>
+</div>
+
+<div class="field">
+<label>Password</label>
+<input id="registerPassword"
+type="password"
+minlength="6"
+placeholder="Minimum 6 characters"
+autocomplete="new-password"
+required>
+</div>
+
+<button class="btn primary submit" type="submit">
+🚀 Create Account
+</button>
+
+</form>
+
+</div>
 </section>
 
-<section class="features">
 
-    <div class="title">
-        <h2>Why Join Us?</h2>
-    </div>
+<!-- ================= APP ================= -->
 
-    <div class="feature-grid">
+<div id="app" class="hidden">
 
-        <div class="feature">
-            <div class="feature-icon">🤝</div>
-            <h3>Friendship</h3>
-            <p>Meet people and build genuine friendships.</p>
-        </div>
+<header>
 
-        <div class="feature">
-            <div class="feature-icon">🔒</div>
-            <h3>Privacy</h3>
-            <p>Respect personal boundaries and privacy.</p>
-        </div>
+<div class="container header-inner">
 
-        <div class="feature">
-            <div class="feature-icon">💬</div>
-            <h3>Connect</h3>
-            <p>Start friendly conversations with new people.</p>
-        </div>
+<div class="logo">
+<div class="logo-icon">🤝</div>
+<span>Friendship Connect</span>
+</div>
 
-        <div class="feature">
-            <div class="feature-icon">🛡️</div>
-            <h3>Safety</h3>
-            <p>Keep interactions respectful and safe.</p>
-        </div>
+<div class="search">
 
-    </div>
+<span>🔍</span>
+
+<input id="search"
+type="search"
+placeholder="Search posts..."
+autocomplete="off">
+
+</div>
+
+<div class="header-actions">
+
+<button class="icon"
+onclick="toggleTheme()"
+title="Theme">
+🌙
+</button>
+
+<button class="icon notify"
+onclick="showPage('notifications')"
+title="Notifications">
+🔔
+<span id="badge" class="badge">0</span>
+</button>
+
+<button class="icon profile-icon"
+onclick="showPage('profile')"
+title="Profile">
+👤
+</button>
+
+</div>
+
+</div>
+</header>
+
+
+<main class="app">
+
+<div class="container">
+
+<div class="grid">
+
+<!-- LEFT SIDEBAR -->
+
+<aside class="left">
+
+<div class="card side">
+
+<div class="user-side">
+
+<div id="sideAvatar"
+class="avatar small">
+U
+</div>
+
+<div>
+<strong id="sideName">User</strong>
+<small id="sideEmail">user@email.com</small>
+</div>
+
+</div>
+
+<button class="nav active"
+data-page="home"
+onclick="showPage('home')">
+🏠 Home
+</button>
+
+<button class="nav"
+data-page="profile"
+onclick="showPage('profile')">
+👤 My Profile
+</button>
+
+<button class="nav"
+data-page="friends"
+onclick="showPage('friends')">
+👥 Friends
+</button>
+
+<button class="nav"
+data-page="notifications"
+onclick="showPage('notifications')">
+🔔 Notifications
+</button>
+
+<button class="nav"
+onclick="toggleTheme()">
+🌙 Dark Mode
+</button>
+
+<button class="nav"
+onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
+</aside>
+
+
+<!-- CENTER -->
+
+<section>
+
+<!-- HOME -->
+
+<div id="homePage">
+
+<div class="title">
+<h2>Welcome back 👋</h2>
+<p>Share your thoughts and connect with friends.</p>
+</div>
+
+<div class="card create">
+
+<div class="create-top">
+
+<div id="createAvatar"
+class="avatar">
+U
+</div>
+
+<textarea id="postInput"
+placeholder="What's on your mind?"
+rows="2"
+maxlength="5000"></textarea>
+
+</div>
+
+<div class="create-bottom">
+
+<span style="color:var(--muted);font-size:13px">
+✨ Share something with your friends
+</span>
+
+<button class="btn primary"
+onclick="createPost()">
+Post
+</button>
+
+</div>
+
+</div>
+
+<div id="posts"></div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div id="profilePage" class="hidden">
+
+<div class="card profile">
+
+<div class="cover"></div>
+
+<div class="profile-info">
+
+<div class="profile-avatar">
+
+<div id="profileAvatar"
+class="avatar large">
+U
+</div>
+
+</div>
+
+<h2 id="profileName"
+class="profile-name">
+User
+</h2>
+
+<p id="profileBio"
+class="profile-bio">
+Welcome to Friendship Connect.
+</p>
+
+<div class="stats">
+
+<div>
+<strong id="myPostCount">0</strong>
+<small>Posts</small>
+</div>
+
+<div>
+<strong id="friendCount">0</strong>
+<small>Friends</small>
+</div>
+
+<div>
+<strong id="pendingCount">0</strong>
+<small>Pending</small>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="title">
+<h2>My Posts</h2>
+<p>Your posts on Friendship Connect.</p>
+</div>
+
+<div id="myPosts"></div>
+
+</div>
+
+
+<!-- FRIENDS -->
+
+<div id="friendsPage" class="hidden">
+
+<div class="title">
+<h2>Friends 👥</h2>
+<p>Discover people and manage friend requests.</p>
+</div>
+
+<div id="friendsList" class="card"></div>
+
+</div>
+
+
+<!-- NOTIFICATIONS -->
+
+<div id="notificationsPage" class="hidden">
+
+<div class="title">
+<h2>Notifications 🔔</h2>
+<p>Your latest friendship activity.</p>
+</div>
+
+<div id="notificationList" class="card"></div>
+
+</div>
 
 </section>
 
-<footer>
-    <strong>Friendship Connect</strong>
-    <p>© 2026 Friendship Connect. All rights reserved.</p>
-    <p>Friendship • Respect • Privacy • Safety</p>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- RIGHT -->
+
+<aside class="right">
+
+<div class="card widget">
+
+<h3>People You May Know</h3>
+
+<div id="suggestions"></div>
+
+</div>
+
+<div class="card widget">
+
+<h3>Friendship Connect 💜</h3>
+
+<p style="color:var(--muted);font-size:13px;line-height:1.6">
+Connect with people, share your thoughts and build meaningful friendships.
+</p>
+
+</div>
+
+</aside>
+
+</div>
+</div>
+</main>
+
+
+<!-- MOBILE -->
+
+<nav class="mobile">
+
+<div class="mobile-inner">
+
+<button data-mobile="home"
+class="active"
+onclick="showPage('home')">
+<b>🏠</b>
+Home
+</button>
+
+<button data-mobile="friends"
+onclick="showPage('friends')">
+<b>👥</b>
+Friends
+</button>
+
+<button data-mobile="notifications"
+onclick="showPage('notifications')">
+<b>🔔</b>
+Alerts
+</button>
+
+<button data-mobile="profile"
+onclick="showPage('profile')">
+<b>👤</b>
+Profile
+</button>
+
+<button onclick="logout()">
+<b>🚪</b>
+Logout
+</button>
+
+</div>
+</nav>
+
+</div>
+
+<div id="toastBox" class="toast-box"></div>
+
+
 <script>
-const SUPABASE_URL = "https://fpdhozxounuxbpnioban.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
+"use strict";
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+"https://fpdhozxounuxbpnioban.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
-   function scrollToProfiles(){
-    document.getElementById("profiles").scrollIntoView({
-        behavior:"smooth"
-    });
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentUser=null;
+let currentProfile=null;
+
+let allPosts=[];
+let allProfiles=[];
+let allRequests=[];
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHTML(value){
+return String(value??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 }
 
-async function connect(name){
-    const { data, error } = await supabase
-        .from("connections")
-        .insert([
-            { name: name }
-        ]);
 
-    if(error){
-        alert("Connection failed: " + error.message);
-        return;
-    }
-
-    alert("Connection request sent to " + name + "!");
+function initials(name){
+return String(name||"User")
+.trim()
+.split(/\s+/)
+.slice(0,2)
+.map(x=>x.charAt(0))
+.join("")
+.toUpperCase() || "U";
 }
 
-function showAbout(){
-    alert(
-        "Friendship Connect is a social platform concept " +
-        "for meeting people and building respectful friendships."
-    );
+
+function timeAgo(date){
+
+const seconds=Math.floor(
+(Date.now()-new Date(date).getTime())/1000
+);
+
+if(seconds<60)return"Just now";
+if(seconds<3600)return Math.floor(seconds/60)+" min ago";
+if(seconds<86400)return Math.floor(seconds/3600)+" hr ago";
+return Math.floor(seconds/86400)+" day ago";
 }
 
-function searchProfiles(){
 
-    let input =
-        document.getElementById("search")
-        .value
-        .toLowerCase();
+function toast(message,type="success"){
 
-    let cards =
-        document.querySelectorAll(".card");
+const box=document.getElementById("toastBox");
 
-    cards.forEach(function(card){
+const item=document.createElement("div");
 
-        let name =
-            card.getAttribute("data-name")
-            .toLowerCase();
+item.className="toast "+type;
+item.textContent=message;
 
-        let location =
-            card.getAttribute("data-location")
-            .toLowerCase();
+box.appendChild(item);
 
-        if(
-            name.includes(input) ||
-            location.includes(input)
-        ){
-            card.style.display = "block";
-        }else{
-            card.style.display = "none";
-        }
-
-    });
+setTimeout(()=>item.remove(),3500);
 }
+
+
+/* =========================================================
+   AUTH UI
+   ========================================================= */
+
+function switchAuth(type){
+
+const login=document.getElementById("loginForm");
+const register=document.getElementById("registerForm");
+
+const loginTab=document.getElementById("loginTab");
+const registerTab=document.getElementById("registerTab");
+
+if(type==="login"){
+
+login.classList.remove("hidden");
+register.classList.add("hidden");
+
+loginTab.classList.add("active");
+registerTab.classList.remove("active");
+
+}else{
+
+login.classList.add("hidden");
+register.classList.remove("hidden");
+
+loginTab.classList.remove("active");
+registerTab.classList.add("active");
+
+}
+}
+
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+document.getElementById("registerForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const name=document
+.getElementById("registerName")
+.value.trim();
+
+const email=document
+.getElementById("registerEmail")
+.value.trim();
+
+const password=document
+.getElementById("registerPassword")
+.value;
+
+if(name.length<2){
+toast("Please enter your full name.","error");
+return;
+}
+
+if(password.length<6){
+toast("Password must contain at least 6 characters.","error");
+return;
+}
+
+const {data,error}=
+await supabaseClient.auth.signUp({
+email,
+password,
+options:{
+data:{
+full_name:name
+}
+}
+});
+
+if(error){
+toast(error.message,"error");
+return;
+}
+
+if(data.session){
+
+toast("Account created successfully! 🎉");
+
+}else{
+
+toast(
+"Account created. Please check your email to confirm your account."
+);
+
+}
+
+});
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+document.getElementById("loginForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const email=document
+.getElementById("loginEmail")
+.value.trim();
+
+const password=document
+.getElementById("loginPassword")
+.value;
+
+const {error}=
+await supabaseClient.auth.signInWithPassword({
+email,
+password
+});
+
+if(error){
+toast(error.message,"error");
+return;
+}
+
+toast("Welcome back! 👋");
+
+});
+
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+(event,session)=>{
+
+if(session){
+
+currentUser=session.user;
+
+setTimeout(()=>{
+startApp();
+},0);
+
+}else{
+
+currentUser=null;
+currentProfile=null;
+
+showAuth();
+
+}
+
+});
+
+
+async function checkSession(){
+
+const {data,error}=
+await supabaseClient.auth.getSession();
+
+if(error){
+
+console.error(error);
+showAuth();
+return;
+
+}
+
+if(data.session){
+
+currentUser=data.session.user;
+
+await startApp();
+
+}else{
+
+showAuth();
+
+}
+
+}
+
+
+function showAuth(){
+
+document.getElementById("auth")
+.classList.remove("hidden");
+
+document.getElementById("app")
+.classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+async function startApp(){
+
+if(!currentUser)return;
+
+document.getElementById("auth")
+.classList.add("hidden");
+
+document.getElementById("app")
+.classList.remove("hidden");
+
+await loadProfile();
+await loadProfiles();
+await loadRequests();
+await loadPosts();
+
+updateUserUI();
+
+renderPosts();
+renderMyPosts();
+renderSuggestions();
+renderFriends();
+renderNotifications();
+
+applyTheme();
+
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+async function loadProfile(){
+
+const {data,error}=
+await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
+
+if(error){
+
+console.error(error);
+toast("Could not load profile: "+error.message,"error");
+return;
+
+}
+
+currentProfile=data;
+
+if(!currentProfile){
+
+const name=
+currentUser.user_metadata?.full_name ||
+"New User";
+
+const result=
+await supabaseClient
+.from("profiles")
+.insert({
+id:currentUser.id,
+full_name:name,
+bio:"Welcome to Friendship Connect."
+})
+.select()
+.single();
+
+if(result.error){
+
+console.error(result.error);
+
+}else{
+
+currentProfile=result.data;
+
+}
+
+}
+
+}
+
+
+function updateUserUI(){
+
+const name=
+currentProfile?.full_name ||
+currentUser.user_metadata?.full_name ||
+"User";
+
+const email=currentUser.email||"";
+const ini=initials(name);
+
+document.getElementById("sideName").textContent=name;
+document.getElementById("sideEmail").textContent=email;
+
+document.getElementById("sideAvatar").textContent=ini;
+document.getElementById("createAvatar").textContent=ini;
+document.getElementById("profileAvatar").textContent=ini;
+
+document.getElementById("profileName").textContent=name;
+
+document.getElementById("profileBio").textContent=
+currentProfile?.bio ||
+"Welcome to Friendship Connect.";
+
+}
+
+
+/* =========================================================
+   LOAD PROFILES
+   ========================================================= */
+
+async function loadProfiles(){
+
+const {data,error}=
+await supabaseClient
+.from("profiles")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+allProfiles=[];
+return;
+
+}
+
+allProfiles=data||[];
+
+}
+
+
+/* =========================================================
+   LOAD POSTS
+   ========================================================= */
+
+async function loadPosts(){
+
+const {data,error}=
+await supabaseClient
+.from("posts")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+toast(
+"Could not load posts: "+error.message,
+"error"
+);
+
+allPosts=[];
+return;
+
+}
+
+allPosts=data||[];
+
+for(const post of allPosts){
+
+post.profile=
+allProfiles.find(
+p=>p.id===post.user_id
+)||null;
+
+const likesResult=
+await supabaseClient
+.from("likes")
+.select("id,user_id")
+.eq("post_id",post.id);
+
+const commentsResult=
+await supabaseClient
+.from("comments")
+.select("*")
+.eq("post_id",post.id)
+.order("created_at",{ascending:true});
+
+post.likes=likesResult.data||[];
+post.comments=commentsResult.data||[];
+
+for(const comment of post.comments){
+
+comment.profile=
+allProfiles.find(
+p=>p.id===comment.user_id
+)||null;
+
+}
+
+}
+
+}
+
+
+/* =========================================================
+   RENDER POSTS
+   ========================================================= */
+
+function renderPosts(){
+
+const container=document.getElementById("posts");
+
+if(!allPosts.length){
+
+container.innerHTML=`
+<div class="card empty">
+<div class="empty-icon">📝</div>
+<h3>No posts yet</h3>
+<p>Be the first to share something.</p>
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+allPosts.map(post=>postHTML(post)).join("");
+
+}
+
+
+function postHTML(post){
+
+const profile=post.profile;
+
+const name=profile?.full_name||"User";
+const ini=initials(name);
+
+const likeCount=post.likes?.length||0;
+
+const liked=
+post.likes?.some(
+like=>like.user_id===currentUser.id
+);
+
+const comments=post.comments||[];
+
+const commentHTML=comments.map(comment=>{
+
+const cname=comment.profile?.full_name||"User";
+
+return`
+<div class="comment">
+
+<div class="avatar small">
+${escapeHTML(initials(cname))}
+</div>
+
+<div class="comment-body">
+
+<strong>${escapeHTML(cname)}</strong>
+
+<p>${escapeHTML(comment.content)}</p>
+
+</div>
+</div>
+`;
+
+}).join("");
+
+return`
+<article class="card post">
+
+<div class="post-head">
+
+<div class="avatar">
+${escapeHTML(ini)}
+</div>
+
+<div class="author">
+
+<strong>${escapeHTML(name)}</strong>
+
+<small>
+${timeAgo(post.created_at)}
+</small>
+
+</div>
+
+${
+post.user_id===currentUser.id
+?
+`
+<button
+class="post-menu"
+onclick="deletePost(${post.id})"
+title="Delete">
+⋯
+</button>
+`
+:""
+}
+
+</div>
+
+<div class="post-text">
+${escapeHTML(post.content)}
+</div>
+
+<div class="post-stats">
+
+<span>❤️ ${likeCount}</span>
+
+<span>💬 ${comments.length}</span>
+
+</div>
+
+<div class="post-actions">
+
+<button
+class="action ${liked?"liked":""}"
+onclick="toggleLike(${post.id},${liked})">
+${liked?"❤️":"♡"} Like
+</button>
+
+<button
+class="action"
+onclick="focusComment(${post.id})">
+💬 Comment
+</button>
+
+<button
+class="action"
+onclick="sharePost(${post.id})">
+↗ Share
+</button>
+
+</div>
+
+<div>
+${commentHTML}
+</div>
+
+<form
+class="comment-form"
+onsubmit="addComment(event,${post.id})">
+
+<input
+id="comment-${post.id}"
+placeholder="Write a comment..."
+autocomplete="off"
+maxlength="1000">
+
+<button class="btn primary" type="submit">
+Send
+</button>
+
+</form>
+
+</article>
+`;
+
+}
+
+
+/* =========================================================
+   CREATE POST
+   ========================================================= */
+
+async function createPost(){
+
+const input=document.getElementById("postInput");
+
+const content=input.value.trim();
+
+if(!content){
+
+toast("Write something before posting.","error");
+return;
+
+}
+
+const {error}=
+await supabaseClient
+.from("posts")
+.insert({
+user_id:currentUser.id,
+content
+});
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+input.value="";
+
+await loadPosts();
+
+renderPosts();
+renderMyPosts();
+
+toast("Your post was published! 🎉");
+
+}
+
+
+/* =========================================================
+   LIKE
+   ========================================================= */
+
+async function toggleLike(postId,liked){
+
+if(liked){
+
+const {error}=
+await supabaseClient
+.from("likes")
+.delete()
+.eq("post_id",postId)
+.eq("user_id",currentUser.id);
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+}else{
+
+const {error}=
+await supabaseClient
+.from("likes")
+.insert({
+post_id:postId,
+user_id:currentUser.id
+});
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+}
+
+await loadPosts();
+
+renderPosts();
+
+}
+
+
+/* =========================================================
+   COMMENTS
+   ========================================================= */
+
+async function addComment(event,postId){
+
+event.preventDefault();
+
+const input=document.getElementById(
+"comment-"+postId
+);
+
+const content=input.value.trim();
+
+if(!content)return;
+
+const {error}=
+await supabaseClient
+.from("comments")
+.insert({
+post_id:postId,
+user_id:currentUser.id,
+content
+});
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+input.value="";
+
+await loadPosts();
+
+renderPosts();
+
+}
+
+
+function focusComment(postId){
+
+const input=document.getElementById(
+"comment-"+postId
+);
+
+if(input){
+
+input.focus();
+
+input.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
+
+}
+
+
+/* =========================================================
+   DELETE POST
+   ========================================================= */
+
+async function deletePost(postId){
+
+if(!confirm("Delete this post?"))return;
+
+const {error}=
+await supabaseClient
+.from("posts")
+.delete()
+.eq("id",postId)
+.eq("user_id",currentUser.id);
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+await loadPosts();
+
+renderPosts();
+renderMyPosts();
+
+toast("Post deleted.");
+
+}
+
+
+/* =========================================================
+   SHARE
+   ========================================================= */
+
+async function sharePost(postId){
+
+const post=
+allPosts.find(
+p=>p.id===postId
+);
+
+if(!post)return;
+
+const name=
+post.profile?.full_name||"User";
+
+const text=
+name+": "+post.content;
+
+if(navigator.share){
+
+try{
+
+await navigator.share({
+title:"Friendship Connect",
+text
+});
+
+return;
+
+}catch(e){}
+
+}
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+toast("Post copied to clipboard.");
+
+}catch(e){
+
+toast("Sharing is not supported.","error");
+
+}
+
+}
+
+
+/* =========================================================
+   FRIEND REQUESTS
+   ========================================================= */
+
+async function loadRequests(){
+
+const {data,error}=
+await supabaseClient
+.from("friend_requests")
+.select("*")
+.or(
+`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
+);
+
+if(error){
+
+console.error(error);
+allRequests=[];
+return;
+
+}
+
+allRequests=data||[];
+
+updateFriendStats();
+
+}
+
+
+function updateFriendStats(){
+
+const accepted=allRequests.filter(
+r=>r.status==="accepted"
+);
+
+const pendingIncoming=allRequests.filter(
+r=>
+r.receiver_id===currentUser.id &&
+r.status==="pending"
+);
+
+document.getElementById("friendCount")
+.textContent=accepted.length;
+
+document.getElementById("pendingCount")
+.textContent=pendingIncoming.length;
+
+}
+
+
+function getRequestStatus(personId){
+
+const request=
+allRequests.find(r=>
+(r.sender_id===currentUser.id &&
+r.receiver_id===personId)
+||
+(r.receiver_id===currentUser.id &&
+r.sender_id===personId)
+);
+
+return request||null;
+
+}
+
+
+function renderSuggestions(){
+
+const container=
+document.getElementById("suggestions");
+
+const people=
+allProfiles
+.filter(p=>p.id!==currentUser.id)
+.slice(0,5);
+
+if(!people.length){
+
+container.innerHTML=`
+<p style="color:var(--muted);font-size:13px">
+No other users yet.
+</p>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+people.map(person=>friendHTML(person)).join("");
+
+}
+
+
+function friendHTML(person){
+
+const request=getRequestStatus(person.id);
+
+let button="";
+
+if(!request){
+
+button=`
+<button
+class="btn primary"
+onclick="sendFriendRequest('${person.id}')">
++ Add
+</button>
+`;
+
+}else if(
+request.status==="pending" &&
+request.receiver_id===currentUser.id
+){
+
+button=`
+<button
+class="btn primary"
+onclick="acceptFriendRequest('${request.id}')">
+Accept
+</button>
+`;
+
+}else if(
+request.status==="pending" &&
+request.sender_id===currentUser.id
+){
+
+button=`
+<button class="btn light" disabled>
+Sent ✓
+</button>
+`;
+
+}else if(request.status==="accepted"){
+
+button=`
+<button class="btn light" disabled>
+Friends ✓
+</button>
+`;
+
+}else{
+
+button=`
+<button class="btn light" disabled>
+Requested
+</button>
+`;
+
+}
+
+const name=person.full_name||"User";
+
+return`
+<div class="friend">
+
+<div class="avatar small">
+${escapeHTML(initials(name))}
+</div>
+
+<div class="friend-info">
+<strong>${escapeHTML(name)}</strong>
+<small>Friendship Connect</small>
+</div>
+
+${button}
+
+</div>
+`;
+
+}
+
+
+/* =========================================================
+   SEND FRIEND REQUEST
+   ========================================================= */
+
+async function sendFriendRequest(receiverId){
+
+if(receiverId===currentUser.id)return;
+
+const existing=
+getRequestStatus(receiverId);
+
+if(existing){
+
+toast("A request already exists.","error");
+return;
+
+}
+
+const {error}=
+await supabaseClient
+.from("friend_requests")
+.insert({
+sender_id:currentUser.id,
+receiver_id:receiverId,
+status:"pending"
+});
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+await loadRequests();
+
+renderSuggestions();
+renderFriends();
+renderNotifications();
+
+toast("Friend request sent! 👥");
+
+}
+
+
+/* =========================================================
+   ACCEPT REQUEST
+   ========================================================= */
+
+async function acceptFriendRequest(requestId){
+
+const {error}=
+await supabaseClient
+.from("friend_requests")
+.update({
+status:"accepted"
+})
+.eq("id",requestId)
+.eq("receiver_id",currentUser.id);
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+await loadRequests();
+
+renderSuggestions();
+renderFriends();
+renderNotifications();
+
+toast("Friend request accepted! 🎉");
+
+}
+
+
+/* =========================================================
+   REJECT REQUEST
+   ========================================================= */
+
+async function rejectFriendRequest(requestId){
+
+const {error}=
+await supabaseClient
+.from("friend_requests")
+.delete()
+.eq("id",requestId)
+.eq("receiver_id",currentUser.id);
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+await loadRequests();
+
+renderSuggestions();
+renderFriends();
+renderNotifications();
+
+toast("Friend request declined.");
+
+}
+
+
+/* =========================================================
+   FRIENDS PAGE
+   ========================================================= */
+
+function renderFriends(){
+
+const container=
+document.getElementById("friendsList");
+
+const others=
+allProfiles.filter(
+p=>p.id!==currentUser.id
+);
+
+if(!others.length){
+
+container.innerHTML=`
+<div class="empty">
+<div class="empty-icon">👥</div>
+<h3>No other users yet</h3>
+<p>Invite someone to join Friendship Connect.</p>
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+others.map(person=>{
+
+return`
+<div style="padding:15px;border-bottom:1px solid var(--border)">
+${friendHTML(person)}
+</div>
+`;
+
+}).join("");
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+function getIncomingRequests(){
+
+return allRequests.filter(
+r=>
+r.receiver_id===currentUser.id &&
+r.status==="pending"
+);
+
+}
+
+
+function renderNotifications(){
+
+const container=
+document.getElementById("notificationList");
+
+const incoming=getIncomingRequests();
+
+document.getElementById("badge")
+.textContent=incoming.length;
+
+if(!incoming.length){
+
+container.innerHTML=`
+<div class="empty">
+
+<div class="empty-icon">🔔</div>
+
+<h3>No notifications</h3>
+
+<p>You're all caught up.</p>
+
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+incoming.map(request=>{
+
+const sender=
+allProfiles.find(
+p=>p.id===request.sender_id
+);
+
+const name=
+sender?.full_name||"Someone";
+
+return`
+<div class="notification">
+
+<div class="avatar small">
+${escapeHTML(initials(name))}
+</div>
+
+<div class="notification-text">
+
+<p>
+<strong>${escapeHTML(name)}</strong>
+sent you a friend request.
+</p>
+
+<small>
+${timeAgo(request.created_at)}
+</small>
+
+<div class="notification-actions">
+
+<button
+class="btn primary"
+onclick="acceptFriendRequest('${request.id}')">
+Accept
+</button>
+
+<button
+class="btn danger"
+onclick="rejectFriendRequest('${request.id}')">
+Decline
+</button>
+
+</div>
+
+</div>
+
+</div>
+`;
+
+}).join("");
+
+}
+
+
+/* =========================================================
+   PAGE NAVIGATION
+   ========================================================= */
+
+function showPage(page){
+
+const pages=[
+"home",
+"profile",
+"friends",
+"notifications"
+];
+
+pages.forEach(name=>{
+
+const element=
+document.getElementById(
+name+"Page"
+);
+
+if(element){
+
+element.classList.toggle(
+"hidden",
+name!==page
+);
+
+}
+
+});
+
+
+document.querySelectorAll(
+".nav[data-page]"
+).forEach(item=>{
+
+item.classList.toggle(
+"active",
+item.dataset.page===page
+);
+
+});
+
+
+document.querySelectorAll(
+".mobile button[data-mobile]"
+).forEach(item=>{
+
+item.classList.toggle(
+"active",
+item.dataset.mobile===page
+);
+
+});
+
+
+if(page==="profile"){
+renderMyPosts();
+}
+
+if(page==="notifications"){
+renderNotifications();
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================================================
+   MY POSTS
+   ========================================================= */
+
+function renderMyPosts(){
+
+const container=
+document.getElementById("myPosts");
+
+const mine=
+allPosts.filter(
+post=>post.user_id===currentUser.id
+);
+
+document.getElementById("myPostCount")
+.textContent=mine.length;
+
+if(!mine.length){
+
+container.innerHTML=`
+<div class="card empty">
+
+<div class="empty-icon">✨</div>
+
+<h3>No posts yet</h3>
+
+<p>Create your first post from Home.</p>
+
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+mine.map(post=>postHTML(post)).join("");
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+document.getElementById("search")
+.addEventListener("input",function(){
+
+const query=this.value.trim().toLowerCase();
+
+if(!query){
+
+renderPosts();
+return;
+
+}
+
+const filtered=
+allPosts.filter(post=>{
+
+const text=
+post.content?.toLowerCase()||"";
+
+const name=
+post.profile?.full_name?.toLowerCase()||"";
+
+return(
+text.includes(query)||
+name.includes(query)
+);
+
+});
+
+const container=
+document.getElementById("posts");
+
+if(!filtered.length){
+
+container.innerHTML=`
+<div class="card empty">
+
+<div class="empty-icon">🔍</div>
+
+<h3>No results found</h3>
+
+<p>Try another search.</p>
+
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+filtered.map(post=>postHTML(post)).join("");
+
+});
+
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function toggleTheme(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"fc_theme",
+document.body.classList.contains("dark")
+?"dark"
+:"light"
+);
+
+}
+
+
+function applyTheme(){
+
+if(
+localStorage.getItem("fc_theme")==="dark"
+){
+
+document.body.classList.add("dark");
+
+}else{
+
+document.body.classList.remove("dark");
+
+}
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+async function logout(){
+
+const {error}=
+await supabaseClient.auth.signOut();
+
+if(error){
+
+toast(error.message,"error");
+return;
+
+}
+
+toast("Logged out successfully.");
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+applyTheme();
+checkSession();
 
 </script>
 
