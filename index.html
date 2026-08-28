@@ -51,7 +51,7 @@
     .post-content { font-size: 15px; padding: 0 16px; margin-bottom: 12px; }
     .post-image { width: 100%; max-height: 400px; object-fit: cover; margin-top: 8px; }
 
-    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 12px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; margin-bottom: 10px; display: block; text-align: center; }
+    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 14px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; margin-bottom: 12px; display: block; text-align: center; }
     .btn-secondary { background: var(--color-surface-container-low); color: var(--color-on-surface); border: none; padding: 8px 12px; border-radius: var(--radius-default); cursor: pointer; }
     .form-control { width: 100%; padding: 12px; border: 1px solid var(--color-outline-variant); border-radius: var(--radius-default); font-size: 15px; margin-bottom: 12px; }
 
@@ -71,17 +71,17 @@
     </header>
 
     <!-- AUTH SECTION -->
-    <div id="auth-section" class="card" style="margin: 16px; border-radius: 12px; z-index: 10;">
+    <div id="auth-section" class="card" style="margin: 16px; border-radius: 12px; position: relative; z-index: 50;">
       <h2 style="font-size: 20px; margin-bottom: 16px;">Social Connect-এ স্বাগতম</h2>
       
-      <form id="main-auth-form" onsubmit="return false;">
+      <div>
         <input type="text" id="auth-name" class="form-control" placeholder="আপনার পূর্ণ নাম (নতুন অ্যাকাউন্ট খুললে দিন)">
         <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস">
-        <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)">
+        <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড">
         
-        <button type="button" id="login-btn" class="btn-primary">লগইন করুন</button>
-        <button type="button" id="signup-btn" class="btn-primary" style="background-color: #42b72a;">নতুন অ্যাকাউন্ট খুলুন (Sign Up)</button>
-      </form>
+        <button type="button" class="btn-primary" onclick="handleLogin()">লগইন করুন</button>
+        <button type="button" class="btn-primary" style="background-color: #42b72a;" onclick="handleSignUp()">নতুন অ্যাকাউন্ট খুলুন (Sign Up)</button>
+      </div>
     </div>
 
     <!-- MAIN FEED -->
@@ -128,8 +128,8 @@
       </div>
     </div>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <!-- BOTTOM NAV (লগইন না করা পর্যন্ত লুকানো থাকবে) -->
+    <nav class="bottom-nav hidden" id="main-bottom-nav">
       <button class="nav-item active" id="nav-home" onclick="switchView('feed')">
         <i class="fa-solid fa-house"></i><span>Home</span>
       </button>
@@ -144,65 +144,65 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://fpdhozxounuxbpnioban.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwZGhvenhvdW51eGJwbmlvYmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NjQ0MzQsImV4cCI6MjA1NjI0MDQzNH0.2a-pB6iGvhfF6xO8kQ9kYfR6n5-s7T_vA2F8cW7bM8M';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+    let supabaseClient = null;
     let currentUser = null;
     let selectedPostImageFile = null;
 
-    const authSection = document.getElementById('auth-section');
-    const feedSection = document.getElementById('feed-section');
-    const profileSection = document.getElementById('profile-section');
-    const postModal = document.getElementById('post-modal');
+    // নিরাপদভাবে Supabase শুরু করা
+    function initSupabase() {
+      if (window.supabase) {
+        const SUPABASE_URL = 'https://fpdhozxounuxbpnioban.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwZGhvenhvdW51eGJwbmlvYmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NjQ0MzQsImV4cCI6MjA1NjI0MDQzNH0.2a-pB6iGvhfF6xO8kQ9kYfR6n5-s7T_vA2F8cW7bM8M';
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    }
 
-    // Event Listeners for Buttons
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('login-btn').addEventListener('click', handleLogin);
-      document.getElementById('signup-btn').addEventListener('click', handleSignUp);
-
-      supabase.auth.getSession().then(({ data: { session } }) => {
+    window.addEventListener('load', async () => {
+      initSupabase();
+      if (supabaseClient) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
           currentUser = session.user;
           showMainApp();
         }
-      });
+      }
     });
 
     // Login Action
     async function handleLogin() {
+      if (!supabaseClient) initSupabase();
+      
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
 
       if (!email || !password) {
-        alert('ইমেইল ও পাসওয়ার্ড লিখুন!');
+        alert('অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড দুইটাই লিখুন!');
         return;
       }
 
-      const loginBtn = document.getElementById('login-btn');
-      loginBtn.innerText = "লগইন হচ্ছে...";
-
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        
-        currentUser = data.user;
-        showMainApp();
-      } catch (err) {
-        alert("লগইন ব্যর্থ: " + err.message);
-      } finally {
-        loginBtn.innerText = "লগইন করুন";
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) {
+          alert("লগইন ভুল হয়েছে: " + error.message);
+        } else {
+          currentUser = data.user;
+          showMainApp();
+        }
+      } catch (e) {
+        alert("সমস্যা হয়েছে: " + e.message);
       }
     }
 
     // Sign Up Action
     async function handleSignUp() {
+      if (!supabaseClient) initSupabase();
+
       const name = document.getElementById('auth-name').value.trim();
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
 
       if (!name) {
-        alert('নতুন অ্যাকাউন্ট খুলতে নাম আবশ্যক!');
+        alert('নতুন অ্যাকাউন্ট তৈরি করতে নাম লিখুন!');
         return;
       }
       if (!email || !password) {
@@ -210,36 +210,34 @@
         return;
       }
 
-      const signupBtn = document.getElementById('signup-btn');
-      signupBtn.innerText = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
       try {
-        const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-
-        if (data.user) {
-          await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
-          currentUser = data.user;
-          showMainApp();
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) {
+          alert("সাইন আপের সমস্যা: " + error.message);
         } else {
-          alert('অ্যাকাউন্ট তৈরি হয়েছে! এবার লগইন করুন।');
+          if (data.user) {
+            await supabaseClient.from('profiles').insert([{ id: data.user.id, full_name: name }]);
+            currentUser = data.user;
+            showMainApp();
+          } else {
+            alert('অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন বাটনে চাপ দিন।');
+          }
         }
-      } catch (err) {
-        alert("সাইন আপ ব্যর্থ: " + err.message);
-      } finally {
-        signupBtn.innerText = "নতুন অ্যাকাউন্ট খুলুন (Sign Up)";
+      } catch (e) {
+        alert("সমস্যা হয়েছে: " + e.message);
       }
     }
 
-    async function showMainApp() {
-      authSection.classList.add('hidden');
-      feedSection.classList.remove('hidden');
+    function showMainApp() {
+      document.getElementById('auth-section').classList.add('hidden');
+      document.getElementById('feed-section').classList.remove('hidden');
+      document.getElementById('main-bottom-nav').classList.remove('hidden');
       loadUserProfile();
       loadPosts();
     }
 
     async function loadUserProfile() {
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+      const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
       if (profile) {
         document.getElementById('profile-user-name').innerText = profile.full_name || 'User';
         
@@ -265,20 +263,20 @@
       const fileExt = file.name.split('.').pop();
       const fileName = `avatar_${currentUser.id}_${Date.now()}.${fileExt}`;
 
-      const { data, error } = await supabase.storage.from('avatars').upload(fileName, file);
+      const { data, error } = await supabaseClient.storage.from('avatars').upload(fileName, file);
       if (error) return alert('ছবি আপলোড ব্যর্থ হয়েছে: ' + error.message);
 
-      const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(fileName);
+      const { data: publicUrlData } = supabaseClient.storage.from('avatars').getPublicUrl(fileName);
       const avatarUrl = publicUrlData.publicUrl;
 
-      await supabase.from('profiles').update({ avatar_url: avatarUrl }).eq('id', currentUser.id);
+      await supabaseClient.from('profiles').update({ avatar_url: avatarUrl }).eq('id', currentUser.id);
 
       alert('প্রোফাইল ছবি পরিবর্তন হয়েছে!');
       loadUserProfile();
     }
 
-    function showPostModal() { postModal.classList.remove('hidden'); }
-    function hidePostModal() { postModal.classList.add('hidden'); selectedPostImageFile = null; }
+    function showPostModal() { document.getElementById('post-modal').classList.remove('hidden'); }
+    function hidePostModal() { document.getElementById('post-modal').classList.add('hidden'); selectedPostImageFile = null; }
 
     function previewPostImage(event) {
       selectedPostImageFile = event.target.files[0];
@@ -296,15 +294,15 @@
       if (selectedPostImageFile) {
         const fileExt = selectedPostImageFile.name.split('.').pop();
         const fileName = `post_${Date.now()}.${fileExt}`;
-        const { error } = await supabase.storage.from('avatars').upload(fileName, selectedPostImageFile);
+        const { error } = await supabaseClient.storage.from('avatars').upload(fileName, selectedPostImageFile);
         
         if (!error) {
-          const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+          const { data } = supabaseClient.storage.from('avatars').getPublicUrl(fileName);
           imageUrl = data.publicUrl;
         }
       }
 
-      const { error } = await supabase.from('posts').insert([{
+      const { error } = await supabaseClient.from('posts').insert([{
         user_id: currentUser.id,
         content: text,
         image_url: imageUrl
@@ -323,7 +321,7 @@
       const container = document.getElementById('posts-list');
       container.innerHTML = '<p style="text-align:center; padding:20px;">পোস্ট লোড হচ্ছে...</p>';
 
-      const { data: posts } = await supabase
+      const { data: posts } = await supabaseClient
         .from('posts')
         .select('*, profiles(full_name, avatar_url)')
         .order('created_at', { ascending: false });
@@ -355,12 +353,12 @@
       document.getElementById('nav-home').classList.toggle('active', view === 'feed');
       document.getElementById('nav-profile').classList.toggle('active', view === 'profile');
       
-      feedSection.classList.toggle('hidden', view !== 'feed');
-      profileSection.classList.toggle('hidden', view !== 'profile');
+      document.getElementById('feed-section').classList.toggle('hidden', view !== 'feed');
+      document.getElementById('profile-section').classList.toggle('hidden', view !== 'profile');
     }
 
     async function logout() {
-      await supabase.auth.signOut();
+      if (supabaseClient) await supabaseClient.auth.signOut();
       location.reload();
     }
   </script>
