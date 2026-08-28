@@ -1,2367 +1,3125 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#5b5cf0">
-<title>Call Boy Center</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0058bc">
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f3f5fb;color:#171923}
-:root{
- --p:#5b5cf0;
- --s:#8b5cf6;
- --card:#fff;
- --text:#171923;
- --muted:#6b7280;
- --border:#e5e7eb;
- --input:#f5f6fa
-}
-body.dark{
- --card:#181b25;
- --text:#f5f5f7;
- --muted:#a5a9b7;
- --border:#2b2f3b;
- --input:#202431;
- background:#10121a
-}
-button,input,textarea,select{font:inherit}
-button{border:0;cursor:pointer}
-.hidden{display:none!important}
+  <title>Social Connect</title>
 
-.container{
- width:min(1180px,calc(100% - 24px));
- margin:auto
-}
-.card{
- background:var(--card);
- border:1px solid var(--border);
- border-radius:18px;
- box-shadow:0 8px 28px #1e23500d
-}
-.btn{
- padding:10px 15px;
- border-radius:10px;
- font-weight:700
-}
-.primary{
- background:linear-gradient(135deg,var(--p),var(--s));
- color:#fff
-}
-.light{
- background:var(--input);
- color:var(--text)
-}
-.avatar{
- width:48px;
- height:48px;
- border-radius:50%;
- overflow:hidden;
- display:grid;
- place-items:center;
- background:linear-gradient(135deg,var(--p),var(--s));
- color:#fff;
- font-weight:800;
- flex:none
-}
-.avatar img{
- width:100%;
- height:100%;
- object-fit:cover
-}
-.small{
- width:38px;
- height:38px;
- font-size:13px
-}
-.large{
- width:105px;
- height:105px;
- border:5px solid var(--card);
- font-size:30px
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-.auth{
- min-height:100vh;
- display:grid;
- place-items:center;
- padding:20px;
- background:
- radial-gradient(circle at 10% 20%,#5b5cf026,transparent 35%),
- radial-gradient(circle at 90% 80%,#8b5cf624,transparent 35%),
- var(--input)
-}
-.auth-card{
- width:min(430px,100%);
- padding:30px
-}
-.logo{text-align:center}
-.logo-icon{
- width:48px;
- height:48px;
- margin:auto;
- border-radius:14px;
- display:grid;
- place-items:center;
- background:linear-gradient(135deg,var(--p),var(--s));
- color:#fff;
- font-size:25px
-}
-.logo h1{margin:10px 0 4px}
-.muted{color:var(--muted)}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.tabs{
- display:grid;
- grid-template-columns:1fr 1fr;
- background:var(--input);
- padding:4px;
- border-radius:11px;
- margin:20px 0
-}
-.tab{
- padding:10px;
- background:transparent;
- color:var(--muted);
- border-radius:8px;
- font-weight:700
-}
-.tab.active{
- background:var(--card);
- color:var(--p)
-}
-.field{margin:13px 0}
-.field label{
- display:block;
- font-weight:700;
- font-size:14px;
- margin-bottom:6px
-}
-.field input,
-.field textarea,
-.field select{
- width:100%;
- padding:12px;
- border:1px solid var(--border);
- border-radius:10px;
- background:var(--input);
- color:var(--text);
- outline:0
-}
-.submit{
- width:100%;
- margin-top:5px
-}
+  <style>
+    :root {
+      --primary: #0058bc;
+      --primary-hover: #0070eb;
+      --primary-light: #e8f0ff;
 
-header{
- height:66px;
- position:sticky;
- top:0;
- z-index:20;
- background:var(--card);
- border-bottom:1px solid var(--border)
-}
-.head{
- height:100%;
- display:flex;
- align-items:center;
- gap:15px
-}
-.brand{
- display:flex;
- align-items:center;
- gap:9px;
- font-weight:900
-}
-.brand .logo-icon{
- width:40px;
- height:40px;
- font-size:20px;
- margin:0
-}
-.search{
- flex:1;
- max-width:430px
-}
-.search input{
- width:100%;
- padding:11px 14px;
- border:0;
- border-radius:11px;
- background:var(--input);
- color:var(--text);
- outline:0
-}
-.actions{
- margin-left:auto;
- display:flex;
- gap:7px
-}
-.icon{
- width:40px;
- height:40px;
- border-radius:10px;
- background:var(--input);
- color:var(--text)
-}
+      --secondary: #116e00;
+      --secondary-light: #e8f7e5;
 
-.app{
- padding:22px 0 80px
-}
-.grid{
- display:grid;
- grid-template-columns:225px minmax(0,1fr) 275px;
- gap:18px
-}
-.sticky{
- position:sticky;
- top:85px
-}
-.side{padding:12px}
-.sideuser{
- display:flex;
- gap:10px;
- align-items:center;
- padding:10px;
- margin-bottom:7px
-}
-.nav{
- width:100%;
- text-align:left;
- padding:11px;
- border-radius:10px;
- background:transparent;
- color:var(--text);
- font-weight:700
-}
-.nav.active,
-.nav:hover{
- background:#5b5cf012;
- color:var(--p)
-}
+      --danger: #ba002f;
+      --danger-light: #ffeaee;
 
-.title{
- margin-bottom:15px
-}
-.title h2{font-size:24px}
-.title p{
- color:var(--muted);
- font-size:14px;
- margin-top:4px
-}
+      --background: #f7f9fc;
+      --surface: #ffffff;
+      --surface-low: #f2f4f7;
+      --surface-mid: #eceef1;
 
-.create,
-.post,
-.widget{
- padding:16px;
- margin-bottom:16px
-}
-.create-top{
- display:flex;
- gap:9px
-}
-.create textarea{
- flex:1;
- min-height:55px;
- resize:none;
- border:0;
- background:var(--input);
- color:var(--text);
- border-radius:11px;
- padding:12px;
- outline:0
-}
-.create-bottom{
- display:flex;
- justify-content:space-between;
- align-items:center;
- border-top:1px solid var(--border);
- margin-top:11px;
- padding-top:10px
-}
+      --text: #191c1e;
+      --muted: #656b76;
 
-.posthead{
- display:flex;
- align-items:center;
- gap:9px
-}
-.author{flex:1}
-.author strong{display:block}
-.author small{color:var(--muted)}
-.posttext{
- margin:14px 0;
- line-height:1.55;
- white-space:pre-wrap;
- word-break:break-word
-}
-.postmedia{
- max-width:100%;
- max-height:520px;
- border-radius:12px;
- display:block;
- margin-top:10px
-}
-.poststats{
- display:flex;
- justify-content:space-between;
- color:var(--muted);
- font-size:12px;
- padding:9px 0
-}
-.postactions{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- border-top:1px solid var(--border)
-}
-.action{
- padding:10px 4px;
- background:transparent;
- color:var(--muted);
- font-weight:700
-}
-.action.liked{color:#ef4444}
+      --border: #d8dce5;
 
-.comment{
- display:flex;
- gap:8px;
- margin-top:9px
-}
-.commentbody{
- background:var(--input);
- padding:8px 11px;
- border-radius:11px;
- flex:1
-}
-.commentbody strong{
- font-size:13px;
- display:block
-}
-.commentbody p{
- font-size:13px;
- margin-top:3px
-}
-.commentform{
- display:flex;
- gap:7px;
- margin-top:10px
-}
-.commentform input{
- flex:1;
- min-width:0;
- padding:10px;
- border:1px solid var(--border);
- border-radius:9px;
- background:var(--input);
- color:var(--text)
-}
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 999px;
 
-.cover{
- height:190px;
- background:linear-gradient(135deg,var(--p),var(--s));
- background-size:cover;
- background-position:center
-}
-.profileinfo{
- padding:0 22px 22px
-}
-.profileavatar{margin-top:-53px}
-.profile-name{
- margin-top:9px;
- font-size:25px
-}
-.stats{
- display:flex;
- gap:28px;
- margin-top:17px
-}
-.stats strong{
- display:block;
- font-size:18px
-}
-.stats small{color:var(--muted)}
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
 
-.friend{
- display:flex;
- align-items:center;
- gap:9px;
- padding:11px 0;
- border-bottom:1px solid var(--border)
-}
-.friend:last-child{border:0}
-.friendinfo{
- flex:1;
- min-width:0
-}
-.friendinfo strong{
- display:block;
- font-size:13px
-}
-.friendinfo small{color:var(--muted)}
+    * {
+      box-sizing: border-box;
+    }
 
-.empty{
- text-align:center;
- padding:45px 20px;
- color:var(--muted)
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.modal{
- position:fixed;
- inset:0;
- background:#0008;
- display:grid;
- place-items:center;
- padding:18px;
- z-index:100
-}
-.modalbox{
- width:min(520px,100%);
- max-height:90vh;
- overflow:auto;
- padding:20px
-}
-.modalhead{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:10px
-}
-.close{
- background:transparent;
- color:var(--muted);
- font-size:24px
-}
-.filebox{
- border:1px dashed var(--border);
- padding:12px;
- border-radius:10px;
- background:var(--input)
-}
-.preview{
- width:100%;
- max-height:180px;
- object-fit:cover;
- border-radius:10px;
- margin-top:8px
-}
-.mobile{display:none}
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Be Vietnam Pro", sans-serif;
+      font-size: 15px;
+    }
 
-@media(max-width:1050px){
- .grid{
-  grid-template-columns:205px minmax(0,1fr)
- }
- .right{display:none}
-}
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+    }
 
-@media(max-width:760px){
- .container{width:calc(100% - 14px)}
- .grid{display:block}
- .left{display:none}
- .app{padding-top:15px}
- .mobile{
-  display:block;
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:var(--card);
-  border-top:1px solid var(--border);
-  z-index:30
- }
- .mobilein{
-  display:grid;
-  grid-template-columns:repeat(5,1fr)
- }
- .mobile button{
-  padding:7px 2px;
-  background:transparent;
-  color:var(--muted);
-  font-size:10px
- }
- .mobile b{
-  display:block;
-  font-size:18px
- }
- .mobile .active{color:var(--p)}
- .brand span{display:none}
- .search{max-width:none}
- .actions .profilebtn{display:none}
- .cover{height:145px}
- .postactions{font-size:12px}
-}
-</style>
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* AUTH */
+
+    .auth-screen {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      padding: 30px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .brand-large {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .brand-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--surface-low);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 2px 7px rgba(0, 0, 0, .08);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .input,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 12px 13px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .input:focus,
+    .textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .primary-btn {
+      border: 0;
+      background: var(--primary);
+      color: white;
+      padding: 11px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .primary-btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      border: 0;
+      background: var(--surface-low);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+
+    .secondary-btn:hover {
+      background: var(--surface-mid);
+    }
+
+    .message {
+      padding: 11px 13px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+      font-size: 13px;
+      background: var(--surface-low);
+    }
+
+    .message.error {
+      color: #93000a;
+      background: #ffe8e6;
+    }
+
+    .message.success {
+      color: var(--secondary);
+      background: var(--secondary-light);
+    }
+
+    /* APP */
+
+    .app {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 64px;
+      background: white;
+      border-bottom: 1px solid #e4e7ed;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .search {
+      flex: 1;
+      max-width: 560px;
+      margin: auto;
+      border: 0;
+      outline: none;
+      background: var(--surface-low);
+      padding: 11px 18px;
+      border-radius: var(--radius-full);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--surface-low);
+      font-size: 18px;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-mid);
+    }
+
+    .layout {
+      width: 100%;
+      max-width: 1180px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 650px) 250px;
+      gap: 20px;
+      padding: 20px 16px 80px;
+    }
+
+    .sidebar,
+    .rightbar {
+      position: sticky;
+      top: 84px;
+      height: max-content;
+    }
+
+    .nav-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 4px;
+      border: 0;
+      background: transparent;
+      border-radius: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* CARD */
+
+    .card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 8px;
+    }
+
+    /* COMPOSER */
+
+    .composer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .composer-input {
+      flex: 1;
+      background: var(--surface-low);
+      border-radius: var(--radius-full);
+      padding: 12px 16px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    /* AVATAR */
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e0e3e6;
+      flex-shrink: 0;
+    }
+
+    .avatar-large {
+      width: 96px;
+      height: 96px;
+    }
+
+    /* POST */
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-user {
+      min-width: 0;
+    }
+
+    .post-name {
+      font-weight: 700;
+    }
+
+    .post-time {
+      color: #727785;
+      font-size: 12px;
+    }
+
+    .post-content {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      margin: 14px 0;
+    }
+
+    .post-actions {
+      display: flex;
+      border-top: 1px solid #edf0f4;
+      padding-top: 6px;
+    }
+
+    .post-action {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .post-action:hover {
+      background: var(--surface-low);
+    }
+
+    .post-action.liked {
+      color: var(--primary);
+    }
+
+    /* COMMENTS */
+
+    .comment-box {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment-input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 9px 13px;
+      outline: none;
+    }
+
+    .comment {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment .avatar {
+      width: 32px;
+      height: 32px;
+    }
+
+    .comment-content {
+      background: var(--surface-low);
+      border-radius: 12px;
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
+    /* PEOPLE */
+
+    .person {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+
+    .person-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .person-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .person-location {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      padding: 4px 8px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* PROFILE */
+
+    .cover {
+      height: 170px;
+      background: linear-gradient(135deg, #0058bc, #72aefc);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .profile-info {
+      padding: 0 16px 18px;
+    }
+
+    .profile-avatar {
+      margin-top: -48px;
+      position: relative;
+      border: 4px solid white;
+    }
+
+    .profile-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .profile-location {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .48);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      width: min(520px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--surface-low);
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+      display: none;
+    }
+
+    .loading,
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translateX(-50%);
+      background: #222;
+      color: white;
+      padding: 11px 18px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      z-index: 2000;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 950px) {
+      .layout {
+        grid-template-columns: 1fr;
+        max-width: 700px;
+      }
+
+      .sidebar,
+      .rightbar {
+        display: none;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 66px;
+        background: white;
+        border-top: 1px solid #e1e4ea;
+        display: flex;
+        justify-content: space-around;
+        z-index: 500;
+      }
+
+      .bottom-nav button {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .bottom-nav button.active {
+        color: var(--primary);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 0 10px;
+        gap: 8px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .search {
+        min-width: 0;
+      }
+
+      .layout {
+        padding: 10px 0 78px;
+      }
+
+      .card {
+        border-radius: 0;
+      }
+
+      .top-actions .icon-btn:last-child {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<section id="auth" class="auth">
-<div class="auth-card card">
-
-<div class="logo">
- <div class="logo-icon">🤝</div>
- <h1>Call Boy Center</h1>
- <p class="muted">যোগাযোগ করুন, বন্ধু বানান, শেয়ার করুন</p>
-</div>
-
-<div class="tabs">
- <button id="lt" class="tab active" onclick="switchAuth('login')">লগইন</button>
- <button id="rt" class="tab" onclick="switchAuth('register')">রেজিস্টার</button>
-</div>
-
-<form id="loginForm">
- <div class="field">
-  <label>ইমেইল</label>
-  <input id="loginEmail" type="email" required>
- </div>
-
- <div class="field">
-  <label>পাসওয়ার্ড</label>
-  <input id="loginPassword" type="password" required>
- </div>
-
- <button class="btn primary submit">🔐 লগইন</button>
-</form>
-
-<form id="registerForm" class="hidden">
-
- <div class="field">
-  <label>পুরো নাম</label>
-  <input id="registerName" required>
- </div>
-
- <div class="field">
-  <label>ইমেইল</label>
-  <input id="registerEmail" type="email" required>
- </div>
-
- <div class="field">
-  <label>পাসওয়ার্ড</label>
-  <input id="registerPassword" type="password" minlength="6" required>
- </div>
-
- <button class="btn primary submit">🚀 অ্যাকাউন্ট তৈরি</button>
-</form>
-
-</div>
-</section>
-
-
-<div id="app" class="hidden">
-
-<header>
-<div class="container head">
-
-<div class="brand">
- <div class="logo-icon">🤝</div>
- <span>Call Boy Center</span>
-</div>
-
-<div class="search">
- <input id="search" placeholder="পোস্ট খুঁজুন...">
-</div>
-
-<div class="actions">
- <button class="icon" onclick="toggleTheme()">🌙</button>
- <button class="icon" onclick="showPage('notifications')">🔔</button>
- <button class="icon profilebtn" onclick="showPage('profile')">👤</button>
-</div>
-
-</div>
-</header>
-
-
-<main class="app">
-<div class="container grid">
-
-<aside class="left sticky">
-<div class="card side">
-
-<div class="sideuser">
- <div id="sideAvatar" class="avatar small">U</div>
-
- <div>
-  <strong id="sideName">User</strong>
-  <small id="sideEmail" class="muted"></small>
- </div>
-</div>
-
-<button class="nav active" data-page="home" onclick="showPage('home')">
-🏠 হোম
-</button>
-
-<button class="nav" data-page="profile" onclick="showPage('profile')">
-👤 প্রোফাইল
-</button>
-
-<button class="nav" data-page="friends" onclick="showPage('friends')">
-👥 বন্ধুরা
-</button>
-
-<button class="nav" data-page="notifications" onclick="showPage('notifications')">
-🔔 নোটিফিকেশন
-</button>
-
-<button class="nav" onclick="showPage('settings')">
-⚙️ সেটিংস
-</button>
-
-<button class="nav" onclick="toggleTheme()">
-🌙 ডার্ক মোড
-</button>
-
-<button class="nav" onclick="logout()">
-🚪 লগআউট
-</button>
-
-</div>
-</aside>
-
-
-<section>
-
-<div id="homePage">
-
-<div class="title">
- <h2>স্বাগতম 👋</h2>
- <p>তোমার বন্ধুদের সঙ্গে শেয়ার করো।</p>
-</div>
-
-<div class="card create">
-
-<div class="create-top">
-
- <div id="createAvatar" class="avatar">U</div>
-
- <textarea
- id="postInput"
- placeholder="তোমার মনের কথা লিখুন..."
- maxlength="5000"></textarea>
-
-</div>
-
-<div class="create-bottom">
-
-<label class="btn light">
- 📷 ছবি/ভিডিও
- <input
-  id="mediaInput"
-  type="file"
-  accept="image/*,video/*"
-  hidden>
-</label>
-
-<button class="btn primary" onclick="createPost()">
- পোস্ট করুন
-</button>
-
-</div>
-
-<div id="mediaPreview"></div>
-
-</div>
-
-<div id="posts"></div>
-
-</div>
-
-
-<div id="profilePage" class="hidden">
-
-<div class="card" style="overflow:hidden;margin-bottom:18px">
-
-<div id="cover" class="cover"></div>
-
-<div class="profileinfo">
-
-<div class="profileavatar">
- <div id="profileAvatar" class="avatar large">U</div>
-</div>
-
-<button
- class="btn primary"
- style="float:right;margin-top:-35px"
- onclick="openEditProfile()">
- ✏️ প্রোফাইল এডিট
-</button>
-
-<h2 id="profileName" class="profile-name">
- User
-</h2>
-
-<p id="profileBio" class="muted">
- স্বাগতম Call Boy Center-এ।
-</p>
-
-<p
- id="profileLocation"
- class="muted"
- style="margin-top:5px">
-</p>
-
-<div class="stats">
-
-<div>
- <strong id="myPostCount">0</strong>
- <small>পোস্ট</small>
-</div>
-
-<div>
- <strong id="friendCount">0</strong>
- <small>বন্ধু</small>
-</div>
-
-<div>
- <strong id="pendingCount">0</strong>
- <small>অনুরোধ</small>
-</div>
-
-</div>
-</div>
-</div>
-
-<div class="title">
- <h2>আমার পোস্ট</h2>
-</div>
-
-<div id="myPosts"></div>
-
-</div>
-
-
-<div id="friendsPage" class="hidden">
-
-<div class="title">
- <h2>👥 বন্ধুরা</h2>
- <p>নতুন মানুষ খুঁজুন ও বন্ধুত্ব করুন।</p>
-</div>
-
-<div id="friendsList" class="card" style="padding:10px"></div>
-
-</div>
-
-
-<div id="notificationsPage" class="hidden">
-
-<div class="title">
- <h2>🔔 নোটিফিকেশন</h2>
-</div>
-
-<div id="notificationList" class="card"></div>
-
-</div>
-
-
-<div id="settingsPage" class="hidden">
-
-<div class="title">
- <h2>⚙️ সেটিংস</h2>
- <p>অ্যাকাউন্ট ও ওয়েবসাইটের সেটিংস।</p>
-</div>
-
-<div class="card widget">
-
-<button class="btn light" onclick="toggleTheme()">
- 🌙 থিম পরিবর্তন
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<aside class="right sticky">
-
-<div class="card widget">
-<h3>People You May Know</h3>
-<div id="suggestions"></div>
-</div>
-
-<div class="card widget">
-
-<h3>Call Boy Center</h3>
-
-<p
- class="muted"
- style="font-size:13px;line-height:1.6">
-
-বন্ধুদের সঙ্গে যোগাযোগ, পোস্ট ও
-ছবি/ভিডিও শেয়ার করার জায়গা।
-
-</p>
-
-</div>
-
-</aside>
-
-</div>
-</main>
-
-
-<nav class="mobile">
-
-<div class="mobilein">
-
-<button
- data-mobile="home"
- class="active"
- onclick="showPage('home')">
- <b>🏠</b>হোম
-</button>
-
-<button
- data-mobile="friends"
- onclick="showPage('friends')">
- <b>👥</b>বন্ধু
-</button>
-
-<button
- data-mobile="notifications"
- onclick="showPage('notifications')">
- <b>🔔</b>নোটিফাই
-</button>
-
-<button
- data-mobile="profile"
- onclick="showPage('profile')">
- <b>👤</b>প্রোফাইল
-</button>
-
-<button onclick="logout()">
- <b>🚪</b>লগআউট
-</button>
-
-</div>
-</nav>
-
-</div>
-
-
-<div id="editModal" class="modal hidden">
-
-<div class="modalbox card">
-
-<div class="modalhead">
-
-<h2>✏️ প্রোফাইল এডিট</h2>
-
-<button
- class="close"
- onclick="closeEditProfile()">
- ×
-</button>
-
-</div>
-
-
-<div class="field">
-<label>নাম</label>
-<input id="editName">
-</div>
-
-
-<div class="field">
-<label>বায়ো</label>
-<textarea id="editBio" rows="3"></textarea>
-</div>
-
-
-<div class="field">
-<label>লোকেশন</label>
-<input id="editLocation">
-</div>
-
-
-<div class="field">
-
-<label>প্রোফাইল ছবি</label>
-
-<div class="filebox">
-
-<input
- id="avatarFile"
- type="file"
- accept="image/*">
-
-<img
- id="avatarPreview"
- class="preview hidden">
-
-</div>
-
-</div>
-
-
-<div class="field">
-
-<label>কভার ছবি</label>
-
-<div class="filebox">
-
-<input
- id="coverFile"
- type="file"
- accept="image/*">
-
-<img
- id="coverPreview"
- class="preview hidden">
-
-</div>
-
-</div>
-
-
-<button
- class="btn primary"
- style="width:100%"
- onclick="saveProfile()">
-
-💾 পরিবর্তন সংরক্ষণ
-
-</button>
-
-</div>
-</div>
-
-
-<div id="toast"></div>
-
-
-<script>
-"use strict";
-
-const SUPABASE_URL="https://fpdhozxounuxbpnioban.supabase.co";
-
-const SUPABASE_KEY="sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
-
-const db=window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY
-);
-
-let currentUser=null;
-let currentProfile=null;
-let allProfiles=[];
-let allPosts=[];
-let allRequests=[];
-
-
-const $=id=>document.getElementById(id);
-
-
-function esc(v){
- return String(v??"").replace(
-  /[&<>"']/g,
-  m=>({
-   "&":"&amp;",
-   "<":"&lt;",
-   ">":"&gt;",
-   '"':"&quot;",
-   "'":"&#039;"
-  }[m])
- );
-}
-
-
-function initials(n){
- return String(n||"User")
-  .trim()
-  .split(/\s+/)
-  .slice(0,2)
-  .map(x=>x[0])
-  .join("")
-  .toUpperCase()||"U";
-}
-
-
-function toast(m){
-
- const x=document.createElement("div");
-
- x.textContent=m;
-
- x.style=
- "position:fixed;right:15px;bottom:15px;z-index:999;padding:13px 17px;background:#20232e;color:#fff;border-radius:12px";
-
- document.body.appendChild(x);
-
- setTimeout(()=>x.remove(),3000);
-}
-
-
-function ago(d){
-
- let s=Math.floor(
-  (Date.now()-new Date(d))/1000
- );
-
- if(s<60)return"এইমাত্র";
-
- if(s<3600)
-  return Math.floor(s/60)+" মিনিট আগে";
-
- if(s<86400)
-  return Math.floor(s/3600)+" ঘণ্টা আগে";
-
- return Math.floor(s/86400)+" দিন আগে";
-}
-
-
-function switchAuth(t){
-
- $("loginForm")
-  .classList
-  .toggle("hidden",t!=="login");
-
- $("registerForm")
-  .classList
-  .toggle("hidden",t==="login");
-
- $("lt")
-  .classList
-  .toggle("active",t==="login");
-
- $("rt")
-  .classList
-  .toggle("active",t==="register");
-}
-
-
-function showAuth(){
-
- $("auth").classList.remove("hidden");
-
- $("app").classList.add("hidden");
-}
-
-
-async function start(){
-
- if(!currentUser)return;
-
- $("auth").classList.add("hidden");
-
- $("app").classList.remove("hidden");
-
- await loadProfile();
-
- await loadProfiles();
-
- await loadRequests();
-
- await loadPosts();
-
- updateUI();
-
- renderAll();
-}
-
-
-async function loadProfile(){
-
- let {
-  data,
-  error
- }=
- await db
- .from("profiles")
- .select("*")
- .eq("id",currentUser.id)
- .maybeSingle();
-
- if(error){
-
-  toast(
-   "প্রোফাইল লোড হয়নি: "+
-   error.message
-  );
-
-  return;
- }
-
- if(!data){
-
-  let r=
-  await db
-  .from("profiles")
-  .insert({
-   id:currentUser.id,
-   name:
-    currentUser.user_metadata?.full_name||
-    "User",
-   location:"",
-   avatar_url:""
-  })
-  .select()
-  .single();
-
-  data=r.data;
- }
-
- currentProfile=data;
-}
-
-
-async function loadProfiles(){
-
- let {data}=
- await db
- .from("profiles")
- .select("*")
- .order("created_at",{ascending:false});
-
- allProfiles=data||[];
-}
-
-
-async function loadRequests(){
-
- let {data}=
- await db
- .from("friend_requests")
- .select("*")
- .or(
-  `sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
- );
-
- allRequests=data||[];
-}
-
-
-async function loadPosts(){
-
- let {
-  data,
-  error
- }=
- await db
- .from("posts")
- .select("*")
- .order("created_at",{ascending:false});
-
- if(error){
-
-  allPosts=[];
-
-  return;
- }
-
- allPosts=data||[];
-
- for(const p of allPosts){
-
-  p.profile=
-   allProfiles.find(
-    x=>x.id===p.user_id
-   );
-
-  let l=
-   await db
-   .from("likes")
-   .select("id,user_id")
-   .eq("post_id",p.id);
-
-  let c=
-   await db
-   .from("comments")
-   .select("*")
-   .eq("post_id",p.id)
-   .order("created_at",{ascending:true});
-
-  p.likes=l.data||[];
-
-  p.comments=c.data||[];
-
-  for(const z of p.comments){
-
-   z.profile=
-    allProfiles.find(
-     x=>x.id===z.user_id
-    );
-
-  }
- }
-}
-
-
-function avatarHTML(p,cls="avatar"){
-
- if(p?.avatar_url){
-
-  return `
-   <div class="${cls}">
-    <img src="${esc(p.avatar_url)}">
-   </div>
-  `;
-
- }
-
- return `
-  <div class="${cls}">
-   ${esc(initials(p?.name))}
-  </div>
- `;
-}
-
-
-function updateUI(){
-
- let n=currentProfile?.name||"User";
-
- $("sideName").textContent=n;
-
- $("sideEmail").textContent=
-  currentUser.email||"";
-
- $("sideAvatar").outerHTML=
-  avatarHTML(
-   currentProfile,
-   "avatar small"
-  );
-
- $("createAvatar").outerHTML=
-  avatarHTML(
-   currentProfile,
-   "avatar"
-  );
-
- $("profileAvatar").outerHTML=
-  avatarHTML(
-   currentProfile,
-   "avatar large"
-  );
-
- $("profileName").textContent=n;
-
- $("profileBio").textContent=
-  currentProfile?.bio||
-  "স্বাগতম Call Boy Center-এ।";
-
- $("profileLocation").textContent=
-  currentProfile?.location
-   ?"📍 "+currentProfile.location
-   :"";
-
- if(currentProfile?.cover_url){
-
-  $("cover").style.backgroundImage=
-   `url("${currentProfile.cover_url}")`;
-
- }
-}
-
-
-function renderAll(){
-
- renderPosts();
-
- renderMyPosts();
-
- renderFriends();
-
- renderSuggestions();
-
- renderNotifications();
-}
-
-
-function postHTML(p){
-
- let name=
-  p.profile?.name||"User";
-
- let liked=
-  p.likes.some(
-   x=>x.user_id===currentUser.id
-  );
-
- let media=
-  p.media_url
-   ?
-    (
-     (p.media_type||"")
-      .startsWith("video")
-      ?
-      `
-      <video
-       class="postmedia"
-       src="${esc(p.media_url)}"
-       controls>
-      </video>
-      `
-      :
-      `
-      <img
-       class="postmedia"
-       src="${esc(p.media_url)}">
-      `
-    )
-   :"";
-
- let comments=
-  p.comments
-   .map(c=>`
-
-<div class="comment">
-
-${avatarHTML(c.profile,"avatar small")}
-
-<div class="commentbody">
-
-<strong>
-${esc(c.profile?.name||"User")}
-</strong>
-
-<p>
-${esc(c.content)}
-</p>
-
-</div>
-
-</div>
-
-`)
-.join("");
-
- return `
-
-<article class="card post">
-
-<div class="posthead">
-
-${avatarHTML(p.profile)}
-
-<div class="author">
-
-<strong>
-${esc(name)}
-</strong>
-
-<small>
-${ago(p.created_at)}
-</small>
-
-</div>
-
-${
- p.user_id===currentUser.id
- ?
- `
- <button
-  class="icon"
-  onclick="deletePost(${p.id})">
-  ⋯
- </button>
- `
- :""
-}
-
-</div>
-
-
-<div class="posttext">
-${esc(p.content)}
-</div>
-
-${media}
-
-
-<div class="poststats">
-
-<span>
-❤️ ${p.likes.length}
-</span>
-
-<span>
-💬 ${p.comments.length}
-</span>
-
-</div>
-
-
-<div class="postactions">
-
-<button
- class="action ${liked?"liked":""}"
- onclick="likePost(${p.id},${liked})">
-
-${liked?"❤️":"♡"} পছন্দ
-
-</button>
-
-
-<button
- class="action"
- onclick="focusComment(${p.id})">
-
-💬 কমেন্ট
-
-</button>
-
-
-<button
- class="action"
- onclick="sharePost(${p.id})">
-
-🔄 শেয়ার
-
-</button>
-
-
-<button
- class="action"
- onclick="savePost(${p.id})">
-
-🔖 সেভ
-
-</button>
-
-</div>
-
-
-${comments}
-
-
-<form
- class="commentform"
- onsubmit="comment(event,${p.id})">
-
-<input
- id="c${p.id}"
- placeholder="কমেন্ট লিখুন...">
-
-<button class="btn primary">
-পাঠান
-</button>
-
-</form>
-
-</article>
-
-`;
-}
-
-
-function renderPosts(){
-
- let q=
-  $("search").value
-  .trim()
-  .toLowerCase();
-
- let arr=
-  allPosts.filter(
-   p=>
-    !q||
-    (p.content||"")
-     .toLowerCase()
-     .includes(q)||
-    (p.profile?.name||"")
-     .toLowerCase()
-     .includes(q)
-  );
-
- $("posts").innerHTML=
-  arr.length
-   ?
-   arr.map(postHTML).join("")
-   :
-   `
-   <div class="card empty">
-    📝
-    <h3>কোনো পোস্ট নেই</h3>
-    <p>প্রথম পোস্টটি আপনিই করুন।</p>
-   </div>
-   `;
-}
-
-
-function renderMyPosts(){
-
- let a=
-  allPosts.filter(
-   p=>p.user_id===currentUser.id
-  );
-
- $("myPostCount").textContent=
-  a.length;
-
- $("myPosts").innerHTML=
-  a.length
-   ?
-   a.map(postHTML).join("")
-   :
-   `
-   <div class="card empty">
-    ✨
-    <h3>আপনার কোনো পোস্ট নেই</h3>
-   </div>
-   `;
-}
-
-
-async function upload(file,path){
-
- const bucket=
-  db.storage.from("media");
-
- const result=
-  await bucket.upload(
-   path,
-   file,
-   {
-    upsert:true,
-    contentType:
-     file.type||undefined
-   }
-  );
-
- if(result.error){
-
-  const msg=
-   result.error.message||"";
-
-  if(
-   msg
-   .toLowerCase()
-   .includes("bucket not found")
-  ){
-
-   throw new Error(
-    "Supabase-এ media bucket নেই। Supabase SQL সেটআপটি আগে চালান।"
-   );
-  }
-
-  throw result.error;
- }
-
- const {data}=
-  bucket.getPublicUrl(path);
-
- return data.publicUrl;
-}
-
-
-async function createPost(){
-
- let content=
-  $("postInput")
-  .value
-  .trim();
-
- let file=
-  $("mediaInput")
-  .files[0];
-
- if(!content&&!file){
-
-  return toast(
-   "কিছু লিখুন বা ছবি/ভিডিও দিন"
-  );
- }
-
- let media_url=null;
-
- let media_type=null;
-
- if(file){
-
-  try{
-
-   media_type=file.type;
-
-   media_url=
-    await upload(
-     file,
-     `posts/${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`
-    );
-
-  }
-  catch(e){
-
-   return toast(
-    "মিডিয়া আপলোড হয়নি: "+
-    e.message
-   );
-
-  }
- }
-
- let {error}=
-  await db
-  .from("posts")
-  .insert({
-   user_id:currentUser.id,
-   content:content||"",
-   media_url,
-   media_type
-  });
-
- if(error){
-
-  if(
-   (error.message||"")
-   .toLowerCase()
-   .includes("media_type")||
-   (error.message||"")
-   .toLowerCase()
-   .includes("schema cache")
-  ){
-
-   return toast(
-    "Supabase-এর posts টেবিলে media_type/media_url কলাম এখনো যোগ হয়নি। SQL সেটআপটি একবার চালান।"
-   );
-  }
-
-  return toast(error.message);
- }
-
- $("postInput").value="";
-
- $("mediaInput").value="";
-
- $("mediaPreview").innerHTML="";
-
- await loadPosts();
-
- renderPosts();
-
- renderMyPosts();
-
- toast("পোস্ট হয়েছে");
-}
-
-
-$("mediaInput").addEventListener(
- "change",
- e=>{
-
-  let f=e.target.files[0];
-
-  $("mediaPreview").innerHTML=
-   f
-   ?
-   `<p class="muted">${esc(f.name)}</p>`
-   :"";
- }
-);
-
-
-async function likePost(id,liked){
-
- let q=
-  liked
-  ?
-  db
-   .from("likes")
-   .delete()
-   .eq("post_id",id)
-   .eq("user_id",currentUser.id)
-  :
-  db
-   .from("likes")
-   .insert({
-    post_id:id,
-    user_id:currentUser.id
-   });
-
- let {error}=await q;
-
- if(error)
-  return toast(error.message);
-
- await loadPosts();
-
- renderPosts();
-}
-
-
-async function comment(e,id){
-
- e.preventDefault();
-
- let i=$("c"+id);
-
- let v=i.value.trim();
-
- if(!v)return;
-
- let {error}=
-  await db
-  .from("comments")
-  .insert({
-   post_id:id,
-   user_id:currentUser.id,
-   content:v
-  });
-
- if(error)
-  return toast(error.message);
-
- i.value="";
-
- await loadPosts();
-
- renderPosts();
-}
-
-
-function focusComment(id){
-
- $("c"+id)?.focus();
-}
-
-
-async function deletePost(id){
-
- if(!confirm("পোস্টটি মুছে ফেলবেন?"))
-  return;
-
- let {error}=
-  await db
-  .from("posts")
-  .delete()
-  .eq("id",id)
-  .eq("user_id",currentUser.id);
-
- if(error)
-  return toast(error.message);
-
- await loadPosts();
-
- renderPosts();
-
- renderMyPosts();
-}
-
-
-async function sharePost(id){
-
- let p=
-  allPosts.find(
-   x=>x.id===id
-  );
-
- if(navigator.share){
-
-  try{
-
-   await navigator.share({
-    title:"Call Boy Center",
-    text:
-     (p.profile?.name||"User")+
-     ": "+
-     p.content
-   });
-
-  }
-  catch(e){}
-
- }
- else{
-
-  await navigator.clipboard.writeText(
-   p.content
-  );
-
-  toast("কপি হয়েছে");
- }
-}
-
-
-function savePost(id){
-
- let s=
-  JSON.parse(
-   localStorage.getItem(
-    "saved_posts"
-   )||"[]"
-  );
-
- if(!s.includes(id))
-  s.push(id);
-
- localStorage.setItem(
-  "saved_posts",
-  JSON.stringify(s)
- );
-
- toast("পোস্ট সেভ হয়েছে");
-}
-
-
-function reqStatus(id){
-
- return allRequests.find(
-  r=>
-   (
-    r.sender_id===currentUser.id&&
-    r.receiver_id===id
-   )||
-   (
-    r.receiver_id===currentUser.id&&
-    r.sender_id===id
-   )
- );
-}
-
-
-function friendHTML(p){
-
- let r=reqStatus(p.id);
-
- let b=
-  !r
-  ?
-  `
-  <button
-   class="btn primary"
-   onclick="sendReq('${p.id}')">
-   + যোগ
-  </button>
-  `
-  :
-  r.status==="accepted"
-  ?
-  `
-  <button
-   class="btn light"
-   disabled>
-   বন্ধু ✓
-  </button>
-  `
-  :
-  r.receiver_id===currentUser.id
-  ?
-  `
-  <button
-   class="btn primary"
-   onclick="acceptReq('${r.id}')">
-   গ্রহণ
-  </button>
-  `
-  :
-  `
-  <button
-   class="btn light"
-   disabled>
-   পাঠানো ✓
-  </button>
-  `;
-
- return `
-
-<div class="friend">
-
-${avatarHTML(p,"avatar small")}
-
-<div class="friendinfo">
-
-<strong>
-${esc(p.name||"User")}
-</strong>
-
-<small>
-Call Boy Center
-</small>
-
-</div>
-
-${b}
-
-</div>
-
-`;
-}
-
-
-function renderFriends(){
-
- let a=
-  allProfiles.filter(
-   p=>p.id!==currentUser.id
-  );
-
- $("friendsList").innerHTML=
-  a.length
-  ?
-  a.map(friendHTML).join("")
-  :
-  `
-  <div class="empty">
-   আর কোনো ব্যবহারকারী নেই।
-  </div>
-  `;
-}
-
-
-function renderSuggestions(){
-
- let a=
-  allProfiles
-  .filter(
-   p=>p.id!==currentUser.id
-  )
-  .slice(0,5);
-
- $("suggestions").innerHTML=
-  a.length
-  ?
-  a.map(friendHTML).join("")
-  :
-  `<p class="muted">এখনো কেউ নেই।</p>`;
-}
-
-
-async function sendReq(id){
-
- if(reqStatus(id))
-  return;
-
- let {error}=
-  await db
-  .from("friend_requests")
-  .insert({
-   sender_id:currentUser.id,
-   receiver_id:id,
-   status:"pending"
-  });
-
- if(error)
-  return toast(error.message);
-
- await loadRequests();
-
- renderAll();
-
- toast(
-  "ফ্রেন্ড রিকোয়েস্ট পাঠানো হয়েছে"
- );
-}
-
-
-async function acceptReq(id){
-
- let {error}=
-  await db
-  .from("friend_requests")
-  .update({
-   status:"accepted"
-  })
-  .eq("id",id)
-  .eq(
-   "receiver_id",
-   currentUser.id
-  );
-
- if(error)
-  return toast(error.message);
-
- await loadRequests();
-
- renderAll();
-
- toast(
-  "বন্ধুত্ব গ্রহণ করা হয়েছে"
- );
-}
-
-
-function renderNotifications(){
-
- let a=
-  allRequests.filter(
-   r=>
-    r.receiver_id===currentUser.id&&
-    r.status==="pending"
-  );
-
- $("notificationList").innerHTML=
-  a.length
-  ?
-  a.map(r=>{
-
-   let p=
-    allProfiles.find(
-     x=>x.id===r.sender_id
-    );
-
-   return `
-
-   <div
-    class="friend"
-    style="padding:15px">
-
-    ${avatarHTML(
-     p,
-     "avatar small"
-    )}
-
-    <div class="friendinfo">
-
-     <strong>
-      ${esc(p?.name||"Someone")}
-     </strong>
-
-     <small>
-      আপনাকে ফ্রেন্ড রিকোয়েস্ট পাঠিয়েছে
-     </small>
+  <!-- AUTH SCREEN -->
+  <section id="authScreen" class="auth-screen">
+
+    <div class="auth-card">
+
+      <div class="brand-large">
+        Social Connect
+      </div>
+
+      <div class="brand-subtitle">
+        Connect. Share. Discover.
+      </div>
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active">
+          Login
+        </button>
+
+        <button id="signupTab" class="auth-tab">
+          Create account
+        </button>
+      </div>
+
+      <div id="authMessage" class="message hidden"></div>
+
+      <form id="authForm">
+
+        <div id="nameGroup" class="form-group hidden">
+          <label class="form-label">
+            Full name
+          </label>
+
+          <input
+            id="nameInput"
+            class="input"
+            type="text"
+            placeholder="Your name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Email
+          </label>
+
+          <input
+            id="emailInput"
+            class="input"
+            type="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Password
+          </label>
+
+          <input
+            id="passwordInput"
+            class="input"
+            type="password"
+            placeholder="Minimum 6 characters"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <button
+          id="authButton"
+          class="primary-btn"
+          style="width:100%"
+          type="submit"
+        >
+          Login
+        </button>
+
+      </form>
 
     </div>
 
-    <button
-     class="btn primary"
-     onclick="acceptReq('${r.id}')">
+  </section>
 
-     গ্রহণ
 
-    </button>
+  <!-- MAIN APP -->
+  <div id="app" class="app hidden">
 
-   </div>
+    <!-- TOP BAR -->
+    <header class="topbar">
 
-   `;
+      <div class="brand">
+        Social Connect
+      </div>
 
-  }).join("")
-  :
-  `
-  <div class="empty">
-   🔔 কোনো নতুন নোটিফিকেশন নেই।
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="Search people..."
+      >
+
+      <div class="top-actions">
+
+        <button
+          id="notificationsButton"
+          class="icon-btn"
+          title="Notifications"
+        >
+          🔔
+        </button>
+
+        <button
+          id="logoutButton"
+          class="icon-btn"
+          title="Logout"
+        >
+          ↪
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- LAYOUT -->
+    <div class="layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <button
+          class="nav-item active"
+          data-view="home"
+        >
+          🏠
+          <span>Home</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-view="people"
+        >
+          👥
+          <span>People</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-view="profile"
+        >
+          👤
+          <span>Profile</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-view="notifications"
+        >
+          🔔
+          <span>Notifications</span>
+        </button>
+
+      </aside>
+
+
+      <!-- MAIN CONTENT -->
+      <main id="mainContent"></main>
+
+
+      <!-- RIGHT BAR -->
+      <aside class="rightbar">
+
+        <div class="card">
+
+          <strong>
+            People you may know
+          </strong>
+
+          <div id="suggestions">
+            <div class="loading">
+              Loading...
+            </div>
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+    <!-- MOBILE NAV -->
+    <nav class="bottom-nav">
+
+      <button
+        class="active"
+        data-view="home"
+      >
+        🏠
+        <br>
+        Home
+      </button>
+
+      <button data-view="people">
+        👥
+        <br>
+        People
+      </button>
+
+      <button data-view="profile">
+        👤
+        <br>
+        Profile
+      </button>
+
+      <button data-view="notifications">
+        🔔
+        <br>
+        Alerts
+      </button>
+
+    </nav>
+
   </div>
-  `;
-}
 
 
-function showPage(page){
+  <!-- CREATE POST MODAL -->
+  <div id="postModal" class="modal hidden">
 
- [
-  "home",
-  "profile",
-  "friends",
-  "notifications",
-  "settings"
- ].forEach(
-  x=>
-   $(x+"Page")
-    .classList
-    .toggle(
-     "hidden",
-     x!==page
-    )
- );
+    <div class="modal-card">
 
- document
-  .querySelectorAll(
-   ".nav[data-page]"
-  )
-  .forEach(
-   x=>
-    x.classList.toggle(
-     "active",
-     x.dataset.page===page
-    )
+      <div class="modal-header">
+
+        <div class="modal-title">
+          Create post
+        </div>
+
+        <button
+          class="close-btn"
+          onclick="closeModal('postModal')"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <textarea
+        id="postInput"
+        class="textarea"
+        placeholder="What's on your mind?"
+      ></textarea>
+
+      <button
+        id="publishButton"
+        class="primary-btn"
+        style="width:100%;margin-top:12px"
+      >
+        Publish
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- EDIT PROFILE MODAL -->
+  <div id="profileModal" class="modal hidden">
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          Edit profile
+        </div>
+
+        <button
+          class="close-btn"
+          onclick="closeModal('profileModal')"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Name
+        </label>
+
+        <input
+          id="editName"
+          class="input"
+          type="text"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Bio
+        </label>
+
+        <textarea
+          id="editBio"
+          class="textarea"
+        ></textarea>
+
+      </div>
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Location
+        </label>
+
+        <input
+          id="editLocation"
+          class="input"
+          type="text"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Avatar URL
+        </label>
+
+        <input
+          id="editAvatar"
+          class="input"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+      <button
+        id="saveProfileButton"
+        class="primary-btn"
+        style="width:100%"
+      >
+        Save changes
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="toast" class="toast hidden"></div>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE CONFIG
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://fpdhozxounuxbpnioban.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
   );
 
- document
-  .querySelectorAll(
-   ".mobile button[data-mobile]"
-  )
-  .forEach(
-   x=>
-    x.classList.toggle(
-     "active",
-     x.dataset.mobile===page
-    )
-  );
 
- if(page==="profile")
-  renderMyPosts();
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
 
- scrollTo(0,0);
+let currentUser = null;
+let currentProfile = null;
+let currentView = "home";
+let authMode = "login";
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+const $ = (id) => document.getElementById(id);
+
+function escapeHTML(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 }
 
 
-function toggleTheme(){
+function getAvatar(profile) {
 
- document.body.classList.toggle(
-  "dark"
- );
-
- localStorage.setItem(
-  "cbc_theme",
-  document.body.classList.contains("dark")
-   ?"dark"
-   :"light"
- );
-}
-
-
-function applyTheme(){
-
- document.body.classList.toggle(
-  "dark",
-  localStorage.getItem(
-   "cbc_theme"
-  )==="dark"
- );
-}
-
-
-function openEditProfile(){
-
- $("editName").value=
-  currentProfile?.name||"";
-
- $("editBio").value=
-  currentProfile?.bio||"";
-
- $("editLocation").value=
-  currentProfile?.location||"";
-
- $("editModal")
-  .classList
-  .remove("hidden");
-}
-
-
-function closeEditProfile(){
-
- $("editModal")
-  .classList
-  .add("hidden");
-}
-
-
-async function saveProfile(){
-
- try{
-
-  let avatar=
-   currentProfile?.avatar_url||"";
-
-  let cover=
-   currentProfile?.cover_url||"";
-
-  let af=
-   $("avatarFile")
-   .files[0];
-
-  let cf=
-   $("coverFile")
-   .files[0];
-
-  if(af){
-
-   avatar=
-    await upload(
-     af,
-     `profiles/${currentUser.id}/avatar-${Date.now()}.${af.name.split(".").pop()}`
-    );
+  if (profile && profile.avatar_url) {
+    return profile.avatar_url;
   }
 
-  if(cf){
+  const name =
+    profile && profile.name
+      ? profile.name
+      : "User";
 
-   cover=
-    await upload(
-     cf,
-     `profiles/${currentUser.id}/cover-${Date.now()}.${cf.name.split(".").pop()}`
-    );
-  }
-
-  let {
-   data,
-   error
-  }=
-  await db
-  .from("profiles")
-  .update({
-   name:
-    $("editName")
-     .value
-     .trim()||
-    "User",
-
-   bio:
-    $("editBio")
-     .value
-     .trim(),
-
-   location:
-    $("editLocation")
-     .value
-     .trim(),
-
-   avatar_url:avatar,
-
-   cover_url:cover
-
-  })
-  .eq(
-   "id",
-   currentUser.id
-  )
-  .select()
-  .single();
-
-  if(error)
-   throw error;
-
-  currentProfile=data;
-
-  closeEditProfile();
-
-  await loadProfiles();
-
-  await loadPosts();
-
-  updateUI();
-
-  renderAll();
-
-  toast(
-   "প্রোফাইল আপডেট হয়েছে"
+  return (
+    "https://ui-avatars.com/api/?name=" +
+    encodeURIComponent(name) +
+    "&background=e0e3e6&color=191c1e"
   );
 
- }
- catch(e){
-
-  toast(
-   "আপডেট হয়নি: "+
-   e.message
-  );
-
- }
 }
 
 
-$("loginForm").onsubmit=
- async e=>{
+function timeAgo(date) {
 
-  e.preventDefault();
+  const seconds =
+    Math.floor(
+      (Date.now() - new Date(date).getTime()) / 1000
+    );
 
-  let {error}=
-   await db.auth.signInWithPassword({
-    email:
-     $("loginEmail")
-      .value
-      .trim(),
+  if (seconds < 60) {
+    return "Just now";
+  }
 
-    password:
-     $("loginPassword").value
-   });
+  if (seconds < 3600) {
+    return Math.floor(seconds / 60) + "m";
+  }
 
-  if(error)
-   toast(error.message);
+  if (seconds < 86400) {
+    return Math.floor(seconds / 3600) + "h";
+  }
+
+  if (seconds < 604800) {
+    return Math.floor(seconds / 86400) + "d";
+  }
+
+  return new Date(date).toLocaleDateString();
+
+}
+
+
+function showToast(message) {
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+
+  toast.classList.remove("hidden");
+
+  setTimeout(() => {
+    toast.classList.add("hidden");
+  }, 2500);
+
+}
+
+
+function closeModal(id) {
+
+  $(id).classList.add("hidden");
+
+}
+
+
+function openModal(id) {
+
+  $(id).classList.remove("hidden");
+
+}
+
+
+function showAuthMessage(message, type = "") {
+
+  const box = $("authMessage");
+
+  box.textContent = message;
+
+  box.className =
+    "message " +
+    type;
+
+  box.classList.remove("hidden");
+
+}
+
+
+function hideAuthMessage() {
+
+  $("authMessage").classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   AUTH MODE
+   ========================================================= */
+
+function setAuthMode(mode) {
+
+  authMode = mode;
+
+  $("loginTab")
+    .classList.toggle(
+      "active",
+      mode === "login"
+    );
+
+  $("signupTab")
+    .classList.toggle(
+      "active",
+      mode === "signup"
+    );
+
+  $("nameGroup")
+    .classList.toggle(
+      "hidden",
+      mode !== "signup"
+    );
+
+  $("authButton").textContent =
+    mode === "login"
+      ? "Login"
+      : "Create account";
+
+  hideAuthMessage();
+
+}
+
+
+$("loginTab").onclick = () => {
+
+  setAuthMode("login");
+
 };
 
 
-$("registerForm").onsubmit=
- async e=>{
+$("signupTab").onclick = () => {
 
-  e.preventDefault();
+  setAuthMode("signup");
 
-  let {
-   data,
-   error
-  }=
-  await db.auth.signUp({
+};
 
-   email:
-    $("registerEmail")
-     .value
-     .trim(),
 
-   password:
-    $("registerPassword").value,
+/* =========================================================
+   AUTH FORM
+   ========================================================= */
 
-   options:{
-    data:{
-     full_name:
-      $("registerName")
-       .value
-       .trim()
+$("authForm").addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+    const email =
+      $("emailInput").value.trim();
+
+    const password =
+      $("passwordInput").value;
+
+    $("authButton").disabled = true;
+
+    try {
+
+      if (authMode === "login") {
+
+        const { error } =
+          await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
+
+        if (error) {
+          throw error;
+        }
+
+      } else {
+
+        const name =
+          $("nameInput").value.trim();
+
+        if (!name) {
+          throw new Error(
+            "Please enter your name."
+          );
+        }
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                name
+              }
+            }
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data.user) {
+
+          const { error: profileError } =
+            await supabaseClient
+              .from("profiles")
+              .upsert({
+                id: data.user.id,
+                name: name
+              });
+
+          if (profileError) {
+            console.error(profileError);
+          }
+
+        }
+
+        if (!data.session) {
+
+          showAuthMessage(
+            "Account created. Check your email to confirm your account.",
+            "success"
+          );
+
+        }
+
+      }
+
+    } catch (error) {
+
+      showAuthMessage(
+        error.message,
+        "error"
+      );
+
+    } finally {
+
+      $("authButton").disabled = false;
+
     }
-   }
-
-  });
-
-  if(error){
-
-   toast(error.message);
 
   }
-  else{
-
-   toast(
-    data.session
-     ?"অ্যাকাউন্ট তৈরি হয়েছে"
-     :"ইমেইল যাচাই করুন"
-   );
-
-  }
-};
-
-
-$("search").oninput=
- renderPosts;
-
-
-async function logout(){
-
- await db.auth.signOut();
-}
-
-
-db.auth.onAuthStateChange(
- (e,s)=>{
-
-  if(s){
-
-   currentUser=s.user;
-
-   setTimeout(
-    start,
-    0
-   );
-
-  }
-  else{
-
-   showAuth();
-
-  }
-
- }
 );
 
 
-applyTheme();
+/* =========================================================
+   AUTH INITIALIZATION
+   ========================================================= */
 
+async function initializeApp() {
 
-db.auth
- .getSession()
- .then(
-  ({data})=>{
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient.auth.getSession();
 
-   if(data.session){
+  if (session) {
 
-    currentUser=
-     data.session.user;
-
-    start();
-
-   }
-   else{
-
-    showAuth();
-
-   }
+    await enterApplication(
+      session.user
+    );
 
   }
- );
+
+}
+
+
+supabaseClient.auth.onAuthStateChange(
+  async (event, session) => {
+
+    if (session) {
+
+      await enterApplication(
+        session.user
+      );
+
+    } else {
+
+      showAuthScreen();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SHOW AUTH
+   ========================================================= */
+
+function showAuthScreen() {
+
+  $("app")
+    .classList
+    .add("hidden");
+
+  $("authScreen")
+    .classList
+    .remove("hidden");
+
+  currentUser = null;
+  currentProfile = null;
+
+}
+
+
+/* =========================================================
+   ENTER APPLICATION
+   ========================================================= */
+
+async function enterApplication(user) {
+
+  currentUser = user;
+
+  let {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+  if (error) {
+    console.error(error);
+  }
+
+  if (!profile) {
+
+    const name =
+      user.user_metadata?.name ||
+      user.email?.split("@")[0] ||
+      "User";
+
+    const result =
+      await supabaseClient
+        .from("profiles")
+        .upsert({
+          id: user.id,
+          name: name
+        })
+        .select()
+        .single();
+
+    profile =
+      result.data || {
+        id: user.id,
+        name: name
+      };
+
+  }
+
+  currentProfile = profile;
+
+  $("authScreen")
+    .classList
+    .add("hidden");
+
+  $("app")
+    .classList
+    .remove("hidden");
+
+  await renderView("home");
+
+  loadSuggestions();
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+$("logoutButton").onclick =
+  async () => {
+
+    await supabaseClient.auth.signOut();
+
+  };
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+document
+  .querySelectorAll("[data-view]")
+  .forEach((button) => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        renderView(
+          button.dataset.view
+        );
+
+      }
+    );
+
+  });
+
+
+async function renderView(view) {
+
+  currentView = view;
+
+  document
+    .querySelectorAll("[data-view]")
+    .forEach((button) => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.view === view
+      );
+
+    });
+
+  if (view === "home") {
+
+    await renderHome();
+
+  }
+
+  if (view === "people") {
+
+    await renderPeople();
+
+  }
+
+  if (view === "profile") {
+
+    await renderProfile(
+      currentUser.id
+    );
+
+  }
+
+  if (view === "notifications") {
+
+    await renderNotifications();
+
+  }
+
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+async function renderHome() {
+
+  $("mainContent").innerHTML = `
+
+    <div
+      class="card composer"
+      id="composer"
+    >
+
+      <img
+        class="avatar"
+        src="${getAvatar(currentProfile)}"
+      >
+
+      <div class="composer-input">
+        What's on your mind?
+      </div>
+
+    </div>
+
+    <div id="feed">
+
+      <div class="loading">
+        Loading posts...
+      </div>
+
+    </div>
+
+  `;
+
+  $("composer").onclick =
+    () => openModal("postModal");
+
+  await loadFeed();
+
+}
+
+
+/* =========================================================
+   LOAD FEED
+   ========================================================= */
+
+async function loadFeed() {
+
+  const {
+    data: posts,
+    error
+  } =
+    await supabaseClient
+      .from("posts")
+      .select(`
+        id,
+        user_id,
+        content,
+        created_at,
+        profiles (
+          id,
+          name,
+          avatar_url
+        )
+      `)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(50);
+
+  if (error) {
+
+    $("feed").innerHTML =
+      `<div class="card message error">
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+
+  }
+
+  if (!posts || posts.length === 0) {
+
+    $("feed").innerHTML =
+      `<div class="card empty">
+        No posts yet. Be the first to share something!
+      </div>`;
+
+    return;
+
+  }
+
+  $("feed").innerHTML = "";
+
+  for (const post of posts) {
+
+    await addPostToFeed(post);
+
+  }
+
+}
+
+
+/* =========================================================
+   ADD POST
+   ========================================================= */
+
+async function addPostToFeed(post) {
+
+  const {
+    count: likeCount
+  } =
+    await supabaseClient
+      .from("likes")
+      .select("*", {
+        count: "exact",
+        head: true
+      })
+      .eq(
+        "post_id",
+        post.id
+      );
+
+  const {
+    data: myLike
+  } =
+    await supabaseClient
+      .from("likes")
+      .select("id")
+      .eq(
+        "post_id",
+        post.id
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+  const {
+    data: comments
+  } =
+    await supabaseClient
+      .from("comments")
+      .select(`
+        id,
+        content,
+        created_at,
+        profiles (
+          name,
+          avatar_url
+        )
+      `)
+      .eq(
+        "post_id",
+        post.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      )
+      .limit(10);
+
+  const article =
+    document.createElement("article");
+
+  article.className = "card";
+
+  article.innerHTML = `
+
+    <div class="post-header">
+
+      <img
+        class="avatar"
+        src="${getAvatar(post.profiles)}"
+      >
+
+      <div class="post-user">
+
+        <div class="post-name">
+          ${escapeHTML(
+            post.profiles?.name ||
+            "User"
+          )}
+        </div>
+
+        <div class="post-time">
+          ${timeAgo(post.created_at)}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="post-content">
+      ${escapeHTML(post.content)}
+    </div>
+
+
+    <div class="post-actions">
+
+      <button
+        class="post-action ${
+          myLike ? "liked" : ""
+        }"
+        data-like
+      >
+        ♥ Like
+        <span>
+          ${likeCount || 0}
+        </span>
+      </button>
+
+      <button
+        class="post-action"
+        data-comment
+      >
+        💬 Comment
+      </button>
+
+      ${
+        post.user_id === currentUser.id
+          ? `
+            <button
+              class="post-action"
+              data-delete
+            >
+              🗑 Delete
+            </button>
+          `
+          : ""
+      }
+
+    </div>
+
+
+    <div class="comments">
+
+      ${
+        (comments || [])
+          .map(
+            (comment) => `
+
+              <div class="comment">
+
+                <img
+                  class="avatar"
+                  src="${getAvatar(
+                    comment.profiles
+                  )}"
+                >
+
+                <div class="comment-content">
+
+                  <strong>
+                    ${escapeHTML(
+                      comment.profiles?.name ||
+                      "User"
+                    )}
+                  </strong>
+
+                  <br>
+
+                  ${escapeHTML(
+                    comment.content
+                  )}
+
+                </div>
+
+              </div>
+
+            `
+          )
+          .join("")
+      }
+
+    </div>
+
+
+    <div class="comment-box">
+
+      <input
+        class="comment-input"
+        placeholder="Write a comment..."
+      >
+
+      <button
+        class="secondary-btn"
+        data-send
+      >
+        Send
+      </button>
+
+    </div>
+
+  `;
+
+
+  $("feed")
+    .appendChild(article);
+
+
+  /* LIKE */
+
+  article
+    .querySelector("[data-like]")
+    .onclick = async () => {
+
+      if (myLike) {
+
+        await supabaseClient
+          .from("likes")
+          .delete()
+          .eq(
+            "id",
+            myLike.id
+          );
+
+      } else {
+
+        await supabaseClient
+          .from("likes")
+          .insert({
+            post_id: post.id,
+            user_id: currentUser.id
+          });
+
+        if (
+          post.user_id !==
+          currentUser.id
+        ) {
+
+          await supabaseClient
+            .from("notifications")
+            .insert({
+              user_id: post.user_id,
+              actor_id: currentUser.id,
+              type: "like",
+              post_id: post.id
+            });
+
+        }
+
+      }
+
+      await renderView("home");
+
+    };
+
+
+  /* COMMENT */
+
+  article
+    .querySelector("[data-send]")
+    .onclick = async () => {
+
+      const input =
+        article.querySelector(
+          ".comment-input"
+        );
+
+      const content =
+        input.value.trim();
+
+      if (!content) {
+        return;
+      }
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("comments")
+          .insert({
+            post_id: post.id,
+            user_id: currentUser.id,
+            content
+          });
+
+      if (error) {
+
+        showToast(
+          error.message
+        );
+
+        return;
+
+      }
+
+      if (
+        post.user_id !==
+        currentUser.id
+      ) {
+
+        await supabaseClient
+          .from("notifications")
+          .insert({
+            user_id: post.user_id,
+            actor_id: currentUser.id,
+            type: "comment",
+            post_id: post.id
+          });
+
+      }
+
+      await renderView("home");
+
+    };
+
+
+  /* COMMENT FOCUS */
+
+  article
+    .querySelector("[data-comment]")
+    .onclick = () => {
+
+      article
+        .querySelector(".comment-input")
+        .focus();
+
+    };
+
+
+  /* DELETE */
+
+  const deleteButton =
+    article.querySelector(
+      "[data-delete]"
+    );
+
+  if (deleteButton) {
+
+    deleteButton.onclick =
+      async () => {
+
+        if (
+          !confirm(
+            "Delete this post?"
+          )
+        ) {
+          return;
+        }
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("posts")
+            .delete()
+            .eq(
+              "id",
+              post.id
+            );
+
+        if (error) {
+
+          showToast(
+            error.message
+          );
+
+          return;
+
+        }
+
+        await renderView("home");
+
+      };
+
+  }
+
+}
+
+
+/* =========================================================
+   PUBLISH POST
+   ========================================================= */
+
+$("publishButton").onclick =
+  async () => {
+
+    const content =
+      $("postInput")
+        .value
+        .trim();
+
+    if (!content) {
+
+      showToast(
+        "Write something first."
+      );
+
+      return;
+
+    }
+
+    $("publishButton")
+      .disabled = true;
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("posts")
+        .insert({
+          user_id: currentUser.id,
+          content
+        });
+
+    $("publishButton")
+      .disabled = false;
+
+    if (error) {
+
+      showToast(
+        error.message
+      );
+
+      return;
+
+    }
+
+    $("postInput").value = "";
+
+    closeModal("postModal");
+
+    showToast(
+      "Post published!"
+    );
+
+    await renderView("home");
+
+  };
+
+
+/* =========================================================
+   PEOPLE
+   ========================================================= */
+
+async function renderPeople() {
+
+  $("mainContent").innerHTML = `
+
+    <div class="card">
+
+      <h2 style="margin-top:0">
+        People
+      </h2>
+
+      <div id="peopleList">
+        <div class="loading">
+          Loading...
+        </div>
+      </div>
+
+    </div>
+
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .neq(
+        "id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(50);
+
+
+  if (error) {
+
+    $("peopleList").innerHTML =
+      `<div class="message error">
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    $("peopleList").innerHTML =
+      `<div class="empty">
+        No other users yet.
+      </div>`;
+
+    return;
+
+  }
+
+
+  $("peopleList").innerHTML = "";
+
+
+  for (const person of data) {
+
+    const {
+      data: connection
+    } =
+      await supabaseClient
+        .from("connections")
+        .select("*")
+        .or(
+          `and(sender_id.eq.${currentUser.id},receiver_id.eq.${person.id}),and(sender_id.eq.${person.id},receiver_id.eq.${currentUser.id})`
+        )
+        .maybeSingle();
+
+
+    const row =
+      document.createElement("div");
+
+    row.className = "person";
+
+
+    let buttonHTML = "";
+
+
+    if (!connection) {
+
+      buttonHTML = `
+        <button
+          class="primary-btn"
+          data-connect
+        >
+          Connect
+        </button>
+      `;
+
+    } else if (
+      connection.status === "pending" &&
+      connection.receiver_id ===
+        currentUser.id
+    ) {
+
+      buttonHTML = `
+        <button
+          class="secondary-btn"
+          data-accept
+        >
+          Accept
+        </button>
+      `;
+
+    } else {
+
+      buttonHTML = `
+        <span class="status">
+          ${
+            connection.status ===
+            "accepted"
+              ? "Connected"
+              : "Pending"
+          }
+        </span>
+      `;
+
+    }
+
+
+    row.innerHTML = `
+
+      <img
+        class="avatar"
+        src="${getAvatar(person)}"
+      >
+
+      <div class="person-info">
+
+        <div class="person-name">
+          ${escapeHTML(person.name)}
+        </div>
+
+        <div class="person-location">
+          ${escapeHTML(
+            person.location || ""
+          )}
+        </div>
+
+      </div>
+
+      ${buttonHTML}
+
+    `;
+
+
+    $("peopleList")
+      .appendChild(row);
+
+
+    const connectButton =
+      row.querySelector(
+        "[data-connect]"
+      );
+
+
+    if (connectButton) {
+
+      connectButton.onclick =
+        async () => {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from("connections")
+              .insert({
+                sender_id:
+                  currentUser.id,
+                receiver_id:
+                  person.id,
+                status:
+                  "pending"
+              });
+
+
+          if (error) {
+
+            showToast(
+              error.message
+            );
+
+            return;
+
+          }
+
+
+          await supabaseClient
+            .from("notifications")
+            .insert({
+              user_id:
+                person.id,
+              actor_id:
+                currentUser.id,
+              type:
+                "connection"
+            });
+
+
+          showToast(
+            "Connection request sent!"
+          );
+
+
+          await renderPeople();
+
+        };
+
+    }
+
+
+    const acceptButton =
+      row.querySelector(
+        "[data-accept]"
+      );
+
+
+    if (acceptButton) {
+
+      acceptButton.onclick =
+        async () => {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from("connections")
+              .update({
+                status:
+                  "accepted"
+              })
+              .eq(
+                "id",
+                connection.id
+              );
+
+
+          if (error) {
+
+            showToast(
+              error.message
+            );
+
+            return;
+
+          }
+
+
+          await supabaseClient
+            .from("notifications")
+            .insert({
+              user_id:
+                connection.sender_id,
+              actor_id:
+                currentUser.id,
+              type:
+                "accepted"
+            });
+
+
+          await renderPeople();
+
+        };
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+async function renderProfile(id) {
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq(
+        "id",
+        id
+      )
+      .single();
+
+
+  if (error) {
+
+    $("mainContent").innerHTML =
+      `<div class="card message error">
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+
+  }
+
+
+  const {
+    count
+  } =
+    await supabaseClient
+      .from("posts")
+      .select("*", {
+        count: "exact",
+        head: true
+      })
+      .eq(
+        "user_id",
+        id
+      );
+
+
+  $("mainContent").innerHTML = `
+
+    <div
+      class="card"
+      style="padding:0;overflow:hidden"
+    >
+
+      <div class="cover"></div>
+
+      <div class="profile-info">
+
+        <img
+          class="avatar avatar-large profile-avatar"
+          src="${getAvatar(profile)}"
+        >
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+          "
+        >
+
+          <div class="profile-title">
+            ${escapeHTML(profile.name)}
+          </div>
+
+          ${
+            id === currentUser.id
+              ? `
+                <button
+                  id="editProfileButton"
+                  class="secondary-btn"
+                >
+                  Edit profile
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+        <div class="profile-location">
+          ${escapeHTML(
+            profile.location || ""
+          )}
+        </div>
+
+        <p>
+          ${escapeHTML(
+            profile.bio ||
+            "No bio yet."
+          )}
+        </p>
+
+        <div class="profile-location">
+          ${count || 0} posts
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="profilePosts"></div>
+
+  `;
+
+
+  const editButton =
+    $("editProfileButton");
+
+
+  if (editButton) {
+
+    editButton.onclick =
+      () => {
+
+        $("editName").value =
+          profile.name || "";
+
+        $("editBio").value =
+          profile.bio || "";
+
+        $("editLocation").value =
+          profile.location || "";
+
+        $("editAvatar").value =
+          profile.avatar_url || "";
+
+        openModal(
+          "profileModal"
+        );
+
+      };
+
+  }
+
+
+  await loadProfilePosts(id);
+
+}
+
+
+/* =========================================================
+   PROFILE POSTS
+   ========================================================= */
+
+async function loadProfilePosts(id) {
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .from("posts")
+      .select(`
+        id,
+        user_id,
+        content,
+        created_at,
+        profiles (
+          id,
+          name,
+          avatar_url
+        )
+      `)
+      .eq(
+        "user_id",
+        id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  $("profilePosts").innerHTML = "";
+
+
+  if (!data || data.length === 0) {
+
+    $("profilePosts").innerHTML =
+      `<div class="card empty">
+        No posts yet.
+      </div>`;
+
+    return;
+
+  }
+
+
+  data.forEach((post) => {
+
+    const article =
+      document.createElement("article");
+
+    article.className = "card";
+
+
+    article.innerHTML = `
+
+      <div class="post-header">
+
+        <img
+          class="avatar"
+          src="${getAvatar(post.profiles)}"
+        >
+
+        <div class="post-user">
+
+          <div class="post-name">
+            ${escapeHTML(
+              post.profiles?.name ||
+              "User"
+            )}
+          </div>
+
+          <div class="post-time">
+            ${timeAgo(
+              post.created_at
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="post-content">
+        ${escapeHTML(
+          post.content
+        )}
+      </div>
+
+    `;
+
+
+    $("profilePosts")
+      .appendChild(article);
+
+  });
+
+}
+
+
+/* =========================================================
+   SAVE PROFILE
+   ========================================================= */
+
+$("saveProfileButton").onclick =
+  async () => {
+
+    const update = {
+
+      name:
+        $("editName")
+          .value
+          .trim(),
+
+      bio:
+        $("editBio")
+          .value
+          .trim(),
+
+      location:
+        $("editLocation")
+          .value
+          .trim(),
+
+      avatar_url:
+        $("editAvatar")
+          .value
+          .trim()
+
+    };
+
+
+    if (!update.name) {
+
+      showToast(
+        "Name is required."
+      );
+
+      return;
+
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .update(update)
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .select()
+        .single();
+
+
+    if (error) {
+
+      showToast(
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    currentProfile = data;
+
+    closeModal(
+      "profileModal"
+    );
+
+    showToast(
+      "Profile updated!"
+    );
+
+    await renderProfile(
+      currentUser.id
+    );
+
+    loadSuggestions();
+
+  };
+
+
+/* =========================================================
+   SUGGESTIONS
+   ========================================================= */
+
+async function loadSuggestions() {
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .neq(
+        "id",
+        currentUser.id
+      )
+      .limit(5);
+
+
+  if (!data || data.length === 0) {
+
+    $("suggestions").innerHTML =
+      `<div class="empty">
+        No suggestions yet.
+      </div>`;
+
+    return;
+
+  }
+
+
+  $("suggestions").innerHTML =
+    data
+      .map(
+        (person) => `
+
+          <div class="person">
+
+            <img
+              class="avatar"
+              src="${getAvatar(person)}"
+            >
+
+            <div class="person-info">
+
+              <div class="person-name">
+                ${escapeHTML(
+                  person.name
+                )}
+              </div>
+
+              <div class="person-location">
+                ${escapeHTML(
+                  person.location || ""
+                )}
+              </div>
+
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+$("notificationsButton").onclick =
+  () => {
+
+    renderView(
+      "notifications"
+    );
+
+  };
+
+
+async function renderNotifications() {
+
+  $("mainContent").innerHTML = `
+
+    <div class="card">
+
+      <h2 style="margin-top:0">
+        Notifications
+      </h2>
+
+      <div id="notificationsList">
+        <div class="loading">
+          Loading...
+        </div>
+      </div>
+
+    </div>
+
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("notifications")
+      .select(`
+        id,
+        type,
+        is_read,
+        created_at,
+        actor_id
+      `)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(50);
+
+
+  if (error) {
+
+    $("notificationsList").innerHTML =
+      `<div class="message error">
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    $("notificationsList").innerHTML =
+      `<div class="empty">
+        No notifications yet.
+      </div>`;
+
+    return;
+
+  }
+
+
+  const actorIds =
+    [
+      ...new Set(
+        data
+          .map(
+            n => n.actor_id
+          )
+          .filter(Boolean)
+      )
+    ];
+
+
+  let actors = [];
+
+
+  if (actorIds.length) {
+
+    const result =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,name,avatar_url"
+        )
+        .in(
+          "id",
+          actorIds
+        );
+
+    actors =
+      result.data || [];
+
+  }
+
+
+  const actorMap =
+    new Map(
+      actors.map(
+        actor => [
+          actor.id,
+          actor
+        ]
+      )
+    );
+
+
+  $("notificationsList").innerHTML =
+    data
+      .map(
+        notification => {
+
+          const actor =
+            actorMap.get(
+              notification.actor_id
+            );
+
+
+          let text =
+            "interacted with you";
+
+
+          if (
+            notification.type ===
+            "like"
+          ) {
+
+            text =
+              "liked your post";
+
+          }
+
+
+          if (
+            notification.type ===
+            "comment"
+          ) {
+
+            text =
+              "commented on your post";
+
+          }
+
+
+          if (
+            notification.type ===
+            "connection"
+          ) {
+
+            text =
+              "sent you a connection request";
+
+          }
+
+
+          if (
+            notification.type ===
+            "accepted"
+          ) {
+
+            text =
+              "accepted your connection request";
+
+          }
+
+
+          return `
+
+            <div class="person">
+
+              <img
+                class="avatar"
+                src="${getAvatar(actor)}"
+              >
+
+              <div class="person-info">
+
+                <div class="person-name">
+
+                  ${escapeHTML(
+                    actor?.name ||
+                    "Someone"
+                  )}
+
+                  ${text}
+
+                </div>
+
+                <div class="person-location">
+
+                  ${timeAgo(
+                    notification.created_at
+                  )}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+let searchTimer;
+
+
+$("searchInput").addEventListener(
+  "input",
+  () => {
+
+    clearTimeout(
+      searchTimer
+    );
+
+    const query =
+      $("searchInput")
+        .value
+        .trim();
+
+
+    searchTimer =
+      setTimeout(
+        async () => {
+
+          if (!query) {
+
+            await renderView(
+              "home"
+            );
+
+            return;
+
+          }
+
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient
+              .from("profiles")
+              .select("*")
+              .ilike(
+                "name",
+                `%${query}%`
+              )
+              .limit(30);
+
+
+          if (error) {
+
+            $("mainContent").innerHTML =
+              `<div class="card message error">
+                ${escapeHTML(
+                  error.message
+                )}
+              </div>`;
+
+            return;
+
+          }
+
+
+          $("mainContent").innerHTML = `
+
+            <div class="card">
+
+              <h2 style="margin-top:0">
+                Search results
+              </h2>
+
+              <div id="searchResults"></div>
+
+            </div>
+
+          `;
+
+
+          if (
+            !data ||
+            data.length === 0
+          ) {
+
+            $("searchResults").innerHTML =
+              `<div class="empty">
+                No people found.
+              </div>`;
+
+            return;
+
+          }
+
+
+          $("searchResults").innerHTML =
+            data
+              .map(
+                person => `
+
+                  <div class="person">
+
+                    <img
+                      class="avatar"
+                      src="${getAvatar(
+                        person
+                      )}"
+                    >
+
+                    <div class="person-info">
+
+                      <div class="person-name">
+                        ${escapeHTML(
+                          person.name
+                        )}
+                      </div>
+
+                      <div class="person-location">
+                        ${escapeHTML(
+                          person.bio ||
+                          ""
+                        )}
+                      </div>
+
+                    </div>
+
+                    <button
+                      class="secondary-btn"
+                      onclick="renderProfile('${person.id}')"
+                    >
+                      View
+                    </button>
+
+                  </div>
+
+                `
+              )
+              .join("");
+
+        },
+        350
+      );
+
+  }
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initializeApp();
 
 </script>
 
 </body>
-</html>
+ </html>
