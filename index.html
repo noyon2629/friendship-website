@@ -70,18 +70,17 @@
       <a href="#" class="brand-title">Social Connect</a>
     </header>
 
-    <!-- AUTH FORM SECTION -->
+    <!-- AUTH SECTION -->
     <div id="auth-section" class="card" style="margin: 16px; border-radius: 12px;">
       <h2 style="font-size: 20px; margin-bottom: 16px;" id="auth-title">লগইন করুন</h2>
       
-      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-        <!-- Sign up state-এ এই ফিল্ডটি দৃশ্যমান হবে -->
+      <div>
         <input type="text" id="auth-name" class="form-control hidden" placeholder="আপনার পূর্ণ নাম (Full Name)">
-        <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস" required>
-        <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড" required>
+        <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস">
+        <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড">
         
-        <button type="submit" id="btn-auth-submit" class="btn-primary">লগইন</button>
-      </form>
+        <button type="button" id="btn-auth-submit" class="btn-primary" onclick="handleAuthSubmit()">লগইন</button>
+      </div>
 
       <p style="text-align: center; font-size: 14px; margin-top: 16px; cursor: pointer; color: var(--color-primary);" id="toggle-auth" onclick="toggleAuthMode()">
         নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>
@@ -169,7 +168,6 @@
       }
     });
 
-    // Sign Up / Login Switch Function
     function toggleAuthMode() {
       isSignUp = !isSignUp;
       document.getElementById('auth-title').innerText = isSignUp ? 'নতুন অ্যাকাউন্ট তৈরি করুন' : 'লগইন করুন';
@@ -178,10 +176,8 @@
       const nameInput = document.getElementById('auth-name');
       if (isSignUp) {
         nameInput.classList.remove('hidden');
-        nameInput.setAttribute('required', 'required');
       } else {
         nameInput.classList.add('hidden');
-        nameInput.removeAttribute('required');
       }
 
       document.getElementById('toggle-auth').innerHTML = isSignUp ? 
@@ -189,31 +185,46 @@
         'নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>';
     }
 
-    // Submit Handler
-    async function handleAuthSubmit(e) {
-      e.preventDefault();
-      
-      const email = document.getElementById('auth-email').value;
-      const password = document.getElementById('auth-password').value;
-      const name = document.getElementById('auth-name').value;
+    async function handleAuthSubmit() {
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
+      const name = document.getElementById('auth-name').value.trim();
 
-      document.getElementById('btn-auth-submit').innerText = "অপেক্ষা করুন...";
+      if (!email || !password) {
+        return alert('অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড দিন!');
+      }
+
+      const btn = document.getElementById('btn-auth-submit');
+      btn.innerText = "অপেক্ষা করুন...";
+      btn.disabled = true;
 
       if (isSignUp) {
+        if (!name) {
+          btn.innerText = "সাইন আপ";
+          btn.disabled = false;
+          return alert('অনুগ্রহ করে আপনার নাম দিন!');
+        }
+
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) {
-          alert("ভুল হয়েছে: " + error.message);
-          document.getElementById('btn-auth-submit').innerText = "সাইন আপ";
+          alert("সাইন আপ ব্যর্থ: " + error.message);
+          btn.innerText = "সাইন আপ";
+          btn.disabled = false;
         } else {
-          await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
-          currentUser = data.user;
-          showMainApp();
+          if (data.user) {
+            await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
+            currentUser = data.user;
+            showMainApp();
+          } else {
+            alert('অ্যাকাউন্ট তৈরি হয়েছে!');
+          }
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
           alert("লগইন ব্যর্থ: " + error.message);
-          document.getElementById('btn-auth-submit').innerText = "লগইন";
+          btn.innerText = "লগইন";
+          btn.disabled = false;
         } else {
           currentUser = data.user;
           showMainApp();
