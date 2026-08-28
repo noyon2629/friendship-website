@@ -122,6 +122,7 @@
       padding: 10px;
       border-radius: 6px;
       font-weight: 600;
+      cursor: pointer;
     }
 
     .auth-tab.active {
@@ -650,11 +651,11 @@
       </div>
 
       <div class="auth-tabs">
-        <button id="loginTab" class="auth-tab active">
+        <button id="loginTab" type="button" class="auth-tab active">
           Login
         </button>
 
-        <button id="signupTab" class="auth-tab">
+        <button id="signupTab" type="button" class="auth-tab">
           Create account
         </button>
       </div>
@@ -1000,17 +1001,13 @@
    SUPABASE CONFIG
    ========================================================= */
 
-const SUPABASE_URL =
-  "https://fpdhozxounuxbpnioban.supabase.co";
+const SUPABASE_URL = "https://fpdhozxounuxbpnioban.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
 
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_ptxesxTmPQPlMGFtzScOZw_ITpbDTou";
-
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 
 /* =========================================================
@@ -1030,113 +1027,75 @@ let authMode = "login";
 const $ = (id) => document.getElementById(id);
 
 function escapeHTML(value) {
-
   return String(value || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-
 }
 
 
 function getAvatar(profile) {
-
   if (profile && profile.avatar_url) {
     return profile.avatar_url;
   }
 
-  const name =
-    profile && profile.name
-      ? profile.name
-      : "User";
+  const name = profile && profile.name ? profile.name : "User";
 
   return (
     "https://ui-avatars.com/api/?name=" +
     encodeURIComponent(name) +
     "&background=e0e3e6&color=191c1e"
   );
-
 }
 
 
 function timeAgo(date) {
+  const seconds = Math.floor(
+    (Date.now() - new Date(date).getTime()) / 1000
+  );
 
-  const seconds =
-    Math.floor(
-      (Date.now() - new Date(date).getTime()) / 1000
-    );
-
-  if (seconds < 60) {
-    return "Just now";
-  }
-
-  if (seconds < 3600) {
-    return Math.floor(seconds / 60) + "m";
-  }
-
-  if (seconds < 86400) {
-    return Math.floor(seconds / 3600) + "h";
-  }
-
-  if (seconds < 604800) {
-    return Math.floor(seconds / 86400) + "d";
-  }
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return Math.floor(seconds / 60) + "m";
+  if (seconds < 86400) return Math.floor(seconds / 3600) + "h";
+  if (seconds < 604800) return Math.floor(seconds / 86400) + "d";
 
   return new Date(date).toLocaleDateString();
-
 }
 
 
 function showToast(message) {
-
   const toast = $("toast");
-
   toast.textContent = message;
-
   toast.classList.remove("hidden");
 
   setTimeout(() => {
     toast.classList.add("hidden");
   }, 2500);
-
 }
 
 
 function closeModal(id) {
-
   $(id).classList.add("hidden");
-
 }
 
 
 function openModal(id) {
-
   $(id).classList.remove("hidden");
-
 }
 
 
 function showAuthMessage(message, type = "") {
-
   const box = $("authMessage");
-
   box.textContent = message;
-
-  box.className =
-    "message " +
-    type;
-
+  box.className = "message " + type;
   box.classList.remove("hidden");
-
 }
 
 
 function hideAuthMessage() {
-
   $("authMessage").classList.add("hidden");
-
 }
 
 
@@ -1145,151 +1104,87 @@ function hideAuthMessage() {
    ========================================================= */
 
 function setAuthMode(mode) {
-
   authMode = mode;
 
-  $("loginTab")
-    .classList.toggle(
-      "active",
-      mode === "login"
-    );
+  $("loginTab").classList.toggle("active", mode === "login");
+  $("signupTab").classList.toggle("active", mode === "signup");
 
-  $("signupTab")
-    .classList.toggle(
-      "active",
-      mode === "signup"
-    );
+  const nameGroup = $("nameGroup");
+  const nameInput = $("nameInput");
 
-  $("nameGroup")
-    .classList.toggle(
-      "hidden",
-      mode !== "signup"
-    );
+  if (mode === "signup") {
+    nameGroup.classList.remove("hidden");
+    nameInput.setAttribute("required", "true");
+  } else {
+    nameGroup.classList.add("hidden");
+    nameInput.removeAttribute("required");
+  }
 
-  $("authButton").textContent =
-    mode === "login"
-      ? "Login"
-      : "Create account";
-
+  $("authButton").textContent = mode === "login" ? "Login" : "Create account";
   hideAuthMessage();
-
 }
 
 
-$("loginTab").onclick = () => {
-
-  setAuthMode("login");
-
-};
-
-
-$("signupTab").onclick = () => {
-
-  setAuthMode("signup");
-
-};
+$("loginTab").onclick = () => setAuthMode("login");
+$("signupTab").onclick = () => setAuthMode("signup");
 
 
 /* =========================================================
    AUTH FORM
    ========================================================= */
 
-$("authForm").addEventListener(
-  "submit",
-  async (event) => {
+$("authForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    event.preventDefault();
+  const email = $("emailInput").value.trim();
+  const password = $("passwordInput").value;
+  const name = $("nameInput").value.trim();
 
-    const email =
-      $("emailInput").value.trim();
+  $("authButton").disabled = true;
 
-    const password =
-      $("passwordInput").value;
+  try {
+    if (authMode === "login") {
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    $("authButton").disabled = true;
-
-    try {
-
-      if (authMode === "login") {
-
-        const { error } =
-          await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-          });
-
-        if (error) {
-          throw error;
-        }
-
-      } else {
-
-        const name =
-          $("nameInput").value.trim();
-
-        if (!name) {
-          throw new Error(
-            "Please enter your name."
-          );
-        }
-
-        const { data, error } =
-          await supabaseClient.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                name
-              }
-            }
-          });
-
-        if (error) {
-          throw error;
-        }
-
-        if (data.user) {
-
-          const { error: profileError } =
-            await supabaseClient
-              .from("profiles")
-              .upsert({
-                id: data.user.id,
-                name: name
-              });
-
-          if (profileError) {
-            console.error(profileError);
-          }
-
-        }
-
-        if (!data.session) {
-
-          showAuthMessage(
-            "Account created. Check your email to confirm your account.",
-            "success"
-          );
-
-        }
-
+      if (error) throw error;
+    } else {
+      if (!name) {
+        throw new Error("Please enter your name.");
       }
 
-    } catch (error) {
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name }
+        }
+      });
 
-      showAuthMessage(
-        error.message,
-        "error"
-      );
+      if (error) throw error;
 
-    } finally {
+      if (data.user) {
+        await supabaseClient.from("profiles").upsert({
+          id: data.user.id,
+          name: name
+        });
+      }
 
-      $("authButton").disabled = false;
-
+      if (!data.session) {
+        showAuthMessage(
+          "Account created! Please check your email to verify your account.",
+          "success"
+        );
+      }
     }
-
+  } catch (error) {
+    showAuthMessage(error.message, "error");
+  } finally {
+    $("authButton").disabled = false;
   }
-);
+});
 
 
 /* =========================================================
@@ -1297,42 +1192,21 @@ $("authForm").addEventListener(
    ========================================================= */
 
 async function initializeApp() {
-
-  const {
-    data: {
-      session
-    }
-  } =
-    await supabaseClient.auth.getSession();
+  const { data: { session } } = await supabaseClient.auth.getSession();
 
   if (session) {
-
-    await enterApplication(
-      session.user
-    );
-
+    await enterApplication(session.user);
   }
-
 }
 
 
-supabaseClient.auth.onAuthStateChange(
-  async (event, session) => {
-
-    if (session) {
-
-      await enterApplication(
-        session.user
-      );
-
-    } else {
-
-      showAuthScreen();
-
-    }
-
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (session) {
+    await enterApplication(session.user);
+  } else {
+    showAuthScreen();
   }
-);
+});
 
 
 /* =========================================================
@@ -1340,18 +1214,11 @@ supabaseClient.auth.onAuthStateChange(
    ========================================================= */
 
 function showAuthScreen() {
-
-  $("app")
-    .classList
-    .add("hidden");
-
-  $("authScreen")
-    .classList
-    .remove("hidden");
+  $("app").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
 
   currentUser = null;
   currentProfile = null;
-
 }
 
 
@@ -1360,62 +1227,36 @@ function showAuthScreen() {
    ========================================================= */
 
 async function enterApplication(user) {
-
   currentUser = user;
 
-  let {
-    data: profile,
-    error
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
-
-  if (error) {
-    console.error(error);
-  }
+  let { data: profile } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle();
 
   if (!profile) {
+    const name = user.user_metadata?.name || user.email?.split("@")[0] || "User";
 
-    const name =
-      user.user_metadata?.name ||
-      user.email?.split("@")[0] ||
-      "User";
-
-    const result =
-      await supabaseClient
-        .from("profiles")
-        .upsert({
-          id: user.id,
-          name: name
-        })
-        .select()
-        .single();
-
-    profile =
-      result.data || {
+    const result = await supabaseClient
+      .from("profiles")
+      .upsert({
         id: user.id,
         name: name
-      };
+      })
+      .select()
+      .single();
 
+    profile = result.data || { id: user.id, name: name };
   }
 
   currentProfile = profile;
 
-  $("authScreen")
-    .classList
-    .add("hidden");
-
-  $("app")
-    .classList
-    .remove("hidden");
+  $("authScreen").classList.add("hidden");
+  $("app").classList.remove("hidden");
 
   await renderView("home");
-
   loadSuggestions();
-
 }
 
 
@@ -1423,77 +1264,33 @@ async function enterApplication(user) {
    LOGOUT
    ========================================================= */
 
-$("logoutButton").onclick =
-  async () => {
-
-    await supabaseClient.auth.signOut();
-
-  };
+$("logoutButton").onclick = async () => {
+  await supabaseClient.auth.signOut();
+};
 
 
 /* =========================================================
    NAVIGATION
    ========================================================= */
 
-document
-  .querySelectorAll("[data-view]")
-  .forEach((button) => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        renderView(
-          button.dataset.view
-        );
-
-      }
-    );
-
+document.querySelectorAll("[data-view]").forEach((button) => {
+  button.addEventListener("click", () => {
+    renderView(button.dataset.view);
   });
+});
 
 
 async function renderView(view) {
-
   currentView = view;
 
-  document
-    .querySelectorAll("[data-view]")
-    .forEach((button) => {
+  document.querySelectorAll("[data-view]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.view === view);
+  });
 
-      button.classList.toggle(
-        "active",
-        button.dataset.view === view
-      );
-
-    });
-
-  if (view === "home") {
-
-    await renderHome();
-
-  }
-
-  if (view === "people") {
-
-    await renderPeople();
-
-  }
-
-  if (view === "profile") {
-
-    await renderProfile(
-      currentUser.id
-    );
-
-  }
-
-  if (view === "notifications") {
-
-    await renderNotifications();
-
-  }
-
+  if (view === "home") await renderHome();
+  if (view === "people") await renderPeople();
+  if (view === "profile") await renderProfile(currentUser.id);
+  if (view === "notifications") await renderNotifications();
 }
 
 
@@ -1502,40 +1299,18 @@ async function renderView(view) {
    ========================================================= */
 
 async function renderHome() {
-
   $("mainContent").innerHTML = `
-
-    <div
-      class="card composer"
-      id="composer"
-    >
-
-      <img
-        class="avatar"
-        src="${getAvatar(currentProfile)}"
-      >
-
-      <div class="composer-input">
-        What's on your mind?
-      </div>
-
+    <div class="card composer" id="composer">
+      <img class="avatar" src="${getAvatar(currentProfile)}">
+      <div class="composer-input">What's on your mind?</div>
     </div>
-
     <div id="feed">
-
-      <div class="loading">
-        Loading posts...
-      </div>
-
+      <div class="loading">Loading posts...</div>
     </div>
-
   `;
 
-  $("composer").onclick =
-    () => openModal("postModal");
-
+  $("composer").onclick = () => openModal("postModal");
   await loadFeed();
-
 }
 
 
@@ -1544,62 +1319,37 @@ async function renderHome() {
    ========================================================= */
 
 async function loadFeed() {
-
-  const {
-    data: posts,
-    error
-  } =
-    await supabaseClient
-      .from("posts")
-      .select(`
+  const { data: posts, error } = await supabaseClient
+    .from("posts")
+    .select(`
+      id,
+      user_id,
+      content,
+      created_at,
+      profiles (
         id,
-        user_id,
-        content,
-        created_at,
-        profiles (
-          id,
-          name,
-          avatar_url
-        )
-      `)
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
+        name,
+        avatar_url
       )
-      .limit(50);
+    `)
+    .order("created_at", { ascending: false })
+    .limit(50);
 
   if (error) {
-
-    $("feed").innerHTML =
-      `<div class="card message error">
-        ${escapeHTML(error.message)}
-      </div>`;
-
+    $("feed").innerHTML = `<div class="card message error">${escapeHTML(error.message)}</div>`;
     return;
-
   }
 
   if (!posts || posts.length === 0) {
-
-    $("feed").innerHTML =
-      `<div class="card empty">
-        No posts yet. Be the first to share something!
-      </div>`;
-
+    $("feed").innerHTML = `<div class="card empty">No posts yet. Be the first to share something!</div>`;
     return;
-
   }
 
   $("feed").innerHTML = "";
 
   for (const post of posts) {
-
     await addPostToFeed(post);
-
   }
-
 }
 
 
@@ -1608,371 +1358,140 @@ async function loadFeed() {
    ========================================================= */
 
 async function addPostToFeed(post) {
+  const { count: likeCount } = await supabaseClient
+    .from("likes")
+    .select("*", { count: "exact", head: true })
+    .eq("post_id", post.id);
 
-  const {
-    count: likeCount
-  } =
-    await supabaseClient
-      .from("likes")
-      .select("*", {
-        count: "exact",
-        head: true
-      })
-      .eq(
-        "post_id",
-        post.id
-      );
+  const { data: myLike } = await supabaseClient
+    .from("likes")
+    .select("id")
+    .eq("post_id", post.id)
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
 
-  const {
-    data: myLike
-  } =
-    await supabaseClient
-      .from("likes")
-      .select("id")
-      .eq(
-        "post_id",
-        post.id
+  const { data: comments } = await supabaseClient
+    .from("comments")
+    .select(`
+      id,
+      content,
+      created_at,
+      profiles (
+        name,
+        avatar_url
       )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .maybeSingle();
+    `)
+    .eq("post_id", post.id)
+    .order("created_at", { ascending: true })
+    .limit(10);
 
-  const {
-    data: comments
-  } =
-    await supabaseClient
-      .from("comments")
-      .select(`
-        id,
-        content,
-        created_at,
-        profiles (
-          name,
-          avatar_url
-        )
-      `)
-      .eq(
-        "post_id",
-        post.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending: true
-        }
-      )
-      .limit(10);
-
-  const article =
-    document.createElement("article");
-
+  const article = document.createElement("article");
   article.className = "card";
 
   article.innerHTML = `
-
     <div class="post-header">
-
-      <img
-        class="avatar"
-        src="${getAvatar(post.profiles)}"
-      >
-
+      <img class="avatar" src="${getAvatar(post.profiles)}">
       <div class="post-user">
-
-        <div class="post-name">
-          ${escapeHTML(
-            post.profiles?.name ||
-            "User"
-          )}
-        </div>
-
-        <div class="post-time">
-          ${timeAgo(post.created_at)}
-        </div>
-
+        <div class="post-name">${escapeHTML(post.profiles?.name || "User")}</div>
+        <div class="post-time">${timeAgo(post.created_at)}</div>
       </div>
-
     </div>
 
-
-    <div class="post-content">
-      ${escapeHTML(post.content)}
-    </div>
-
+    <div class="post-content">${escapeHTML(post.content)}</div>
 
     <div class="post-actions">
-
-      <button
-        class="post-action ${
-          myLike ? "liked" : ""
-        }"
-        data-like
-      >
-        ♥ Like
-        <span>
-          ${likeCount || 0}
-        </span>
+      <button class="post-action ${myLike ? "liked" : ""}" data-like>
+        ♥ Like <span>${likeCount || 0}</span>
       </button>
-
-      <button
-        class="post-action"
-        data-comment
-      >
-        💬 Comment
-      </button>
-
-      ${
-        post.user_id === currentUser.id
-          ? `
-            <button
-              class="post-action"
-              data-delete
-            >
-              🗑 Delete
-            </button>
-          `
-          : ""
-      }
-
+      <button class="post-action" data-comment>💬 Comment</button>
+      ${post.user_id === currentUser.id ? `<button class="post-action" data-delete>🗑 Delete</button>` : ""}
     </div>
-
 
     <div class="comments">
-
-      ${
-        (comments || [])
-          .map(
-            (comment) => `
-
-              <div class="comment">
-
-                <img
-                  class="avatar"
-                  src="${getAvatar(
-                    comment.profiles
-                  )}"
-                >
-
-                <div class="comment-content">
-
-                  <strong>
-                    ${escapeHTML(
-                      comment.profiles?.name ||
-                      "User"
-                    )}
-                  </strong>
-
-                  <br>
-
-                  ${escapeHTML(
-                    comment.content
-                  )}
-
-                </div>
-
-              </div>
-
-            `
-          )
-          .join("")
-      }
-
+      ${(comments || []).map(comment => `
+        <div class="comment">
+          <img class="avatar" src="${getAvatar(comment.profiles)}">
+          <div class="comment-content">
+            <strong>${escapeHTML(comment.profiles?.name || "User")}</strong><br>
+            ${escapeHTML(comment.content)}
+          </div>
+        </div>
+      `).join("")}
     </div>
-
 
     <div class="comment-box">
-
-      <input
-        class="comment-input"
-        placeholder="Write a comment..."
-      >
-
-      <button
-        class="secondary-btn"
-        data-send
-      >
-        Send
-      </button>
-
+      <input class="comment-input" placeholder="Write a comment...">
+      <button class="secondary-btn" data-send>Send</button>
     </div>
-
   `;
 
-
-  $("feed")
-    .appendChild(article);
-
+  $("feed").appendChild(article);
 
   /* LIKE */
-
-  article
-    .querySelector("[data-like]")
-    .onclick = async () => {
-
-      if (myLike) {
-
-        await supabaseClient
-          .from("likes")
-          .delete()
-          .eq(
-            "id",
-            myLike.id
-          );
-
-      } else {
-
-        await supabaseClient
-          .from("likes")
-          .insert({
-            post_id: post.id,
-            user_id: currentUser.id
-          });
-
-        if (
-          post.user_id !==
-          currentUser.id
-        ) {
-
-          await supabaseClient
-            .from("notifications")
-            .insert({
-              user_id: post.user_id,
-              actor_id: currentUser.id,
-              type: "like",
-              post_id: post.id
-            });
-
-        }
-
+  article.querySelector("[data-like]").onclick = async () => {
+    if (myLike) {
+      await supabaseClient.from("likes").delete().eq("id", myLike.id);
+    } else {
+      await supabaseClient.from("likes").insert({ post_id: post.id, user_id: currentUser.id });
+      if (post.user_id !== currentUser.id) {
+        await supabaseClient.from("notifications").insert({
+          user_id: post.user_id,
+          actor_id: currentUser.id,
+          type: "like",
+          post_id: post.id
+        });
       }
-
-      await renderView("home");
-
-    };
-
+    }
+    await renderView("home");
+  };
 
   /* COMMENT */
+  article.querySelector("[data-send]").onclick = async () => {
+    const input = article.querySelector(".comment-input");
+    const content = input.value.trim();
+    if (!content) return;
 
-  article
-    .querySelector("[data-send]")
-    .onclick = async () => {
+    const { error } = await supabaseClient.from("comments").insert({
+      post_id: post.id,
+      user_id: currentUser.id,
+      content
+    });
 
-      const input =
-        article.querySelector(
-          ".comment-input"
-        );
+    if (error) {
+      showToast(error.message);
+      return;
+    }
 
-      const content =
-        input.value.trim();
+    if (post.user_id !== currentUser.id) {
+      await supabaseClient.from("notifications").insert({
+        user_id: post.user_id,
+        actor_id: currentUser.id,
+        type: "comment",
+        post_id: post.id
+      });
+    }
 
-      if (!content) {
-        return;
-      }
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("comments")
-          .insert({
-            post_id: post.id,
-            user_id: currentUser.id,
-            content
-          });
-
-      if (error) {
-
-        showToast(
-          error.message
-        );
-
-        return;
-
-      }
-
-      if (
-        post.user_id !==
-        currentUser.id
-      ) {
-
-        await supabaseClient
-          .from("notifications")
-          .insert({
-            user_id: post.user_id,
-            actor_id: currentUser.id,
-            type: "comment",
-            post_id: post.id
-          });
-
-      }
-
-      await renderView("home");
-
-    };
-
+    await renderView("home");
+  };
 
   /* COMMENT FOCUS */
-
-  article
-    .querySelector("[data-comment]")
-    .onclick = () => {
-
-      article
-        .querySelector(".comment-input")
-        .focus();
-
-    };
-
+  article.querySelector("[data-comment]").onclick = () => {
+    article.querySelector(".comment-input").focus();
+  };
 
   /* DELETE */
-
-  const deleteButton =
-    article.querySelector(
-      "[data-delete]"
-    );
-
+  const deleteButton = article.querySelector("[data-delete]");
   if (deleteButton) {
-
-    deleteButton.onclick =
-      async () => {
-
-        if (
-          !confirm(
-            "Delete this post?"
-          )
-        ) {
-          return;
-        }
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("posts")
-            .delete()
-            .eq(
-              "id",
-              post.id
-            );
-
-        if (error) {
-
-          showToast(
-            error.message
-          );
-
-          return;
-
-        }
-
-        await renderView("home");
-
-      };
-
+    deleteButton.onclick = async () => {
+      if (!confirm("Delete this post?")) return;
+      const { error } = await supabaseClient.from("posts").delete().eq("id", post.id);
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+      await renderView("home");
+    };
   }
-
 }
 
 
@@ -1980,61 +1499,33 @@ async function addPostToFeed(post) {
    PUBLISH POST
    ========================================================= */
 
-$("publishButton").onclick =
-  async () => {
+$("publishButton").onclick = async () => {
+  const content = $("postInput").value.trim();
 
-    const content =
-      $("postInput")
-        .value
-        .trim();
+  if (!content) {
+    showToast("Write something first.");
+    return;
+  }
 
-    if (!content) {
+  $("publishButton").disabled = true;
 
-      showToast(
-        "Write something first."
-      );
+  const { error } = await supabaseClient.from("posts").insert({
+    user_id: currentUser.id,
+    content
+  });
 
-      return;
+  $("publishButton").disabled = false;
 
-    }
+  if (error) {
+    showToast(error.message);
+    return;
+  }
 
-    $("publishButton")
-      .disabled = true;
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("posts")
-        .insert({
-          user_id: currentUser.id,
-          content
-        });
-
-    $("publishButton")
-      .disabled = false;
-
-    if (error) {
-
-      showToast(
-        error.message
-      );
-
-      return;
-
-    }
-
-    $("postInput").value = "";
-
-    closeModal("postModal");
-
-    showToast(
-      "Post published!"
-    );
-
-    await renderView("home");
-
-  };
+  $("postInput").value = "";
+  closeModal("postModal");
+  showToast("Post published!");
+  await renderView("home");
+};
 
 
 /* =========================================================
@@ -2042,286 +1533,110 @@ $("publishButton").onclick =
    ========================================================= */
 
 async function renderPeople() {
-
   $("mainContent").innerHTML = `
-
     <div class="card">
-
-      <h2 style="margin-top:0">
-        People
-      </h2>
-
-      <div id="peopleList">
-        <div class="loading">
-          Loading...
-        </div>
-      </div>
-
+      <h2 style="margin-top:0">People</h2>
+      <div id="peopleList"><div class="loading">Loading...</div></div>
     </div>
-
   `;
 
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .neq(
-        "id",
-        currentUser.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      )
-      .limit(50);
-
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .neq("id", currentUser.id)
+    .order("created_at", { ascending: false })
+    .limit(50);
 
   if (error) {
-
-    $("peopleList").innerHTML =
-      `<div class="message error">
-        ${escapeHTML(error.message)}
-      </div>`;
-
+    $("peopleList").innerHTML = `<div class="message error">${escapeHTML(error.message)}</div>`;
     return;
-
   }
-
 
   if (!data || data.length === 0) {
-
-    $("peopleList").innerHTML =
-      `<div class="empty">
-        No other users yet.
-      </div>`;
-
+    $("peopleList").innerHTML = `<div class="empty">No other users yet.</div>`;
     return;
-
   }
-
 
   $("peopleList").innerHTML = "";
 
-
   for (const person of data) {
+    const { data: connection } = await supabaseClient
+      .from("connections")
+      .select("*")
+      .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${person.id}),and(sender_id.eq.${person.id},receiver_id.eq.${currentUser.id})`)
+      .maybeSingle();
 
-    const {
-      data: connection
-    } =
-      await supabaseClient
-        .from("connections")
-        .select("*")
-        .or(
-          `and(sender_id.eq.${currentUser.id},receiver_id.eq.${person.id}),and(sender_id.eq.${person.id},receiver_id.eq.${currentUser.id})`
-        )
-        .maybeSingle();
-
-
-    const row =
-      document.createElement("div");
-
+    const row = document.createElement("div");
     row.className = "person";
 
-
     let buttonHTML = "";
-
-
     if (!connection) {
-
-      buttonHTML = `
-        <button
-          class="primary-btn"
-          data-connect
-        >
-          Connect
-        </button>
-      `;
-
-    } else if (
-      connection.status === "pending" &&
-      connection.receiver_id ===
-        currentUser.id
-    ) {
-
-      buttonHTML = `
-        <button
-          class="secondary-btn"
-          data-accept
-        >
-          Accept
-        </button>
-      `;
-
+      buttonHTML = `<button class="primary-btn" data-connect>Connect</button>`;
+    } else if (connection.status === "pending" && connection.receiver_id === currentUser.id) {
+      buttonHTML = `<button class="secondary-btn" data-accept>Accept</button>`;
     } else {
-
-      buttonHTML = `
-        <span class="status">
-          ${
-            connection.status ===
-            "accepted"
-              ? "Connected"
-              : "Pending"
-          }
-        </span>
-      `;
-
+      buttonHTML = `<span class="status">${connection.status === "accepted" ? "Connected" : "Pending"}</span>`;
     }
-
 
     row.innerHTML = `
-
-      <img
-        class="avatar"
-        src="${getAvatar(person)}"
-      >
-
+      <img class="avatar" src="${getAvatar(person)}">
       <div class="person-info">
-
-        <div class="person-name">
-          ${escapeHTML(person.name)}
-        </div>
-
-        <div class="person-location">
-          ${escapeHTML(
-            person.location || ""
-          )}
-        </div>
-
+        <div class="person-name">${escapeHTML(person.name)}</div>
+        <div class="person-location">${escapeHTML(person.location || "")}</div>
       </div>
-
       ${buttonHTML}
-
     `;
 
+    $("peopleList").appendChild(row);
 
-    $("peopleList")
-      .appendChild(row);
-
-
-    const connectButton =
-      row.querySelector(
-        "[data-connect]"
-      );
-
-
+    const connectButton = row.querySelector("[data-connect]");
     if (connectButton) {
+      connectButton.onclick = async () => {
+        const { error } = await supabaseClient.from("connections").insert({
+          sender_id: currentUser.id,
+          receiver_id: person.id,
+          status: "pending"
+        });
 
-      connectButton.onclick =
-        async () => {
+        if (error) {
+          showToast(error.message);
+          return;
+        }
 
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("connections")
-              .insert({
-                sender_id:
-                  currentUser.id,
-                receiver_id:
-                  person.id,
-                status:
-                  "pending"
-              });
+        await supabaseClient.from("notifications").insert({
+          user_id: person.id,
+          actor_id: currentUser.id,
+          type: "connection"
+        });
 
-
-          if (error) {
-
-            showToast(
-              error.message
-            );
-
-            return;
-
-          }
-
-
-          await supabaseClient
-            .from("notifications")
-            .insert({
-              user_id:
-                person.id,
-              actor_id:
-                currentUser.id,
-              type:
-                "connection"
-            });
-
-
-          showToast(
-            "Connection request sent!"
-          );
-
-
-          await renderPeople();
-
-        };
-
+        showToast("Connection request sent!");
+        await renderPeople();
+      };
     }
 
-
-    const acceptButton =
-      row.querySelector(
-        "[data-accept]"
-      );
-
-
+    const acceptButton = row.querySelector("[data-accept]");
     if (acceptButton) {
+      acceptButton.onclick = async () => {
+        const { error } = await supabaseClient
+          .from("connections")
+          .update({ status: "accepted" })
+          .eq("id", connection.id);
 
-      acceptButton.onclick =
-        async () => {
+        if (error) {
+          showToast(error.message);
+          return;
+        }
 
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("connections")
-              .update({
-                status:
-                  "accepted"
-              })
-              .eq(
-                "id",
-                connection.id
-              );
+        await supabaseClient.from("notifications").insert({
+          user_id: connection.sender_id,
+          actor_id: currentUser.id,
+          type: "accepted"
+        });
 
-
-          if (error) {
-
-            showToast(
-              error.message
-            );
-
-            return;
-
-          }
-
-
-          await supabaseClient
-            .from("notifications")
-            .insert({
-              user_id:
-                connection.sender_id,
-              actor_id:
-                currentUser.id,
-              type:
-                "accepted"
-            });
-
-
-          await renderPeople();
-
-        };
-
+        await renderPeople();
+      };
     }
-
   }
-
 }
 
 
@@ -2330,150 +1645,51 @@ async function renderPeople() {
    ========================================================= */
 
 async function renderProfile(id) {
-
-  const {
-    data: profile,
-    error
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq(
-        "id",
-        id
-      )
-      .single();
-
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
 
   if (error) {
-
-    $("mainContent").innerHTML =
-      `<div class="card message error">
-        ${escapeHTML(error.message)}
-      </div>`;
-
+    $("mainContent").innerHTML = `<div class="card message error">${escapeHTML(error.message)}</div>`;
     return;
-
   }
 
-
-  const {
-    count
-  } =
-    await supabaseClient
-      .from("posts")
-      .select("*", {
-        count: "exact",
-        head: true
-      })
-      .eq(
-        "user_id",
-        id
-      );
-
+  const { count } = await supabaseClient
+    .from("posts")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", id);
 
   $("mainContent").innerHTML = `
-
-    <div
-      class="card"
-      style="padding:0;overflow:hidden"
-    >
-
+    <div class="card" style="padding:0;overflow:hidden">
       <div class="cover"></div>
-
       <div class="profile-info">
-
-        <img
-          class="avatar avatar-large profile-avatar"
-          src="${getAvatar(profile)}"
-        >
-
-        <div
-          style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            gap:10px;
-          "
-        >
-
-          <div class="profile-title">
-            ${escapeHTML(profile.name)}
-          </div>
-
-          ${
-            id === currentUser.id
-              ? `
-                <button
-                  id="editProfileButton"
-                  class="secondary-btn"
-                >
-                  Edit profile
-                </button>
-              `
-              : ""
-          }
-
+        <img class="avatar avatar-large profile-avatar" src="${getAvatar(profile)}">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div class="profile-title">${escapeHTML(profile.name)}</div>
+          ${id === currentUser.id ? `<button id="editProfileButton" class="secondary-btn">Edit profile</button>` : ""}
         </div>
-
-        <div class="profile-location">
-          ${escapeHTML(
-            profile.location || ""
-          )}
-        </div>
-
-        <p>
-          ${escapeHTML(
-            profile.bio ||
-            "No bio yet."
-          )}
-        </p>
-
-        <div class="profile-location">
-          ${count || 0} posts
-        </div>
-
+        <div class="profile-location">${escapeHTML(profile.location || "")}</div>
+        <p>${escapeHTML(profile.bio || "No bio yet.")}</p>
+        <div class="profile-location">${count || 0} posts</div>
       </div>
-
     </div>
-
     <div id="profilePosts"></div>
-
   `;
 
-
-  const editButton =
-    $("editProfileButton");
-
-
+  const editButton = $("editProfileButton");
   if (editButton) {
-
-    editButton.onclick =
-      () => {
-
-        $("editName").value =
-          profile.name || "";
-
-        $("editBio").value =
-          profile.bio || "";
-
-        $("editLocation").value =
-          profile.location || "";
-
-        $("editAvatar").value =
-          profile.avatar_url || "";
-
-        openModal(
-          "profileModal"
-        );
-
-      };
-
+    editButton.onclick = () => {
+      $("editName").value = profile.name || "";
+      $("editBio").value = profile.bio || "";
+      $("editLocation").value = profile.location || "";
+      $("editAvatar").value = profile.avatar_url || "";
+      openModal("profileModal");
+    };
   }
 
-
   await loadProfilePosts(id);
-
 }
 
 
@@ -2482,100 +1698,44 @@ async function renderProfile(id) {
    ========================================================= */
 
 async function loadProfilePosts(id) {
-
-  const {
-    data
-  } =
-    await supabaseClient
-      .from("posts")
-      .select(`
+  const { data } = await supabaseClient
+    .from("posts")
+    .select(`
+      id,
+      user_id,
+      content,
+      created_at,
+      profiles (
         id,
-        user_id,
-        content,
-        created_at,
-        profiles (
-          id,
-          name,
-          avatar_url
-        )
-      `)
-      .eq(
-        "user_id",
-        id
+        name,
+        avatar_url
       )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
+    `)
+    .eq("user_id", id)
+    .order("created_at", { ascending: false });
 
   $("profilePosts").innerHTML = "";
 
-
   if (!data || data.length === 0) {
-
-    $("profilePosts").innerHTML =
-      `<div class="card empty">
-        No posts yet.
-      </div>`;
-
+    $("profilePosts").innerHTML = `<div class="card empty">No posts yet.</div>`;
     return;
-
   }
 
-
   data.forEach((post) => {
-
-    const article =
-      document.createElement("article");
-
+    const article = document.createElement("article");
     article.className = "card";
-
-
     article.innerHTML = `
-
       <div class="post-header">
-
-        <img
-          class="avatar"
-          src="${getAvatar(post.profiles)}"
-        >
-
+        <img class="avatar" src="${getAvatar(post.profiles)}">
         <div class="post-user">
-
-          <div class="post-name">
-            ${escapeHTML(
-              post.profiles?.name ||
-              "User"
-            )}
-          </div>
-
-          <div class="post-time">
-            ${timeAgo(
-              post.created_at
-            )}
-          </div>
-
+          <div class="post-name">${escapeHTML(post.profiles?.name || "User")}</div>
+          <div class="post-time">${timeAgo(post.created_at)}</div>
         </div>
-
       </div>
-
-      <div class="post-content">
-        ${escapeHTML(
-          post.content
-        )}
-      </div>
-
+      <div class="post-content">${escapeHTML(post.content)}</div>
     `;
-
-
-    $("profilePosts")
-      .appendChild(article);
-
+    $("profilePosts").appendChild(article);
   });
-
 }
 
 
@@ -2583,88 +1743,37 @@ async function loadProfilePosts(id) {
    SAVE PROFILE
    ========================================================= */
 
-$("saveProfileButton").onclick =
-  async () => {
-
-    const update = {
-
-      name:
-        $("editName")
-          .value
-          .trim(),
-
-      bio:
-        $("editBio")
-          .value
-          .trim(),
-
-      location:
-        $("editLocation")
-          .value
-          .trim(),
-
-      avatar_url:
-        $("editAvatar")
-          .value
-          .trim()
-
-    };
-
-
-    if (!update.name) {
-
-      showToast(
-        "Name is required."
-      );
-
-      return;
-
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .update(update)
-        .eq(
-          "id",
-          currentUser.id
-        )
-        .select()
-        .single();
-
-
-    if (error) {
-
-      showToast(
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    currentProfile = data;
-
-    closeModal(
-      "profileModal"
-    );
-
-    showToast(
-      "Profile updated!"
-    );
-
-    await renderProfile(
-      currentUser.id
-    );
-
-    loadSuggestions();
-
+$("saveProfileButton").onclick = async () => {
+  const update = {
+    name: $("editName").value.trim(),
+    bio: $("editBio").value.trim(),
+    location: $("editLocation").value.trim(),
+    avatar_url: $("editAvatar").value.trim()
   };
+
+  if (!update.name) {
+    showToast("Name is required.");
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .update(update)
+    .eq("id", currentUser.id)
+    .select()
+    .single();
+
+  if (error) {
+    showToast(error.message);
+    return;
+  }
+
+  currentProfile = data;
+  closeModal("profileModal");
+  showToast("Profile updated!");
+  await renderProfile(currentUser.id);
+  loadSuggestions();
+};
 
 
 /* =========================================================
@@ -2672,66 +1781,26 @@ $("saveProfileButton").onclick =
    ========================================================= */
 
 async function loadSuggestions() {
-
-  const {
-    data
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .neq(
-        "id",
-        currentUser.id
-      )
-      .limit(5);
-
+  const { data } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .neq("id", currentUser.id)
+    .limit(5);
 
   if (!data || data.length === 0) {
-
-    $("suggestions").innerHTML =
-      `<div class="empty">
-        No suggestions yet.
-      </div>`;
-
+    $("suggestions").innerHTML = `<div class="empty">No suggestions yet.</div>`;
     return;
-
   }
 
-
-  $("suggestions").innerHTML =
-    data
-      .map(
-        (person) => `
-
-          <div class="person">
-
-            <img
-              class="avatar"
-              src="${getAvatar(person)}"
-            >
-
-            <div class="person-info">
-
-              <div class="person-name">
-                ${escapeHTML(
-                  person.name
-                )}
-              </div>
-
-              <div class="person-location">
-                ${escapeHTML(
-                  person.location || ""
-                )}
-              </div>
-
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("");
-
+  $("suggestions").innerHTML = data.map(person => `
+    <div class="person">
+      <img class="avatar" src="${getAvatar(person)}">
+      <div class="person-info">
+        <div class="person-name">${escapeHTML(person.name)}</div>
+        <div class="person-location">${escapeHTML(person.location || "")}</div>
+      </div>
+    </div>
+  `).join("");
 }
 
 
@@ -2739,231 +1808,72 @@ async function loadSuggestions() {
    NOTIFICATIONS
    ========================================================= */
 
-$("notificationsButton").onclick =
-  () => {
-
-    renderView(
-      "notifications"
-    );
-
-  };
-
+$("notificationsButton").onclick = () => renderView("notifications");
 
 async function renderNotifications() {
-
   $("mainContent").innerHTML = `
-
     <div class="card">
-
-      <h2 style="margin-top:0">
-        Notifications
-      </h2>
-
-      <div id="notificationsList">
-        <div class="loading">
-          Loading...
-        </div>
-      </div>
-
+      <h2 style="margin-top:0">Notifications</h2>
+      <div id="notificationsList"><div class="loading">Loading...</div></div>
     </div>
-
   `;
 
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("notifications")
-      .select(`
-        id,
-        type,
-        is_read,
-        created_at,
-        actor_id
-      `)
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      )
-      .limit(50);
-
+  const { data, error } = await supabaseClient
+    .from("notifications")
+    .select(`
+      id,
+      type,
+      is_read,
+      created_at,
+      actor_id
+    `)
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false })
+    .limit(50);
 
   if (error) {
-
-    $("notificationsList").innerHTML =
-      `<div class="message error">
-        ${escapeHTML(error.message)}
-      </div>`;
-
+    $("notificationsList").innerHTML = `<div class="message error">${escapeHTML(error.message)}</div>`;
     return;
-
   }
-
 
   if (!data || data.length === 0) {
-
-    $("notificationsList").innerHTML =
-      `<div class="empty">
-        No notifications yet.
-      </div>`;
-
+    $("notificationsList").innerHTML = `<div class="empty">No notifications yet.</div>`;
     return;
-
   }
 
-
-  const actorIds =
-    [
-      ...new Set(
-        data
-          .map(
-            n => n.actor_id
-          )
-          .filter(Boolean)
-      )
-    ];
-
-
+  const actorIds = [...new Set(data.map(n => n.actor_id).filter(Boolean))];
   let actors = [];
 
-
   if (actorIds.length) {
+    const result = await supabaseClient
+      .from("profiles")
+      .select("id,name,avatar_url")
+      .in("id", actorIds);
 
-    const result =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "id,name,avatar_url"
-        )
-        .in(
-          "id",
-          actorIds
-        );
-
-    actors =
-      result.data || [];
-
+    actors = result.data || [];
   }
 
+  const actorMap = new Map(actors.map(actor => [actor.id, actor]));
 
-  const actorMap =
-    new Map(
-      actors.map(
-        actor => [
-          actor.id,
-          actor
-        ]
-      )
-    );
+  $("notificationsList").innerHTML = data.map(notification => {
+    const actor = actorMap.get(notification.actor_id);
+    let text = "interacted with you";
 
+    if (notification.type === "like") text = "liked your post";
+    if (notification.type === "comment") text = "commented on your post";
+    if (notification.type === "connection") text = "sent you a connection request";
+    if (notification.type === "accepted") text = "accepted your connection request";
 
-  $("notificationsList").innerHTML =
-    data
-      .map(
-        notification => {
-
-          const actor =
-            actorMap.get(
-              notification.actor_id
-            );
-
-
-          let text =
-            "interacted with you";
-
-
-          if (
-            notification.type ===
-            "like"
-          ) {
-
-            text =
-              "liked your post";
-
-          }
-
-
-          if (
-            notification.type ===
-            "comment"
-          ) {
-
-            text =
-              "commented on your post";
-
-          }
-
-
-          if (
-            notification.type ===
-            "connection"
-          ) {
-
-            text =
-              "sent you a connection request";
-
-          }
-
-
-          if (
-            notification.type ===
-            "accepted"
-          ) {
-
-            text =
-              "accepted your connection request";
-
-          }
-
-
-          return `
-
-            <div class="person">
-
-              <img
-                class="avatar"
-                src="${getAvatar(actor)}"
-              >
-
-              <div class="person-info">
-
-                <div class="person-name">
-
-                  ${escapeHTML(
-                    actor?.name ||
-                    "Someone"
-                  )}
-
-                  ${text}
-
-                </div>
-
-                <div class="person-location">
-
-                  ${timeAgo(
-                    notification.created_at
-                  )}
-
-                </div>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
+    return `
+      <div class="person">
+        <img class="avatar" src="${getAvatar(actor)}">
+        <div class="person-info">
+          <div class="person-name">${escapeHTML(actor?.name || "Someone")} ${text}</div>
+          <div class="person-location">${timeAgo(notification.created_at)}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 
@@ -2973,144 +1883,51 @@ async function renderNotifications() {
 
 let searchTimer;
 
+$("searchInput").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  const query = $("searchInput").value.trim();
 
-$("searchInput").addEventListener(
-  "input",
-  () => {
+  searchTimer = setTimeout(async () => {
+    if (!query) {
+      await renderView("home");
+      return;
+    }
 
-    clearTimeout(
-      searchTimer
-    );
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .ilike("name", `%${query}%`)
+      .limit(30);
 
-    const query =
-      $("searchInput")
-        .value
-        .trim();
+    if (error) {
+      $("mainContent").innerHTML = `<div class="card message error">${escapeHTML(error.message)}</div>`;
+      return;
+    }
 
+    $("mainContent").innerHTML = `
+      <div class="card">
+        <h2 style="margin-top:0">Search results</h2>
+        <div id="searchResults"></div>
+      </div>
+    `;
 
-    searchTimer =
-      setTimeout(
-        async () => {
+    if (!data || data.length === 0) {
+      $("searchResults").innerHTML = `<div class="empty">No people found.</div>`;
+      return;
+    }
 
-          if (!query) {
-
-            await renderView(
-              "home"
-            );
-
-            return;
-
-          }
-
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .from("profiles")
-              .select("*")
-              .ilike(
-                "name",
-                `%${query}%`
-              )
-              .limit(30);
-
-
-          if (error) {
-
-            $("mainContent").innerHTML =
-              `<div class="card message error">
-                ${escapeHTML(
-                  error.message
-                )}
-              </div>`;
-
-            return;
-
-          }
-
-
-          $("mainContent").innerHTML = `
-
-            <div class="card">
-
-              <h2 style="margin-top:0">
-                Search results
-              </h2>
-
-              <div id="searchResults"></div>
-
-            </div>
-
-          `;
-
-
-          if (
-            !data ||
-            data.length === 0
-          ) {
-
-            $("searchResults").innerHTML =
-              `<div class="empty">
-                No people found.
-              </div>`;
-
-            return;
-
-          }
-
-
-          $("searchResults").innerHTML =
-            data
-              .map(
-                person => `
-
-                  <div class="person">
-
-                    <img
-                      class="avatar"
-                      src="${getAvatar(
-                        person
-                      )}"
-                    >
-
-                    <div class="person-info">
-
-                      <div class="person-name">
-                        ${escapeHTML(
-                          person.name
-                        )}
-                      </div>
-
-                      <div class="person-location">
-                        ${escapeHTML(
-                          person.bio ||
-                          ""
-                        )}
-                      </div>
-
-                    </div>
-
-                    <button
-                      class="secondary-btn"
-                      onclick="renderProfile('${person.id}')"
-                    >
-                      View
-                    </button>
-
-                  </div>
-
-                `
-              )
-              .join("");
-
-        },
-        350
-      );
-
-  }
-);
+    $("searchResults").innerHTML = data.map(person => `
+      <div class="person">
+        <img class="avatar" src="${getAvatar(person)}">
+        <div class="person-info">
+          <div class="person-name">${escapeHTML(person.name)}</div>
+          <div class="person-location">${escapeHTML(person.bio || "")}</div>
+        </div>
+        <button class="secondary-btn" onclick="renderProfile('${person.id}')">View</button>
+      </div>
+    `).join("");
+  }, 350);
+});
 
 
 /* =========================================================
@@ -3122,4 +1939,4 @@ initializeApp();
 </script>
 
 </body>
- </html>
+  </html>
