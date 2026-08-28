@@ -51,13 +51,12 @@
     .post-content { font-size: 15px; padding: 0 16px; margin-bottom: 12px; }
     .post-image { width: 100%; max-height: 400px; object-fit: cover; margin-top: 8px; }
 
-    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 10px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; }
+    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 12px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; }
     .btn-secondary { background: var(--color-surface-container-low); color: var(--color-on-surface); border: none; padding: 8px 12px; border-radius: var(--radius-default); cursor: pointer; }
     .form-control { width: 100%; padding: 12px; border: 1px solid var(--color-outline-variant); border-radius: var(--radius-default); font-size: 15px; margin-bottom: 12px; }
 
     .hidden { display: none !important; }
 
-    /* Modal Styling */
     .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 200; }
     .modal-content { background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
   </style>
@@ -71,28 +70,32 @@
       <a href="#" class="brand-title">Social Connect</a>
     </header>
 
-    <!-- AUTH SECTION -->
+    <!-- AUTH FORM SECTION -->
     <div id="auth-section" class="card" style="margin: 16px; border-radius: 12px;">
       <h2 style="font-size: 20px; margin-bottom: 16px;" id="auth-title">লগইন করুন</h2>
-      <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস">
-      <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড">
-      <input type="text" id="auth-name" class="form-control hidden" placeholder="আপনার পূর্ণ নাম">
-      <button id="btn-auth-submit" class="btn-primary">লগইন</button>
-      <p style="text-align: center; font-size: 13px; margin-top: 12px; cursor: pointer;" id="toggle-auth">
-        নতুন অ্যাকাউন্ট? <b>সাইন আপ করুন</b>
+      
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <!-- Sign up state-এ এই ফিল্ডটি দৃশ্যমান হবে -->
+        <input type="text" id="auth-name" class="form-control hidden" placeholder="আপনার পূর্ণ নাম (Full Name)">
+        <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস" required>
+        <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড" required>
+        
+        <button type="submit" id="btn-auth-submit" class="btn-primary">লগইন</button>
+      </form>
+
+      <p style="text-align: center; font-size: 14px; margin-top: 16px; cursor: pointer; color: var(--color-primary);" id="toggle-auth" onclick="toggleAuthMode()">
+        নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>
       </p>
     </div>
 
     <!-- MAIN FEED -->
     <main id="feed-section" class="feed-container hidden">
-      <!-- Create Post Box -->
       <div class="card" style="display:flex; gap:12px; align-items:center;">
         <img id="my-avatar-small" class="avatar" src="" style="display:none;">
         <div id="my-avatar-text" class="avatar">U</div>
         <button class="btn-secondary" style="flex:1; text-align:left;" onclick="showPostModal()">আপনার মনের কথা শেয়ার করুন...</button>
       </div>
 
-      <!-- Posts Container -->
       <div id="posts-list"></div>
     </main>
 
@@ -103,7 +106,6 @@
         <img id="profile-img-preview" class="avatar avatar-lg" src="" style="display:none;">
         <div id="profile-text-preview" class="avatar avatar-lg" style="font-size: 32px;">U</div>
         
-        <!-- Profile Pic Upload Button -->
         <label for="avatar-input" class="btn-secondary" style="cursor: pointer;">
           <i class="fa-solid fa-camera"></i> প্রোফাইল ছবি পরিবর্তন করুন
         </label>
@@ -119,7 +121,6 @@
         <h3>নতুন পোস্ট লিখুন</h3>
         <textarea id="post-text" class="form-control" rows="3" placeholder="এখানে কিছু লিখুন..."></textarea>
         
-        <!-- Post Image Upload Button -->
         <label for="post-img-input" class="btn-secondary" style="text-align: center; cursor: pointer;">
           <i class="fa-solid fa-image" style="color:#45bd62;"></i> ছবি যুক্ত করুন
         </label>
@@ -155,7 +156,6 @@
     let selectedPostImageFile = null;
     let isSignUp = false;
 
-    // Elements
     const authSection = document.getElementById('auth-section');
     const feedSection = document.getElementById('feed-section');
     const profileSection = document.getElementById('profile-section');
@@ -169,40 +169,57 @@
       }
     });
 
-    // Toggle Login/Signup
-    document.getElementById('toggle-auth').addEventListener('click', () => {
+    // Sign Up / Login Switch Function
+    function toggleAuthMode() {
       isSignUp = !isSignUp;
       document.getElementById('auth-title').innerText = isSignUp ? 'নতুন অ্যাকাউন্ট তৈরি করুন' : 'লগইন করুন';
       document.getElementById('btn-auth-submit').innerText = isSignUp ? 'সাইন আপ' : 'লগইন';
-      document.getElementById('auth-name').classList.toggle('hidden', !isSignUp);
-    });
+      
+      const nameInput = document.getElementById('auth-name');
+      if (isSignUp) {
+        nameInput.classList.remove('hidden');
+        nameInput.setAttribute('required', 'required');
+      } else {
+        nameInput.classList.add('hidden');
+        nameInput.removeAttribute('required');
+      }
 
-    // Auth Submit
-    document.getElementById('btn-auth-submit').addEventListener('click', async () => {
+      document.getElementById('toggle-auth').innerHTML = isSignUp ? 
+        'আগে থেকেই অ্যাকাউন্ট আছে? <b>লগইন করুন</b>' : 
+        'নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>';
+    }
+
+    // Submit Handler
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      
       const email = document.getElementById('auth-email').value;
       const password = document.getElementById('auth-password').value;
       const name = document.getElementById('auth-name').value;
 
-      if (!email || !password) return alert('ইমেইল ও পাসওয়ার্ড দিন');
+      document.getElementById('btn-auth-submit').innerText = "অপেক্ষা করুন...";
 
       if (isSignUp) {
-        if (!name) return alert('নাম দিন');
         const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) alert(error.message);
-        else {
+        if (error) {
+          alert("ভুল হয়েছে: " + error.message);
+          document.getElementById('btn-auth-submit').innerText = "সাইন আপ";
+        } else {
           await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
           currentUser = data.user;
           showMainApp();
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) alert(error.message);
-        else {
+        if (error) {
+          alert("লগইন ব্যর্থ: " + error.message);
+          document.getElementById('btn-auth-submit').innerText = "লগইন";
+        } else {
           currentUser = data.user;
           showMainApp();
         }
       }
-    });
+    }
 
     async function showMainApp() {
       authSection.classList.add('hidden');
@@ -211,7 +228,6 @@
       loadPosts();
     }
 
-    // Load User Profile Data
     async function loadUserProfile() {
       const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
       if (profile) {
@@ -232,7 +248,6 @@
       }
     }
 
-    // 1. Upload Profile Picture Function
     async function uploadProfilePicture(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -240,22 +255,18 @@
       const fileExt = file.name.split('.').pop();
       const fileName = `avatar_${currentUser.id}_${Date.now()}.${fileExt}`;
 
-      // Upload to Supabase Storage
       const { data, error } = await supabase.storage.from('avatars').upload(fileName, file);
       if (error) return alert('ছবি আপলোড ব্যর্থ হয়েছে: ' + error.message);
 
-      // Get Public URL
       const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(fileName);
       const avatarUrl = publicUrlData.publicUrl;
 
-      // Update Profiles Table
       await supabase.from('profiles').update({ avatar_url: avatarUrl }).eq('id', currentUser.id);
 
       alert('প্রোফাইল ছবি পরিবর্তন হয়েছে!');
       loadUserProfile();
     }
 
-    // 2. Image Post Functionality
     function showPostModal() { postModal.classList.remove('hidden'); }
     function hidePostModal() { postModal.classList.add('hidden'); selectedPostImageFile = null; }
 
@@ -272,7 +283,6 @@
 
       let imageUrl = null;
 
-      // Upload image if selected
       if (selectedPostImageFile) {
         const fileExt = selectedPostImageFile.name.split('.').pop();
         const fileName = `post_${Date.now()}.${fileExt}`;
@@ -284,7 +294,6 @@
         }
       }
 
-      // Save Post to Database
       const { error } = await supabase.from('posts').insert([{
         user_id: currentUser.id,
         content: text,
@@ -300,7 +309,6 @@
       }
     }
 
-    // Load All Feed Posts
     async function loadPosts() {
       const container = document.getElementById('posts-list');
       container.innerHTML = '<p style="text-align:center; padding:20px;">পোস্ট লোড হচ্ছে...</p>';
