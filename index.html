@@ -51,7 +51,7 @@
     .post-content { font-size: 15px; padding: 0 16px; margin-bottom: 12px; }
     .post-image { width: 100%; max-height: 400px; object-fit: cover; margin-top: 8px; }
 
-    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 12px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; }
+    .btn-primary { background: var(--color-primary); color: #fff; border: none; padding: 12px 16px; border-radius: var(--radius-default); font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; margin-bottom: 8px; }
     .btn-secondary { background: var(--color-surface-container-low); color: var(--color-on-surface); border: none; padding: 8px 12px; border-radius: var(--radius-default); cursor: pointer; }
     .form-control { width: 100%; padding: 12px; border: 1px solid var(--color-outline-variant); border-radius: var(--radius-default); font-size: 15px; margin-bottom: 12px; }
 
@@ -72,19 +72,16 @@
 
     <!-- AUTH SECTION -->
     <div id="auth-section" class="card" style="margin: 16px; border-radius: 12px;">
-      <h2 style="font-size: 20px; margin-bottom: 16px;" id="auth-title">লগইন করুন</h2>
+      <h2 style="font-size: 20px; margin-bottom: 16px;" id="auth-title">Social Connect-এ স্বাগতম</h2>
       
       <div>
-        <input type="text" id="auth-name" class="form-control hidden" placeholder="আপনার পূর্ণ নাম (Full Name)">
+        <input type="text" id="auth-name" class="form-control" placeholder="আপনার পূর্ণ নাম (নতুন অ্যাকাউন্ট খুললে আবশ্যক)">
         <input type="email" id="auth-email" class="form-control" placeholder="ইমেইল অ্যাড্রেস">
         <input type="password" id="auth-password" class="form-control" placeholder="পাসওয়ার্ড">
         
-        <button type="button" id="btn-auth-submit" class="btn-primary" onclick="handleAuthSubmit()">লগইন</button>
+        <button type="button" class="btn-primary" onclick="handleLogin()">লগইন করুন</button>
+        <button type="button" class="btn-primary" style="background-color: #42b72a;" onclick="handleSignUp()">নতুন অ্যাকাউন্ট খুলুন (Sign Up)</button>
       </div>
-
-      <p style="text-align: center; font-size: 14px; margin-top: 16px; cursor: pointer; color: var(--color-primary);" id="toggle-auth" onclick="toggleAuthMode()">
-        নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>
-      </p>
     </div>
 
     <!-- MAIN FEED -->
@@ -153,7 +150,6 @@
 
     let currentUser = null;
     let selectedPostImageFile = null;
-    let isSignUp = false;
 
     const authSection = document.getElementById('auth-section');
     const feedSection = document.getElementById('feed-section');
@@ -168,66 +164,41 @@
       }
     });
 
-    function toggleAuthMode() {
-      isSignUp = !isSignUp;
-      document.getElementById('auth-title').innerText = isSignUp ? 'নতুন অ্যাকাউন্ট তৈরি করুন' : 'লগইন করুন';
-      document.getElementById('btn-auth-submit').innerText = isSignUp ? 'সাইন আপ' : 'লগইন';
-      
-      const nameInput = document.getElementById('auth-name');
-      if (isSignUp) {
-        nameInput.classList.remove('hidden');
-      } else {
-        nameInput.classList.add('hidden');
-      }
-
-      document.getElementById('toggle-auth').innerHTML = isSignUp ? 
-        'আগে থেকেই অ্যাকাউন্ট আছে? <b>লগইন করুন</b>' : 
-        'নতুন অ্যাকাউন্ট তৈরি করতে চান? <b>সাইন আপ করুন</b>';
-    }
-
-    async function handleAuthSubmit() {
+    // Login Function
+    async function handleLogin() {
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
-      const name = document.getElementById('auth-name').value.trim();
 
-      if (!email || !password) {
-        return alert('অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড দিন!');
-      }
+      if (!email || !password) return alert('ইমেইল ও পাসওয়ার্ড দিন!');
 
-      const btn = document.getElementById('btn-auth-submit');
-      btn.innerText = "অপেক্ষা করুন...";
-      btn.disabled = true;
-
-      if (isSignUp) {
-        if (!name) {
-          btn.innerText = "সাইন আপ";
-          btn.disabled = false;
-          return alert('অনুগ্রহ করে আপনার নাম দিন!');
-        }
-
-        const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) {
-          alert("সাইন আপ ব্যর্থ: " + error.message);
-          btn.innerText = "সাইন আপ";
-          btn.disabled = false;
-        } else {
-          if (data.user) {
-            await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
-            currentUser = data.user;
-            showMainApp();
-          } else {
-            alert('অ্যাকাউন্ট তৈরি হয়েছে!');
-          }
-        }
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        alert("লগইন ভুল হয়েছে: " + error.message);
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) {
-          alert("লগইন ব্যর্থ: " + error.message);
-          btn.innerText = "লগইন";
-          btn.disabled = false;
-        } else {
+        currentUser = data.user;
+        showMainApp();
+      }
+    }
+
+    // Sign Up Function
+    async function handleSignUp() {
+      const name = document.getElementById('auth-name').value.trim();
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
+
+      if (!name) return alert('নতুন অ্যাকাউন্ট খুলতে নাম অবশ্যই দিতে হবে!');
+      if (!email || !password) return alert('ইমেইল ও পাসওয়ার্ড দিন!');
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        alert("সাইন আপের সমস্যা: " + error.message);
+      } else {
+        if(data.user) {
+          await supabase.from('profiles').insert([{ id: data.user.id, full_name: name }]);
           currentUser = data.user;
           showMainApp();
+        } else {
+          alert('অ্যাকাউন্ট তৈরি হয়েছে!');
         }
       }
     }
